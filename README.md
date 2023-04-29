@@ -1,13 +1,19 @@
 # Getting Started with Vite and React
 
-This project was originally bootstrapped with Create React App. To convert it to Vite, follow these steps:
+This project was bootstrapped with Create React App, but we'll be using Vite instead. Vite is a faster and more efficient build tool than Create React App.
 
 ## Installation
 
-First, install Vite globally by running:
+First, make sure you have Node.js installed on your machine. Then, create a new React app using the following command:
 
 ```
-npm install -g vite
+npx create-react-app my-app
+```
+
+Once the app is created, navigate to the project directory and install Vite by running:
+
+```
+npm install vite --save-dev
 ```
 
 ## Configuration
@@ -63,6 +69,6 @@ To build your app for production, run:
 npm run build
 ```
 
-This will create a production-ready build in the `dist` folder.
+This will create a production-ready build in the `build` folder.
 
 For more information on using Vite with React, check out the [Vite documentation](https://vitejs.dev/guide/features.html#react).
