@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import descArrays from "../../util/constants/Description";
-import { ConfigProvider, Tag } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssAddTagComponent";
-import { setHandleSubmit } from "../../redux/Slice/ModalHOCSlice";
+import React, { useEffect } from 'react';
+import descArrays from '../../util/constants/Description';
+import { ConfigProvider, Tag } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssAddTagComponent';
+import { setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
 
 const AddTagComponent = (Props: any) => {
   const dispatch = useDispatch();
@@ -16,9 +16,9 @@ const AddTagComponent = (Props: any) => {
 
   const descArray = [...descArrays];
 
-  const [addTagArr, setAddTagArr] = React.useState<any>([
-    ...Props.descriptions,
-  ]);
+  const [addTagArr, setAddTagArr] = React.useState<any>([...Props.descriptions]);
+
+  let addTagArrTemp = [...addTagArr];
 
   const handleSubmit = () => {
     Props.callback(addTagArr);
@@ -41,21 +41,18 @@ const AddTagComponent = (Props: any) => {
               key={index}
               className={
                 addTagArr?.indexOf(item.title) !== -1
-                  ? "itemAddTag mx-2 my-2 px-4 py-2 active"
-                  : "itemAddTag mx-2 my-2 px-4 py-2"
+                  ? 'itemAddTag mx-2 my-2 px-4 py-2 active'
+                  : 'itemAddTag mx-2 my-2 px-4 py-2'
               }
               onClick={(e) => {
                 if (addTagArr?.includes(item.title)) {
                   //   addTagArr.splice(addTagArr.indexOf(item.title), 1);
-                  setAddTagArr(
-                    addTagArr.filter((item: any) => item !== item.title)
-                  );
-                  e.currentTarget.classList.remove("active");
+                  setAddTagArr(addTagArrTemp.filter((i: any) => i !== item.title));
                   return;
                 } else {
                   //   addTagArr.push(item.title);
                   setAddTagArr([...addTagArr, item.title]);
-                  e.currentTarget.classList.add("active");
+                  addTagArrTemp = [...addTagArrTemp, item.title];
                   return;
                 }
               }}
