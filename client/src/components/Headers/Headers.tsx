@@ -1,33 +1,18 @@
-import React from "react";
-import {
-  Avatar,
-  Badge,
-  Button,
-  Col,
-  ConfigProvider,
-  Row,
-  Space,
-  Switch,
-  theme,
-} from "antd";
-import { Header } from "antd/es/layout/layout";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssHeaders";
-import { commonColor } from "../../util/cssVariable/cssVariable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
-import Title from "antd/es/typography/Title";
-import Search from "antd/es/transfer/search";
-import {
-  BellOutlined,
-  CommentOutlined,
-  MessageOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { DARK_THEME, LIGHT_THEME } from "../../util/constants/SettingSystem";
-import { setTheme } from "../../redux/Slice/ThemeSlice";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { Avatar, Badge, Button, Col, ConfigProvider, Row, Space, Switch, theme } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssHeaders';
+import { commonColor } from '../../util/cssVariable/cssVariable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
+import Title from 'antd/es/typography/Title';
+import Search from 'antd/es/transfer/search';
+import { BellOutlined, CommentOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
+import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
+import { setTheme } from '../../redux/Slice/ThemeSlice';
+import { NavLink } from 'react-router-dom';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -35,6 +20,8 @@ const Headers = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
   const { algorithm } = getTheme();
+
+  const switchTheme = localStorage.getItem('theme') === 'dark';
 
   // Switch theme
   const dispatch = useDispatch();
@@ -61,11 +48,11 @@ const Headers = () => {
           className="header"
           style={{
             backgroundColor: themeColorSet.colorBg2,
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
             zIndex: 1000,
-            width: "100%",
+            width: '100%',
           }}
         >
           <Row align="middle">
@@ -77,13 +64,11 @@ const Headers = () => {
                     icon={faSnowflake}
                     style={{ color: themeColorSet.colorText1 }}
                   />
-                  <Title
-                    level={2}
-                    className="title inline-block ml-2"
-                    style={{ color: themeColorSet.colorText1 }}
-                  >
-                    DevHub
-                  </Title>
+                  <NavLink to="/">
+                    <Title level={2} className="title inline-block ml-2" style={{ color: themeColorSet.colorText1 }}>
+                      DevHub
+                    </Title>
+                  </NavLink>
                 </Col>
                 <Col span={15} className="px-4">
                   <Search placeholder="Search" />
@@ -98,22 +83,15 @@ const Headers = () => {
                       />
                     </Badge>
                     <Badge count={7}>
-                      <Avatar
-                        className="notiButton cursor-pointer"
-                        icon={<BellOutlined className="text-xl" />}
-                      />
+                      <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
                     </Badge>
                     <NavLink to="/me">
-                      <Avatar
-                        className="avatarButton cursor-pointer"
-                        icon={<UserOutlined />}
-                        size="default"
-                      />
+                      <Avatar className="avatarButton cursor-pointer" icon={<UserOutlined />} size="default" />
                     </NavLink>
                     <Switch
                       checkedChildren="dark"
                       unCheckedChildren="light"
-                      defaultChecked
+                      checked={switchTheme}
                       onChange={onChange}
                     />
                   </Space>

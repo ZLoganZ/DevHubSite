@@ -52,7 +52,7 @@ const AddTagComponent = (Props: any) => {
                 } else {
                   //   addTagArr.push(item.title);
                   setAddTagArr([...addTagArr, item.title]);
-                  addTagArrTemp = [...addTagArrTemp, item.title];
+                  addTagArrTemp = [...addTagArr, item.title];
                   return;
                 }
               }}

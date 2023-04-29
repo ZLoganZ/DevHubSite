@@ -9,44 +9,36 @@ import {
   faShareNodes,
   faTrash,
   faTriangleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Avatar,
-  ConfigProvider,
-  Divider,
-  Dropdown,
-  Space,
-  Modal,
-  notification,
-} from "antd";
-import type { MenuProps } from "antd";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssPost";
-import { commonColor } from "../../util/cssVariable/cssVariable";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Avatar, ConfigProvider, Divider, Dropdown, Space, Modal, notification } from 'antd';
+import type { MenuProps } from 'antd';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssPost';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 import {
   DELETE_POST_SAGA,
   LIKE_POST_SAGA,
   SHARE_POST_SAGA,
   SAVE_POST_SAGA,
-} from "../../redux/actionSaga/PostActionSaga";
-import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
-import EditPostForm from "../Form/EditPostForm/EditPostForm";
-import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
-import ReactQuill from "react-quill";
-import Quill from "quill";
-import "react-quill/dist/quill.snow.css";
+} from '../../redux/actionSaga/PostActionSaga';
+import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
+import EditPostForm from '../Form/EditPostForm/EditPostForm';
+import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
+import ReactQuill from 'react-quill';
+import Quill from 'quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface PostProps {
   post: any;
   userInfo: any;
 }
 
-type NotificationType = "success" | "info" | "warning" | "error";
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 // -----------------------------------------------------
 
@@ -67,9 +59,9 @@ const MyPost = (PostProps: PostProps) => {
   }, [PostProps.post.likes.length]);
 
   // Like color
-  const [likeColor, setLikeColor] = useState("white");
+  const [likeColor, setLikeColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isLiked ? setLikeColor("red") : setLikeColor("white");
+    PostProps.post.isLiked ? setLikeColor('red') : setLikeColor('white');
   }, [PostProps.post.isLiked]);
 
   // isLiked
@@ -87,9 +79,9 @@ const MyPost = (PostProps: PostProps) => {
   }, [PostProps.post.shares.length]);
 
   // Share color
-  const [shareColor, setShareColor] = useState("white");
+  const [shareColor, setShareColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isShared ? setShareColor("blue") : setShareColor("white");
+    PostProps.post.isShared ? setShareColor('blue') : setShareColor('white');
   }, [PostProps.post.isShared]);
 
   // isShared
@@ -107,17 +99,17 @@ const MyPost = (PostProps: PostProps) => {
   }, [PostProps.post.isSaved]);
 
   // Save color
-  const [saveColor, setSaveColor] = useState("white");
+  const [saveColor, setSaveColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isSaved ? setSaveColor("yellow") : setSaveColor("white");
+    PostProps.post.isSaved ? setSaveColor('yellow') : setSaveColor('white');
   }, [PostProps.post.isSaved]);
 
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
-  const date = createdAt.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const date = createdAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   // modal
@@ -131,10 +123,10 @@ const MyPost = (PostProps: PostProps) => {
     dispatch(
       DELETE_POST_SAGA({
         id: PostProps.post._id,
-      })
+      }),
     );
     setIsModalOpen(false);
-    openNotificationWithIcon("success");
+    openNotificationWithIcon('success');
   };
 
   const handleCancel = () => {
@@ -142,9 +134,9 @@ const MyPost = (PostProps: PostProps) => {
   };
 
   // post setting
-  const items: MenuProps["items"] = [
+  const items: MenuProps['items'] = [
     {
-      key: "1",
+      key: '1',
       label: (
         <div className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faCopy} />
@@ -152,13 +144,11 @@ const MyPost = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(
-          `http://localhost:3000/post/${PostProps.post._id}`
-        );
+        navigator.clipboard.writeText(`http://localhost:3000/post/${PostProps.post._id}`);
       },
     },
     {
-      key: "2",
+      key: '2',
       label: (
         <div className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faPenToSquare} />
@@ -168,20 +158,16 @@ const MyPost = (PostProps: PostProps) => {
       onClick: () => {
         dispatch(
           openDrawer({
-            title: "Edit Post",
+            title: 'Edit Post',
             component: (
-              <EditPostForm
-                id={PostProps.post._id}
-                title={PostProps.post.title}
-                content={PostProps.post.content}
-              />
+              <EditPostForm id={PostProps.post._id} title={PostProps.post.title} content={PostProps.post.content} />
             ),
-          })
+          }),
         );
       },
     },
     {
-      key: "3",
+      key: '3',
       label: (
         <div key="3" className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faTrash} />
@@ -198,8 +184,8 @@ const MyPost = (PostProps: PostProps) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
-      message: "Delete Successfully",
-      placement: "bottomRight",
+      message: 'Delete Successfully',
+      placement: 'bottomRight',
     });
   };
 
@@ -249,32 +235,21 @@ const MyPost = (PostProps: PostProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? (
-        <OpenMyPostDetailModal
-          post={PostProps.post}
-          userInfo={PostProps.userInfo}
-        />
-      ) : null}
-      <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
+      {isOpenPostDetail ? <OpenMyPostDetailModal post={PostProps.post} userInfo={PostProps.userInfo} /> : null}
+      <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
               <div className="name_avatar flex">
-                <Avatar size={50} src={PostProps.userInfo.userImage} />
+                <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink
-                      to={`/${PostProps.userInfo.id}`}
-                      style={{ color: themeColorSet.colorText1 }}
-                    >
+                    <NavLink to={`/${PostProps.userInfo.id}`} style={{ color: themeColorSet.colorText1 }}>
                       {PostProps.userInfo.username}
                     </NavLink>
                   </div>
-                  <div
-                    className="time"
-                    style={{ color: themeColorSet.colorText3 }}
-                  >
-                    <span>{"Data Analyst"} • </span>
+                  <div className="time" style={{ color: themeColorSet.colorText3 }}>
+                    <span>{'Data Analyst'} • </span>
                     <span>{date}</span>
                   </div>
                 </div>
@@ -282,11 +257,7 @@ const MyPost = (PostProps: PostProps) => {
             </div>
             <div className="postHeader__right">
               <div className="icon">
-                <Dropdown
-                  menu={{ items }}
-                  placement="bottomRight"
-                  trigger={["click"]}
-                >
+                <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']}>
                   <FontAwesomeIcon size="lg" icon={faEllipsis} />
                 </Dropdown>
               </div>
@@ -318,22 +289,22 @@ const MyPost = (PostProps: PostProps) => {
                 <span>{likeNumber} Like</span>
                 <Avatar
                   className="item"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faHeart} color={likeColor} />}
                   onClick={(e: any) => {
                     if (isLiked) {
                       setLikeNumber(likeNumber - 1);
-                      setLikeColor("white");
+                      setLikeColor('white');
                       setIsLiked(false);
                     } else {
                       setLikeNumber(likeNumber + 1);
-                      setLikeColor("red");
+                      setLikeColor('red');
                       setIsLiked(true);
                     }
                     dispatch(
                       LIKE_POST_SAGA({
                         id: PostProps.post._id,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -342,22 +313,22 @@ const MyPost = (PostProps: PostProps) => {
                 <span>{shareNumber} Share</span>
                 <Avatar
                   className="item"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faShare} color={shareColor} />}
                   onClick={(e: any) => {
                     if (isShared) {
                       setShareNumber(shareNumber - 1);
-                      setShareColor("white");
+                      setShareColor('white');
                       setIsShared(false);
                     } else {
                       setShareNumber(shareNumber + 1);
-                      setShareColor("blue");
+                      setShareColor('blue');
                       setIsShared(true);
                     }
                     dispatch(
                       SHARE_POST_SAGA({
                         id: PostProps.post._id,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -368,7 +339,7 @@ const MyPost = (PostProps: PostProps) => {
                 <span>{PostProps.post.comments.length} Comment</span>
                 <Avatar
                   className="item"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
@@ -380,28 +351,26 @@ const MyPost = (PostProps: PostProps) => {
                 <Space>
                   <Avatar
                     className="item"
-                    style={{ backgroundColor: "transparent" }}
-                    icon={
-                      <FontAwesomeIcon icon={faBookmark} color={saveColor} />
-                    }
+                    style={{ backgroundColor: 'transparent' }}
+                    icon={<FontAwesomeIcon icon={faBookmark} color={saveColor} />}
                     onClick={(e: any) => {
                       if (isSaved) {
                         setIsSaved(false);
-                        setSaveColor("white");
+                        setSaveColor('white');
                       } else {
                         setIsSaved(true);
-                        setSaveColor("yellow");
+                        setSaveColor('yellow');
                       }
                       dispatch(
                         SAVE_POST_SAGA({
                           id: PostProps.post._id,
-                        })
+                        }),
                       );
                     }}
                   />
                   <Avatar
                     className="item"
-                    style={{ backgroundColor: "transparent" }}
+                    style={{ backgroundColor: 'transparent' }}
                     icon={<FontAwesomeIcon icon={faShareNodes} />}
                   />
                 </Space>

@@ -7,34 +7,24 @@ import {
   faShareNodes,
   faTrash,
   faTriangleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Avatar,
-  ConfigProvider,
-  Dropdown,
-  Space,
-  Modal,
-  notification,
-} from "antd";
-import type { MenuProps } from "antd";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssPost";
-import { commonColor } from "../../util/cssVariable/cssVariable";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Avatar, ConfigProvider, Dropdown, Space, Modal, notification } from 'antd';
+import type { MenuProps } from 'antd';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssPost';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
-import {
-  SHARE_POST_SAGA,
-  LIKE_POSTSHARE_SAGA,
-} from "../../redux/actionSaga/PostActionSaga";
-import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
-import EditPostForm from "../Form/EditPostForm/EditPostForm";
-import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
-import Quill from "quill";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { SHARE_POST_SAGA, LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
+import EditPostForm from '../Form/EditPostForm/EditPostForm';
+import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
+import Quill from 'quill';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface PostShareProps {
   post: any;
@@ -42,7 +32,7 @@ interface PostShareProps {
   owner: any;
 }
 
-type NotificationType = "success" | "info" | "warning" | "error";
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const MyPostShare = (PostProps: PostShareProps) => {
   const dispatch = useDispatch();
@@ -61,9 +51,9 @@ const MyPostShare = (PostProps: PostShareProps) => {
   }, [PostProps.post.likes.length]);
 
   // Like color
-  const [likeColor, setLikeColor] = useState("white");
+  const [likeColor, setLikeColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isLiked ? setLikeColor("red") : setLikeColor("white");
+    PostProps.post.isLiked ? setLikeColor('red') : setLikeColor('white');
   }, [PostProps.post.isLiked]);
 
   // isLiked
@@ -74,18 +64,18 @@ const MyPostShare = (PostProps: PostShareProps) => {
 
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
-  const date = createdAt.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const date = createdAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   const postCreatedAt = new Date(PostProps.post.postCreatedAt);
   //format date to get full date
-  const postDate = postCreatedAt.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const postDate = postCreatedAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   // modal
@@ -99,10 +89,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
     dispatch(
       SHARE_POST_SAGA({
         id: PostProps.post.postID,
-      })
+      }),
     );
     setIsModalOpen(false);
-    openNotificationWithIcon("success");
+    openNotificationWithIcon('success');
   };
 
   const handleCancel = () => {
@@ -110,9 +100,9 @@ const MyPostShare = (PostProps: PostShareProps) => {
   };
 
   // post setting
-  const items: MenuProps["items"] = [
+  const items: MenuProps['items'] = [
     {
-      key: "1",
+      key: '1',
       label: (
         <div className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faCopy} />
@@ -120,13 +110,11 @@ const MyPostShare = (PostProps: PostShareProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(
-          `http://localhost:3000/postshare/${PostProps.post._id}`
-        );
+        navigator.clipboard.writeText(`http://localhost:3000/postshare/${PostProps.post._id}`);
       },
     },
     {
-      key: "2",
+      key: '2',
       label: (
         <div key="2" className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faTrash} />
@@ -143,8 +131,8 @@ const MyPostShare = (PostProps: PostShareProps) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
-      message: "Delete Successfully",
-      placement: "bottomRight",
+      message: 'Delete Successfully',
+      placement: 'bottomRight',
     });
   };
 
@@ -202,26 +190,20 @@ const MyPostShare = (PostProps: PostShareProps) => {
           owner={PostProps.post.user}
         />
       ) : null}
-      <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
+      <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
               <div className="name_avatar flex">
-                <Avatar size={50} src={PostProps.userInfo.userImage} />
+                <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink
-                      to={`/${PostProps.userInfo.id}`}
-                      style={{ color: themeColorSet.colorText1 }}
-                    >
+                    <NavLink to={`/${PostProps.userInfo.id}`} style={{ color: themeColorSet.colorText1 }}>
                       {PostProps.userInfo.username}
                     </NavLink>
                   </div>
-                  <div
-                    className="time"
-                    style={{ color: themeColorSet.colorText3 }}
-                  >
-                    <span>{"Data Analyst"} • </span>
+                  <div className="time" style={{ color: themeColorSet.colorText3 }}>
+                    <span>{'Data Analyst'} • </span>
                     <span>{date}</span>
                   </div>
                 </div>
@@ -229,11 +211,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
             </div>
             <div className="postHeader__right">
               <div className="icon">
-                <Dropdown
-                  menu={{ items }}
-                  placement="bottomRight"
-                  trigger={["click"]}
-                >
+                <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']}>
                   <FontAwesomeIcon size="lg" icon={faEllipsis} />
                 </Dropdown>
               </div>
@@ -243,21 +221,15 @@ const MyPostShare = (PostProps: PostShareProps) => {
             <div className="postHeader flex justify-between items-center">
               <div className="postHeader__left">
                 <div className="name_avatar flex">
-                  <Avatar size={50} src={PostProps.owner.userImage} />
+                  <Avatar size={50} src={PostProps.owner?.userImage} />
                   <div className="name ml-2">
                     <div className="name__top font-bold">
-                      <NavLink
-                        to={`/${PostProps.owner.id}`}
-                        style={{ color: themeColorSet.colorText1 }}
-                      >
+                      <NavLink to={`/${PostProps.owner.id}`} style={{ color: themeColorSet.colorText1 }}>
                         {PostProps.owner.username}
                       </NavLink>
                     </div>
-                    <div
-                      className="time"
-                      style={{ color: themeColorSet.colorText3 }}
-                    >
-                      <span>{"Data Analyst"} • </span>
+                    <div className="time" style={{ color: themeColorSet.colorText3 }}>
+                      <span>{'Data Analyst'} • </span>
                       <span>{postDate}</span>
                     </div>
                   </div>
@@ -274,11 +246,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                   }}
                 ></div> */}
                 <div className="content__text">
-                  <ReactQuill
-                    value={PostProps.post.content}
-                    readOnly={true}
-                    modules={{ toolbar: false }}
-                  />
+                  <ReactQuill value={PostProps.post.content} readOnly={true} modules={{ toolbar: false }} />
                 </div>
               </div>
             </div>
@@ -289,22 +257,22 @@ const MyPostShare = (PostProps: PostShareProps) => {
                 <span>{likeNumber} Like</span>
                 <Avatar
                   className="item"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faHeart} color={likeColor} />}
                   onClick={(e: any) => {
                     if (isLiked) {
                       setLikeNumber(likeNumber - 1);
-                      setLikeColor("white");
+                      setLikeColor('white');
                       setIsLiked(false);
                     } else {
                       setLikeNumber(likeNumber + 1);
-                      setLikeColor("red");
+                      setLikeColor('red');
                       setIsLiked(true);
                     }
                     dispatch(
                       LIKE_POSTSHARE_SAGA({
                         id: PostProps.post._id,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -315,7 +283,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                 <span>{PostProps.post.comments.length} Comment</span>
                 <Avatar
                   className="item"
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
@@ -327,7 +295,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                 <Space>
                   <Avatar
                     className="item"
-                    style={{ backgroundColor: "transparent" }}
+                    style={{ backgroundColor: 'transparent' }}
                     icon={<FontAwesomeIcon icon={faShareNodes} />}
                   />
                 </Space>

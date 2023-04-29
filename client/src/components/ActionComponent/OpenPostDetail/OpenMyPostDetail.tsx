@@ -1,22 +1,22 @@
-import { Avatar, ConfigProvider, Input, Popover, Button } from "antd";
-import React, { useMemo, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../../util/functions/ThemeFunction";
-import PostDetail from "../../Form/PostDetail/PostDetail";
-import StyleTotal from "./cssOpenPostDetail";
-import dataEmoji from "@emoji-mart/data";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import Picker from "@emoji-mart/react";
+import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
+import React, { useMemo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../../util/functions/ThemeFunction';
+import PostDetail from '../../Form/PostDetail/PostDetail';
+import StyleTotal from './cssOpenPostDetail';
+import dataEmoji from '@emoji-mart/data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import Picker from '@emoji-mart/react';
 import {
   SAVE_COMMENT_POSTSHARE_SAGA,
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
   GET_POST_BY_ID_SAGA,
-} from "../../../redux/actionSaga/PostActionSaga";
-import { useParams } from "react-router-dom";
-import MyPostDetail from "../../Form/PostDetail/MyPostDetail";
+} from '../../../redux/actionSaga/PostActionSaga';
+import { useParams } from 'react-router-dom';
+import MyPostDetail from '../../Form/PostDetail/MyPostDetail';
 
 interface Props {
   post: any;
@@ -33,7 +33,7 @@ const OpenMyPostDetail = (Props: Props) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const [commentContent, setCommentContent] = useState("");
+  const [commentContent, setCommentContent] = useState('');
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
@@ -55,7 +55,7 @@ const OpenMyPostDetail = (Props: Props) => {
               contentComment: commentContent,
               idComment: data.idComment,
             },
-          })
+          }),
         );
         setData({ isReply: false, idComment: null });
       } else {
@@ -65,7 +65,7 @@ const OpenMyPostDetail = (Props: Props) => {
               contentComment: commentContent,
             },
             id: Props.post._id,
-          })
+          }),
         );
       }
     } else {
@@ -77,7 +77,7 @@ const OpenMyPostDetail = (Props: Props) => {
               contentComment: commentContent,
               idComment: data.idComment,
             },
-          })
+          }),
         );
         setData({ isReply: false, idComment: null });
       } else {
@@ -87,17 +87,17 @@ const OpenMyPostDetail = (Props: Props) => {
               contentComment: commentContent,
             },
             id: Props.post._id,
-          })
+          }),
         );
       }
     }
     setTimeout(() => {
-      setCommentContent("");
+      setCommentContent('');
     }, 1000);
   };
 
   const checkEmpty = () => {
-    if (commentContent === "") {
+    if (commentContent === '') {
       return true;
     } else {
       return false;
@@ -115,13 +115,13 @@ const OpenMyPostDetail = (Props: Props) => {
         owner={Props.post.owner}
       />
     ),
-    [Props.post, data]
+    [Props.post, data],
   );
 
   const memoizedIputComment = useMemo(
     () => (
       <div className=" commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={Props.userInfo.userImage} />
+        <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
@@ -138,7 +138,7 @@ const OpenMyPostDetail = (Props: Props) => {
               <Popover
                 placement="right"
                 trigger="click"
-                title={"Emoji"}
+                title={'Emoji'}
                 content={
                   <Picker
                     data={dataEmoji}
@@ -151,14 +151,10 @@ const OpenMyPostDetail = (Props: Props) => {
                 <span
                   className="emoji cursor-pointer hover:text-blue-700"
                   style={{
-                    transition: "all 0.3s",
+                    transition: 'all 0.3s',
                   }}
                 >
-                  <FontAwesomeIcon
-                    className="item mr-3 ml-3"
-                    size="lg"
-                    icon={faFaceSmile}
-                  />
+                  <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
             }
@@ -168,12 +164,12 @@ const OpenMyPostDetail = (Props: Props) => {
             {...(checkEmpty()
               ? {
                   style: {
-                    color: "gray",
+                    color: 'gray',
                     //hover disabled
-                    cursor: "not-allowed",
+                    cursor: 'not-allowed',
                   },
                 }
-              : { transition: "all 0.3s" })}
+              : { transition: 'all 0.3s' })}
             onClick={handleSubmitComment}
           >
             <FontAwesomeIcon icon={faPaperPlane} />
@@ -181,7 +177,7 @@ const OpenMyPostDetail = (Props: Props) => {
         </div>
       </div>
     ),
-    [commentContent]
+    [commentContent],
   );
 
   return (
