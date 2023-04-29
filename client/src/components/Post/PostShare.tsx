@@ -91,6 +91,14 @@ const PostShare = (PostProps: PostShareProps) => {
     }
   }, [visible]);
 
+  const [expanded, setExpanded] = useState(false);
+
+  const displayContent = expanded ? PostProps.post.content : PostProps.post.content.slice(0, 150) + '...';
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -161,7 +169,13 @@ const PostShare = (PostProps: PostShareProps) => {
                   }}
                 ></div> */}
                 <div className="content__text">
-                  <ReactQuill value={PostProps.post.content} readOnly={true} modules={{ toolbar: false }} />
+                  <ReactQuill
+                    value={displayContent}
+                    readOnly={true}
+                    modules={{ toolbar: false }}
+                    // formats={Quill.import("formats")}
+                  />
+                  <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 </div>
               </div>
             </div>
