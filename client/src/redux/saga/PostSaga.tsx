@@ -1,6 +1,6 @@
-import { put, takeLatest } from "redux-saga/effects";
-import { postService } from "../../services/PostService";
-import { ID_USER, STATUS_CODE } from "../../util/constants/SettingSystem";
+import { put, takeLatest } from 'redux-saga/effects';
+import { postService } from '../../services/PostService';
+import { ID_USER, STATUS_CODE } from '../../util/constants/SettingSystem';
 import {
   CREATE_POST_SAGA,
   DELETE_POST_SAGA,
@@ -17,9 +17,9 @@ import {
   GET_POST_BY_ID_SAGA,
   GET_POSTSHARE_BY_ID_SAGA,
   GET_ALL_POST_SAGA,
-} from "../actionSaga/PostActionSaga";
-import { setAllPost, setPost } from "../Slice/PostSlice";
-import { setUser } from "../Slice/UserSlice";
+} from '../actionSaga/PostActionSaga';
+import { setAllPost, setOwnerInfo, setPost } from '../Slice/PostSlice';
+import { setUser } from '../Slice/UserSlice';
 
 // Get All Post By User ID Saga
 export function* getAllPostByUserIDSaga({ payload }: any) {
@@ -28,6 +28,7 @@ export function* getAllPostByUserIDSaga({ payload }: any) {
     const { data, status } = yield postService.getAllPostByUserID(id);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setAllPost(data.content));
+      yield put(setOwnerInfo(data.content));
       yield put(setUser(data.content));
     }
   } catch (err: any) {
@@ -100,15 +101,12 @@ function* createPostSaga({ payload }: any) {
       content: payload.postCreate.content,
     };
     const postImage = payload.linkImage;
-    const { data, status } = yield postService.createPost(
-      postCreate,
-      postImage
-    );
+    const { data, status } = yield postService.createPost(postCreate, postImage);
     if (status === STATUS_CODE.CREATED) {
       yield put(
         GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
+          userId: 'me',
+        }),
       );
     }
   } catch (err: any) {
@@ -123,10 +121,7 @@ export function* theoDoiCreatePostSaga() {
 // Update Post Saga
 export function* updatePostSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.updatePost(
-      payload.id,
-      payload.postUpdate
-    );
+    const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
     if (status === STATUS_CODE.SUCCESS) {
       // yield put(
       //   GET_ALL_POST_BY_USERID_SAGA({
@@ -146,10 +141,7 @@ export function* theoDoiUpdatePostSaga() {
 // Save Comment Saga
 export function* saveCommentSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.saveComment(
-      payload.id,
-      payload.comment
-    );
+    const { data, status } = yield postService.saveComment(payload.id, payload.comment);
     if (status === STATUS_CODE.SUCCESS) {
       // yield put(
       //   GET_ALL_POST_BY_USERID_SAGA({
@@ -169,10 +161,7 @@ export function* theoDoiSaveCommentSaga() {
 // Save Reply Saga
 export function* saveReplySaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.saveReply(
-      payload.id,
-      payload.reply
-    );
+    const { data, status } = yield postService.saveReply(payload.id, payload.reply);
     if (status === STATUS_CODE.SUCCESS) {
       // yield put(
       //   GET_ALL_POST_BY_USERID_SAGA({
@@ -212,10 +201,7 @@ export function* theoDoiDeletePostSaga() {
 // Save comment postshare Saga
 export function* saveCommentPostShareSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.saveCommentPostShare(
-      payload.id,
-      payload.comment
-    );
+    const { data, status } = yield postService.saveCommentPostShare(payload.id, payload.comment);
     if (status === STATUS_CODE.SUCCESS) {
       // yield put(
       //   GET_ALL_POST_BY_USERID_SAGA({
@@ -235,10 +221,7 @@ export function* theoDoiSaveCommentPostShareSaga() {
 // Save Reply PostShare Saga
 export function* saveReplyPostShareSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.saveReplyPostShare(
-      payload.id,
-      payload.reply
-    );
+    const { data, status } = yield postService.saveReplyPostShare(payload.id, payload.reply);
     if (status === STATUS_CODE.SUCCESS) {
       // yield put(
       //   GET_ALL_POST_BY_USERID_SAGA({

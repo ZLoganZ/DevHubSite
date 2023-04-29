@@ -66,17 +66,19 @@ const MyProfile = () => {
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
   const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+  const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const postArray = useMemo(() => postArraySlice, [postArraySlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+  const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const userInfoRef = React.useRef(userInfo);
+  const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(userInfoRef.current === userInfo);
-  }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
 
   return (
     <ConfigProvider
@@ -85,7 +87,7 @@ const MyProfile = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || isNotAlreadyChanged ? (
+        {!postArray || !userInfo || !ownerInfo || isNotAlreadyChanged ? (
           <LoadingProfileComponent />
         ) : (
           <>
@@ -102,7 +104,7 @@ const MyProfile = () => {
                 ></div>
                 <div className="avatar rounded-full overflow-hidden">
                   <img
-                    src={userInfo?.userImage ? userInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
+                    src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
                   />
                 </div>
@@ -111,7 +113,7 @@ const MyProfile = () => {
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6} span={12}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
-                      {userInfo.username}
+                      {ownerInfo.username}
                     </div>
                     <div className="position mt-2">
                       <FontAwesomeIcon className="icon" icon={faSnowflake} />
@@ -160,7 +162,7 @@ const MyProfile = () => {
                 <Col span={18} className="mt-5">
                   <div className="description flex flex-wrap">
                     {descArray.map((item, index) => {
-                      if (userInfo?.descriptions?.indexOf(item.title) !== -1) {
+                      if (ownerInfo?.descriptions?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
                             className="item mx-2 my-2 px-4 py-1"
@@ -246,9 +248,9 @@ const MyProfile = () => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
+                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
                             )}
-                            {!item.PostShared && <MyPost key={item._id} post={item} userInfo={userInfo} />}
+                            {!item.PostShared && <MyPost key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>
                         );
                       })}

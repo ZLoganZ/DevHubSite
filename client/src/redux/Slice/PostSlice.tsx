@@ -1,14 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   postArr: [],
   post: {},
+  ownerInfo: {},
 
   isOpenPostDetail: false,
 };
 
 const postSlice = createSlice({
-  name: "post",
+  name: 'post',
   initialState,
   reducers: {
     setAllPost: (state, action) => {
@@ -29,8 +30,14 @@ const postSlice = createSlice({
         post: action.payload.post,
       };
     },
+    setOwnerInfo: (state, action) => {
+      return {
+        ...state,
+        ownerInfo: action.payload.ownerInfo,
+      };
+    },
   },
 });
 
-export const { setAllPost, openPostDetail, setPost } = postSlice.actions;
+export const { setAllPost, openPostDetail, setPost, setOwnerInfo } = postSlice.actions;
 export default postSlice.reducer;
