@@ -39,7 +39,7 @@ const MessageBox = (Props: MessageBoxProps) => {
   const formatDateTime = (date: any) => {
     if (isToday(date)) {
       return format(date, 'p'); // Display only time for today
-    } else if (isThisWeek(date)) {
+    } else if (isThisWeek(date, { weekStartsOn: 1 })) {
       return format(date, 'iiii, p'); // Display full day of the week and time for this week
     } else if (isThisYear(date)) {
       return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
