@@ -1,8 +1,5 @@
-import styled from "styled-components";
-import {
-  commonColor,
-  flex_center_row,
-} from "../../util/cssVariable/cssVariable";
+import styled from 'styled-components';
+import { commonColor, flex_center_row } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   height: fit-content;
@@ -19,8 +16,7 @@ const StyleTotal = styled.div`
           margin-bottom: 1rem;
           border: double 4px transparent;
           border-radius: 50%;
-          background-image: linear-gradient(#171718, #171718),
-            radial-gradient(circle at right top, #2979ff, #07a787);
+          background-image: linear-gradient(#171718, #171718), radial-gradient(circle at right top, #2979ff, #07a787);
           background-origin: border-box;
           background-clip: padding-box, border-box;
           position: relative;
@@ -76,18 +72,6 @@ const StyleTotal = styled.div`
               color: ${(props) => props.theme.colorText2};
               transition: all 0.5s;
             }
-          }
-        }
-      }
-    }
-    .shared {
-      .extension {
-        .extensionItem {
-          color: ${(props) => props.theme.colorText3};
-          :hover {
-            color: ${(props) => props.theme.colorText1};
-            cursor: pointer;
-            transition: all 0.5s;
           }
         }
       }

@@ -1,11 +1,11 @@
-import { ConfigProvider } from "antd";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import StyleTotal from "./cssModalHOC";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import { Button, Modal, Space } from "antd";
-import { closeModal } from "../../redux/Slice/ModalHOCSlice";
-import { commonColor } from "../../util/cssVariable/cssVariable";
+import { ConfigProvider } from 'antd';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import StyleTotal from './cssModalHOC';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import { Button, Modal, Space } from 'antd';
+import { closeModal } from '../../redux/Slice/ModalHOCSlice';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 const ModalHOC = () => {
   const dispatch = useDispatch();
@@ -15,11 +15,12 @@ const ModalHOC = () => {
   const { themeColorSet } = getTheme();
 
   // Hàm xử lý Modal
-  const { visible, ComponentContentModal, footer, title, handleSubmit } =
-    useSelector((state: any) => state.modalHOCReducer);
+  const { visible, ComponentContentModal, footer, title, handleSubmit } = useSelector(
+    (state: any) => state.modalHOCReducer,
+  );
 
   const onClose = () => {
-    dispatch(closeModal({}));
+    dispatch(closeModal());
   };
 
   return (
@@ -31,6 +32,7 @@ const ModalHOC = () => {
       <StyleTotal theme={themeColorSet}>
         <div>
           <Modal
+            centered
             title={title}
             width={720}
             onCancel={onClose}
@@ -41,7 +43,7 @@ const ModalHOC = () => {
                   <button
                     className="btnCancel px-4 py-2 mr-2"
                     style={{
-                      border: "1px solid",
+                      border: '1px solid',
                       borderColor: themeColorSet.colorText2,
                     }}
                     onClick={() => {

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  title: "",
+  title: '',
   visible: false,
   ComponentContentModal: <p>default</p>,
   footer: <p>default</p>,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const modalHOCSlide = createSlice({
-  name: "post",
+  name: 'post',
   initialState,
   reducers: {
     openModal: (state, action) => {
@@ -21,7 +21,7 @@ const modalHOCSlide = createSlice({
         footer: action.payload.footer,
       };
     },
-    closeModal: (state, action) => {
+    closeModal: (state) => {
       return {
         ...state,
         visible: false,

@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { commonColor } from "../../util/cssVariable/cssVariable";
+import styled, { css } from 'styled-components';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
@@ -10,12 +10,15 @@ const StyleTotal = styled.div`
     border: 1px solid ${(props) => props.theme.colorBg4};
     border-radius: 20px;
   }
-  .ql-container.ql-snow {
+  .ql-editor {
+    line-height: 2rem;
     border: none;
     font-size: 0.88rem;
   }
-  .ql-editor {
-    line-height: 2rem;
+  .title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: ${(props) => props.theme.colorText1};
   }
   .post {
     .postHeader {

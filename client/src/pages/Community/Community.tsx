@@ -6,6 +6,7 @@ import {
   Avatar,
   Button,
   Col,
+  Collapse,
   ConfigProvider,
   Empty,
   Input,
@@ -42,81 +43,122 @@ import MyPostShare from '../../components/Post/MyPostShare';
 import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
+import { GET_COMMUNITY_BYID_SAGA } from '../../redux/actionSaga/CommunityActionSaga';
+import { isThisWeek, isThisYear, isToday, format } from 'date-fns';
 
-const descArray = [
+const { Panel } = Collapse;
+
+const tagArr = [
   {
-    icon: faSnowflake,
-    title: 'Java',
-    color1: '#ed0e0e',
-    color: 'magenta',
+    id: 1,
+    name: 'React',
   },
   {
-    icon: faSnowflake,
-    title: 'Back End',
-    color1: '#009B93',
-    color: 'cyan',
+    id: 2,
+    name: 'Javascript',
   },
   {
-    icon: faSnowflake,
-    title: 'Data Analytics',
-    color1: '#f5a623',
-    color: 'lime',
+    id: 3,
+    name: 'NodeJS',
+  },
+];
+
+const adminArr = [
+  {
+    id: 1,
+    name: 'Rong',
+    userName: '@tianrongliew',
+    userImage:
+      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
   },
   {
-    icon: faSnowflake,
-    title: 'Front End',
-    color1: '#7B00ED',
-    color: 'volcano',
+    id: 2,
+    name: 'Sriparno Roy',
+    userName: '@sriparno01465',
+    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
   },
   {
-    icon: faSnowflake,
-    title: 'Full Stack',
-    color1: '#00B0F0',
-    color: 'geekblue',
+    id: 3,
+    name: 'Lena Lee',
+    userName: '@lenalee123',
+    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
+  },
+];
+
+const memberArr = [
+  {
+    id: 1,
+    name: 'Rong',
+    userName: '@tianrongliew',
+    userImage:
+      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
   },
   {
-    icon: faSnowflake,
-    title: 'DevOps',
-    color1: '#7B00ED',
-    color: 'purple',
+    id: 2,
+    name: 'Sriparno Roy',
+    userName: '@sriparno01465',
+    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
   },
   {
-    icon: faSnowflake,
-    title: 'Project Management',
-    color1: '#FE6700',
-    color: 'gold',
+    id: 3,
+    name: 'Lena Lee',
+    userName: '@lenalee123',
+    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
   },
   {
-    icon: faSnowflake,
-    title: 'Design',
-    color1: '#009B93',
-    color: 'blue',
+    id: 4,
+    name: 'Sarah Smith',
+    userName: '@sarahcodes',
+    userImage:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMti6Y58F9U28BKZAOQMWDh9auJ5gfJahe5uKYMjr0kSNaXP4MZYkvDomyRUVKOfiPT5g&usqp=CAU',
   },
   {
-    icon: faSnowflake,
-    title: 'Career',
-    color1: '#00BCD4',
-    color: 'orange',
+    id: 5,
+    name: 'John Doe',
+    userName: '@johndoe87',
+    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-NFn1a5QD_qi-HzSeySBUfx5AALewRHYw-g&usqp=CAU',
+  },
+];
+
+const recentlyJoinedArr = [
+  {
+    id: 1,
+    name: 'Rong',
+    userName: '@tianrongliew',
+    userImage:
+      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
   },
   {
-    icon: faSnowflake,
-    title: 'Problem Solver',
-    color1: '#009B36',
-    color: 'geekblue',
+    id: 2,
+    name: 'Sriparno Roy',
+    userName: '@sriparno01465',
+    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
   },
   {
-    icon: faSnowflake,
-    title: 'App Design',
-    color1: '#526D7B',
-    color: 'lime',
+    id: 3,
+    name: 'Lena Lee',
+    userName: '@lenalee123',
+    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
+  },
+  {
+    id: 4,
+    name: 'Sarah Smith',
+    userName: '@sarahcodes',
+    userImage:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMti6Y58F9U28BKZAOQMWDh9auJ5gfJahe5uKYMjr0kSNaXP4MZYkvDomyRUVKOfiPT5g&usqp=CAU',
+  },
+  {
+    id: 5,
+    name: 'John Doe',
+    userName: '@johndoe87',
+    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-NFn1a5QD_qi-HzSeySBUfx5AALewRHYw-g&usqp=CAU',
   },
 ];
 
 const Community = () => {
   const dispatch = useDispatch();
-
-  const { userID } = useParams<{ userID: string }>();
+  const { communityID } = useParams();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -126,17 +168,19 @@ const Community = () => {
   useEffect(() => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
-        userId: '6426a822013f11e731f8083a',
+        userId: 'me',
       }),
     );
-  }, []);
 
-  useEffect(() => {
+    dispatch(GET_COMMUNITY_BYID_SAGA(communityID));
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   }, []);
+
+  const community = useSelector((state: any) => state.communityReducer.community);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
   const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
@@ -151,6 +195,7 @@ const Community = () => {
   useEffect(() => {
     setIsNotAlreadyChanged(userInfoRef.current === userInfo);
   }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+
   return (
     <ConfigProvider
       theme={{
@@ -161,13 +206,13 @@ const Community = () => {
         {!postArray || !userInfo || isNotAlreadyChanged ? (
           <LoadingProfileComponent />
         ) : (
-          <>
+          <div className="communityPage">
             <Row>
               <Col span={24} className="avatar_cover relative">
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("./images/CommunityPage/cover.jpg")`,
+                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -180,17 +225,14 @@ const Community = () => {
                   />
                 </div>
               </Col>
-              <Col offset={4} span={16}>
+              <Col offset={3} span={18}>
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
-                      React.JS
+                      {community.name}
                     </div>
                     <div className="description mt-2">
-                      <span style={{ color: themeColorSet.colorText2 }}>
-                        Let's get together and discuss all things React! You can talk about your latest project, React
-                        perf, React testing, anything!
-                      </span>
+                      <span style={{ color: themeColorSet.colorText2 }}>{community.description}</span>
                     </div>
                     <Space className="subInformation mt-2" size={15}>
                       <div className="unknow" style={{ color: themeColorSet.colorText3 }}>
@@ -199,11 +241,11 @@ const Community = () => {
                       </div>
                       <div className="createDate" style={{ color: themeColorSet.colorText3 }}>
                         <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">Created Jun 2021</span>
+                        <span className="ml-2">{format(new Date(community.createdAt), 'MMM, d, yyyy')}</span>
                       </div>
                       <div className="members" style={{ color: themeColorSet.colorText3 }}>
                         <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">16,918 Members</span>
+                        <span className="ml-2">{community.memberLength} Members</span>
                       </div>
                     </Space>
                   </Col>
@@ -223,11 +265,11 @@ const Community = () => {
                             description={<span>No post</span>}
                           />
                         )}
-                        {postArray.map((item: any, index: number) => {
+                        {community.posts.map((item: any, index: any) => {
                           return (
-                            <div>
+                            <div key={index}>
                               {item.PostShared && (
-                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
+                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.owner} />
                               )}
                               {!item.PostShared && <MyPost key={item._id} post={item} userInfo={userInfo} />}
                             </div>
@@ -248,28 +290,156 @@ const Community = () => {
                       </TabPane>
                     </Tabs>
                   </div>
-                  <div className="infoCommunity">
-                    <div className="about">
-                      <div className="title">About</div>
-                      <div className="content"></div>
-                      <div className="seeMore"></div>
-                      <div className="createDate" style={{ color: themeColorSet.colorText3 }}>
-                        <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">Created Jun 2021</span>
+                  <div className="infoCommunity mt-32 ml-3 w-4/12">
+                    <div
+                      className="about px-3 py-4 rounded-md mb-3"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        About
                       </div>
-                      <div className="numberMember">11,396</div>
-                      <div className="titleMembers">Members</div>
+                      <div className="content mb-1" style={{ color: themeColorSet.colorText2 }}>
+                        {community.about}
+                      </div>
+                      <div
+                        className="seeMore block mb-3 hover:underline cursor-pointer"
+                        style={{ transition: 'all .5s', color: commonColor.colorBlue3, fontWeight: 600 }}
+                      >
+                        See More
+                      </div>
+                      <div className="createDate mb-5" style={{ color: themeColorSet.colorText3 }}>
+                        <FontAwesomeIcon className="icon" icon={faCalendar} />
+                        <span className="ml-2">Created {format(new Date(community.createdAt), 'MMM, d, yyyy')}</span>
+                      </div>
+                      <div className="numberMember text-xl" style={{ fontWeight: 600 }}>
+                        {community.memberLength}
+                      </div>
+                      <div className="titleMembers" style={{ color: themeColorSet.colorText3 }}>
+                        Members
+                      </div>
                     </div>
-                    <div className="tags"></div>
-                    <div className="admins"></div>
-                    <div className="members"></div>
-                    <div className="rules"></div>
-                    <div className="recentlyJoined"></div>
+                    <div className="tags px-3 py-4 mb-3 rounded-md" style={{ backgroundColor: themeColorSet.colorBg2 }}>
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        Tags
+                      </div>
+                      <div className="content flex flex-wrap">
+                        {community.tags.map((item: any, index: number) => {
+                          return (
+                            <span className="tagItem px-4 py-2 mr-2" key={index}>
+                              {item}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div
+                      className="admin px-3 py-4 mb-3 rounded-md"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        Admins
+                      </div>
+                      <div className="content">
+                        {community.admins.map((item: any, index: number) => {
+                          return (
+                            <NavLink key={index} to={`/user/${item._id}`} className="item flex items-center px-2 py-2">
+                              <Avatar src={item.userImage} />
+                              <Space
+                                size={1}
+                                direction="vertical"
+                                className="ml-2"
+                                style={{ color: themeColorSet.colorText2 }}
+                              >
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
+                              </Space>
+                            </NavLink>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div
+                      className="member px-3 py-4 mb-3 rounded-md"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        Members
+                      </div>
+                      <div className="content">
+                        {community.members.map((item: any, index: number) => {
+                          return (
+                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
+                              <Avatar src={item.userImage} />
+                              <Space
+                                size={1}
+                                direction="vertical"
+                                className="ml-2"
+                                style={{ color: themeColorSet.colorText2 }}
+                              >
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {' '}
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
+                              </Space>
+                            </NavLink>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div
+                      className="rules px-3 py-4 mb-3 rounded-md"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        Rules
+                      </div>
+                      <Collapse>
+                        {community.rules.map((item: any, index: number) => {
+                          return (
+                            <Panel header={index + 1 + '. ' + item.title} key={index}>
+                              <p>{item.content}</p>
+                            </Panel>
+                          );
+                        })}
+                      </Collapse>
+                    </div>
+                    <div
+                      className="recentlyJoined px-3 py-4 mb-3 rounded-md"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <div className="title mb-2 text-lg" style={{ fontWeight: 600 }}>
+                        Recently Joined
+                      </div>
+                      <div className="content">
+                        {community.recentlyJoined.map((item: any, index: number) => {
+                          return (
+                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
+                              <Avatar src={item.userImage} />
+                              <Space
+                                size={1}
+                                direction="vertical"
+                                className="ml-2"
+                                style={{ color: themeColorSet.colorText2 }}
+                              >
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {' '}
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
+                              </Space>
+                            </NavLink>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Col>
             </Row>
-          </>
+          </div>
         )}
       </StyleTotal>
     </ConfigProvider>

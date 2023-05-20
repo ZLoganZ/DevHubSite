@@ -1,29 +1,40 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import StyleTotal from "./cssLoginForm";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {} from "@fortawesome/free-solid-svg-icons";
-import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
-import { ConfigProvider, Form, Input } from "antd";
-import { MailOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { LOGIN_SAGA } from "../../../redux/actionSaga/AuthActionSaga";
-
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import StyleTotal from './cssLoginForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {} from '@fortawesome/free-solid-svg-icons';
+import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
+import { ConfigProvider, Form, Input } from 'antd';
+import { MailOutlined } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
+import { authService } from '../../../services/AuthService';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
 
+  const handleSignInWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      dispatch(
+        LOGIN_WITH_GOOGLE_SAGA({
+          token: tokenResponse.access_token,
+        }),
+      );
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     onSubmit: (values) => {
       dispatch(
         LOGIN_SAGA({
           userLogin: values,
-        })
+        }),
       );
     },
   });
@@ -41,69 +52,54 @@ const LoginForm = () => {
         <ConfigProvider
           theme={{
             token: {
-              colorTextBase: "#d4d4d4",
-              colorBgBase: "#202021",
+              colorTextBase: '#d4d4d4',
+              colorBgBase: '#202021',
               lineWidth: 0,
               controlHeight: 40,
               borderRadius: 0,
             },
           }}
         >
-          <Form
-            className="w-full"
-            style={{ width: "70%" }}
-            onFinish={formik.handleSubmit}
-          >
+          <Form className="w-full" style={{ width: '70%' }} onFinish={formik.handleSubmit}>
             <Form.Item
               name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your E-mail!",
+                  message: 'Please input your E-mail!',
                 },
                 {
-                  type: "email",
-                  message: "The input is not valid E-mail!",
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
                 },
               ]}
             >
-              <Input
-                placeholder="Email"
-                allowClear
-                prefix={<MailOutlined />}
-                onChange={formik.handleChange}
-              ></Input>
+              <Input placeholder="Email" allowClear prefix={<MailOutlined />} onChange={formik.handleChange}></Input>
             </Form.Item>
             <Form.Item
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: 'Please input your password!',
                 },
               ]}
             >
-              <Input.Password
-                placeholder="Password"
-                onChange={formik.handleChange}
-              ></Input.Password>
+              <Input.Password placeholder="Password" onChange={formik.handleChange}></Input.Password>
             </Form.Item>
-            <button
-              type="submit"
-              className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold"
-            >
+            <button type="submit" className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold">
               Login
             </button>
           </Form>
         </ConfigProvider>
         <div className="anotherLogin mt-10">
           <div className="title relative">
-            <span className="absolute" style={{ color: "#d4d4d4" }}>
+            <span className="absolute" style={{ color: '#d4d4d4' }}>
               or login with
             </span>
             <hr />
           </div>
-          <div className="loginTool mt-10 w-full">
+          <div className="loginTool mt-10 w-full" onClick={() => handleSignInWithGoogle()}>
             <div className="google h-10">
               <span className="icon mr-2">
                 <img src="./images/google.svg" alt="google" />

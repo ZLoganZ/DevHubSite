@@ -1,39 +1,31 @@
-import { ConfigProvider } from "antd";
-import React from "react";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { commonColor } from "../../util/cssVariable/cssVariable";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssSelectInterest";
+import { ConfigProvider, message } from 'antd';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { commonColor } from '../../util/cssVariable/cssVariable';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssSelectInterest';
+import { CHOOSE_GET_INTEREST_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
+import descArray from '../../util/constants/Description';
 
 const SelectInterest = () => {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const techArray = [
-    { id: 1, name: "Java" },
-    { id: 2, name: "Back End" },
-    { id: 3, name: "Data Analytics" },
-    { id: 4, name: "Front End" },
-    { id: 5, name: "Full Stack" },
-    { id: 6, name: "DevOps" },
-    { id: 7, name: "Project Management" },
-    { id: 8, name: "Design" },
-    { id: 9, name: "Data Engineer" },
-    { id: 10, name: "Problem Solver" },
-    { id: 11, name: "App Design" },
-    { id: 12, name: "BlockChain" },
-    { id: 13, name: "Open Source" },
-    { id: 14, name: "Security" },
-    { id: 15, name: "PHP" },
-    { id: 16, name: "Operating System" },
-    { id: 17, name: "Mobile App Development" },
-    { id: 18, name: "DAS" },
-    { id: 19, name: "Machine Learning" },
-    { id: 20, name: "Git" },
-  ];
+  const addArray: any = [];
+
+  // Hàm hiển thị mesage
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Please choose at least 5 interest to get started',
+    });
+  };
 
   return (
     <ConfigProvider
@@ -41,67 +33,63 @@ const SelectInterest = () => {
         token: themeColor,
       }}
     >
+      {contextHolder}
       <StyleTotal theme={themeColorSet}>
         <div className="flex justify-center w-full h-full selectInterest">
           <div className="content w-1/2 pt-10 h-full relative">
             <div>
-              <span
-                className="mr-3"
-                style={{ color: themeColorSet.colorText2 }}
-              >
+              <span className="mr-3" style={{ color: themeColorSet.colorText2 }}>
                 Step 03:
               </span>
-              <span style={{ color: themeColorSet.colorText3 }}>
-                Select interest
-              </span>
+              <span style={{ color: themeColorSet.colorText3 }}>Select interest</span>
             </div>
             <div className="slide w-full flex justify-between mt-2">
               <span
                 style={{
-                  width: "19.4%",
-                  height: "2px",
+                  width: '19.4%',
+                  height: '2px',
                   backgroundColor: commonColor.colorGreen1,
-                  display: "inline-block",
+                  display: 'inline-block',
                 }}
               ></span>
               <span
                 style={{
-                  width: "19.4%",
-                  height: "2px",
+                  width: '19.4%',
+                  height: '2px',
                   backgroundColor: commonColor.colorGreen1,
-                  display: "inline-block",
+                  display: 'inline-block',
                 }}
               ></span>
               <span
                 style={{
-                  width: "19.4%",
-                  height: "2px",
+                  width: '19.4%',
+                  height: '2px',
                   backgroundColor: commonColor.colorBlue1,
-                  display: "inline-block",
+                  display: 'inline-block',
                 }}
               ></span>
               <span
                 style={{
-                  width: "19.4%",
-                  height: "2px",
+                  width: '19.4%',
+                  height: '2px',
                   backgroundColor: commonColor.colorGreen1,
-                  display: "inline-block",
+                  display: 'inline-block',
                 }}
               ></span>
               <span
                 style={{
-                  width: "19.4%",
-                  height: "2px",
+                  width: '19.4%',
+                  height: '2px',
                   backgroundColor: commonColor.colorGreen1,
-                  display: "inline-block",
+                  display: 'inline-block',
                 }}
               ></span>
             </div>
             <div
               className="textMax mt-4"
               style={{
-                fontSize: "1.8rem",
-                fontWeight: "600",
+                fontSize: '1.8rem',
+                fontWeight: '600',
               }}
             >
               Select your interest
@@ -109,7 +97,7 @@ const SelectInterest = () => {
             <div
               className="textMin mt-5"
               style={{
-                fontSize: "1rem",
+                fontSize: '1rem',
                 color: themeColorSet.colorText3,
               }}
             >
@@ -117,27 +105,44 @@ const SelectInterest = () => {
             </div>
             <div className="interest mt-7">
               <div className="flex flex-wrap">
-                {techArray.map((item) => (
+                {descArray.map((item, index) => (
                   <div
                     className="interestItem px-4 py-2 mr-2 mb-3"
+                    key={index}
                     onClick={(e) => {
-                      if (e.currentTarget.classList.contains("active")) {
-                        e.currentTarget.classList.remove("active");
+                      if (e.currentTarget.classList.contains('active')) {
+                        e.currentTarget.classList.remove('active');
+                        addArray.splice(addArray.indexOf(item.title), 1);
                         return;
                       } else {
-                        e.currentTarget.classList.add("active");
+                        e.currentTarget.classList.add('active');
+                        addArray.push(item.title);
                         return;
                       }
                     }}
                   >
-                    {item.name}
+                    {item.title}
                   </div>
                 ))}
               </div>
             </div>
-            <NavLink to="/select-community">
-              <button className="btnNext absolute px-4 py-2">Next</button>
-            </NavLink>
+            <button
+              className="btnNext absolute px-4 py-2"
+              onClick={() => {
+                if (addArray.length < 5) {
+                  error();
+                  return;
+                }
+                dispatch(
+                  CHOOSE_GET_INTEREST_SAGA({
+                    des: addArray,
+                  }),
+                );
+                navigate('/select-community');
+              }}
+            >
+              Next
+            </button>
           </div>
         </div>
       </StyleTotal>

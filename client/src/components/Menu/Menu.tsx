@@ -6,23 +6,28 @@ import {
   faHouse,
   faMaximize,
   faPeopleGroup,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Button, ConfigProvider, Divider, Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssMenu';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MenuMain = () => {
+  let navigate = useNavigate();
+  const location = useLocation();
+
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
-  const [key, setKey] = useState('1');
+  const [key, setKey] = useState('');
 
   // Hover menu
   const [collapsed, setCollapsed] = useState(true);
@@ -33,9 +38,26 @@ const MenuMain = () => {
     setCollapsed(true);
   };
 
-  const handleSelected = (e: any) => {
-    setKey(e.key);
-  };
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') {
+      setKey('1');
+    } else if (path === '/me' || path === `/user/${userInfo?.id}`) {
+      setKey('2');
+    } else if (path === '/explore') {
+      setKey('3');
+    } else if (path === '/collaboration') {
+      setKey('4');
+    } else if (path === '/work') {
+      setKey('5');
+    } else if (path === '/bookmark') {
+      setKey('6');
+    } else if (path === '/community') {
+      setKey('7');
+    } else {
+      setKey('');
+    }
+  }, [location, userInfo]);
 
   return (
     <ConfigProvider
@@ -66,6 +88,7 @@ const MenuMain = () => {
           <Menu
             mode="inline"
             defaultSelectedKeys={[key]}
+            selectedKeys={[key]}
             className="h-full"
             items={[
               {
@@ -73,16 +96,22 @@ const MenuMain = () => {
                 icon: <FontAwesomeIcon className="icon" icon={faHouse} />,
                 label: 'Home',
                 title: '',
+                onClick: () => {
+                  navigate('/');
+                },
               },
               {
                 key: '2',
                 icon: userInfo?.userImage ? (
                   <Avatar className="icon" src={userInfo?.userImage} shape="circle" size={20} />
                 ) : (
-                  <Avatar className="icon" icon={<UserOutlined />} shape="circle" size={20} />
+                  <FontAwesomeIcon className="icon" icon={faUser} />
                 ),
-                label: userInfo.username,
+                label: userInfo?.username,
                 title: '',
+                onClick: () => {
+                  navigate(`/user/${userInfo?.id}`);
+                },
               },
               {
                 key: '3',

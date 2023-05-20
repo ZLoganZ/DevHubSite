@@ -1,4 +1,4 @@
-import { BaseService } from "./BaseService";
+import { BaseService } from './BaseService';
 
 export class AuthService extends BaseService {
   constructor() {
@@ -10,6 +10,9 @@ export class AuthService extends BaseService {
   };
   login = (user: any) => {
     return this.post(`/login`, user);
+  };
+  loginWithGoogle = (token: any) => {
+    return this.post(`/auth/googleV2`, token);
   };
   logout = (token: any) => {
     return this.post(`/logout`, token);

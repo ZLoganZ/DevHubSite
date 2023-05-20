@@ -1,19 +1,26 @@
-import { all } from "redux-saga/effects";
-import * as userSaga from "./UserSaga";
-import * as authSaga from "./AuthSaga";
-import * as postSaga from "./PostSaga";
+import { all } from 'redux-saga/effects';
+import * as userSaga from './UserSaga';
+import * as authSaga from './AuthSaga';
+import * as postSaga from './PostSaga';
+import * as messageSaga from './MessageSaga';
+import * as getStartedSaga from './GetStartedSaga';
+import * as communitySaga from './CommunitySaga';
 
 export function* rootSaga() {
   yield all([
     // authSaga
-    authSaga.theoDoicheckLoginSaga(),
     authSaga.theoDoiLoginSaga(),
     authSaga.theoDoiLogoutSaga(),
     authSaga.theoDoiGetUserIDSaga(),
+    authSaga.theoDoiLoginWithGoogleSaga(),
+    authSaga.theoDoiCheckLoginSaga(),
 
     // userSaga
     userSaga.theoDoiRegisterUserSaga(),
     userSaga.theoDoiUpdateUserSaga(),
+    userSaga.theoDoiGetFollowersSaga(),
+    userSaga.theoDoiGetUserInfoSaga(),
+    userSaga.theoDoiFollowUserSaga(),
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),
@@ -31,5 +38,24 @@ export function* rootSaga() {
     postSaga.theoDoiLikePostShareSaga(),
     postSaga.theoDoiSaveReplyPostShareSaga(),
     postSaga.theoDoiGetPostByIdSaga(),
+    postSaga.theoDoiIncreaseViewPostSaga(),
+    postSaga.theoDoiIncreaseViewPostShareSaga(),
+
+    // messageSaga
+    messageSaga.theoDoiGetConversationsSaga(),
+    messageSaga.theoDoiCreateConversationSaga(),
+    messageSaga.theoDoiGetConversationSaga(),
+    messageSaga.theoDoiGetMessagesSaga(),
+    messageSaga.theoDoiSeenMessageSaga(),
+    messageSaga.theoDoiSendMessageSaga(),
+
+    // getStartedSaga
+    getStartedSaga.theoDoiChooseGetStartedSaga(),
+    getStartedSaga.theoDoiChooseGetInterestSaga(),
+    getStartedSaga.theoDoigetShouldFollowSaga(),
+    getStartedSaga.theoDoichooseShouldFollowerSaga(),
+
+    // communitySaga
+    communitySaga.theoDoiGetCommunityByIDSaga(),
   ]);
 }

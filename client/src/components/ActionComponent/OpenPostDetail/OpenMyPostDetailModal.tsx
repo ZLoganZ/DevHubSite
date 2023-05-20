@@ -3,7 +3,7 @@ import React, { useMemo, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import StyleTotal from './cssOpenPostDetail';
+import StyleTotal from './cssOpenPostDetailModal';
 import dataEmoji from '@emoji-mart/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,8 @@ import {
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
+  GET_POSTSHARE_BY_ID_SAGA,
+  GET_POST_BY_ID_SAGA,
 } from '../../../redux/actionSaga/PostActionSaga';
 import MyPostDetail from '../../Form/PostDetail/MyPostDetail';
 
@@ -32,6 +34,17 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
+  const [cursor, setCursor] = useState(0);
+
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+
+  useLayoutEffect(() => {
+    if (PostProps.postShare) {
+      dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
+    } else {
+      dispatch(GET_POST_BY_ID_SAGA({ id: PostProps.post._id }));
+    }
+  }, [PostProps.post, PostProps.postShare]);
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
@@ -39,16 +52,12 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     setData(data);
   };
 
-  const handleComment = (content: any) => {
-    setCommentContent(content);
-  };
-
   const handleSubmitComment = () => {
     if (PostProps.postShare) {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -62,7 +71,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -70,7 +79,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -84,7 +93,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -116,21 +125,34 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [PostProps.post, PostProps.userInfo, data],
   );
 
-  const memoizedIputComment = useMemo(
+  const memoizedInputComment = useMemo(
     () => (
-      <div className=" commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
+      <div className="commentInput text-right flex items-center">
+        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
+
+            onKeyUp={(e) => {
+              // get cursor position
+              const cursorPosition = e.currentTarget.selectionStart;
+              setCursor(cursorPosition || 0);
+            }}
+            onClick={(e) => {
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
             onChange={(e) => {
-              handleComment(e.target.value);
+              setCommentContent(e.currentTarget.value);
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
             }}
             style={{
               borderColor: themeColorSet.colorText3,
             }}
+            onPressEnter={handleSubmitComment}
             maxLength={150}
             addonAfter={
               <Popover
@@ -141,7 +163,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -175,22 +197,22 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
         </div>
       </div>
     ),
-    [commentContent],
+    [commentContent, cursor],
   );
 
   useLayoutEffect(() => {
     dispatch(
       openModal({
-        title: 'The post of ' + PostProps.userInfo.username,
+        title: 'The post of ' + PostProps.userInfo?.username,
         component: memoizedComponent,
         footer: (
           <ConfigProvider>
-            <StyleTotal theme={themeColorSet}>{memoizedIputComment}</StyleTotal>
+            <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
           </ConfigProvider>
         ),
       }),
     );
-  }, [memoizedComponent, memoizedIputComment]);
+  }, [memoizedComponent, memoizedInputComment]);
 
   return (
     <ConfigProvider

@@ -1,11 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+interface State {
+  postArr: any;
+  allPost: any;
+  post: any;
+  ownerInfo: any;
+  isOpenPostDetail: boolean;
+  isInProfile: boolean;
+}
+
+const initialState: State = {
   postArr: [],
+  allPost: [],
   post: {},
   ownerInfo: {},
 
   isOpenPostDetail: false,
+  isInProfile: false,
 };
 
 const postSlice = createSlice({
@@ -13,6 +24,12 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setAllPost: (state, action) => {
+      return {
+        ...state,
+        allPost: action.payload.allPostArr,
+      };
+    },
+    setPostArr: (state, action) => {
       return {
         ...state,
         postArr: action.payload.postArr,
@@ -36,8 +53,27 @@ const postSlice = createSlice({
         ownerInfo: action.payload.ownerInfo,
       };
     },
+    setIsInProfile: (state, action) => {
+      return {
+        ...state,
+        isInProfile: action.payload,
+      };
+    },
+    updatePosts: (state, action) => {
+      const updatedPosts = state.postArr.map((post: any) => {
+        if (post._id === action.payload.post._id) {
+          return action.payload.post;
+        }
+        return post;
+      });
+      return {
+        ...state,
+        postArr: updatedPosts,
+      };
+    },
   },
 });
 
-export const { setAllPost, openPostDetail, setPost, setOwnerInfo } = postSlice.actions;
+export const { setAllPost, openPostDetail, setPost, setOwnerInfo, setIsInProfile, updatePosts, setPostArr } =
+  postSlice.actions;
 export default postSlice.reducer;

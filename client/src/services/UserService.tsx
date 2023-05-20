@@ -1,4 +1,4 @@
-import { BaseService } from "./BaseService";
+import { BaseService } from './BaseService';
 
 export class UserService extends BaseService {
   constructor() {
@@ -11,6 +11,16 @@ export class UserService extends BaseService {
   updateUser = (userID: any, userUpdate: any) => {
     return this.put(`/users/${userID}`, userUpdate);
   };
+  getFollowers = () => {
+    return this.get(`/user/followers`);
+  };
+  getUserInfo = () => {
+    return this.get(`/users/me`);
+  };
+  followUser = (userID: any) => {
+    return this.post(`/users/${userID}/follow`, '');
+  };
+ 
 }
 
 export const userService = new UserService();

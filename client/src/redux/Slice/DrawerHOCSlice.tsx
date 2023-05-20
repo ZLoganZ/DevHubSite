@@ -1,14 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  title: "",
+  title: '',
   visible: false,
   ComponentContentDrawer: <p>default</p>,
   callBackSubmit: () => {},
+  loading: false,
 };
 
 const drawerHOCSlide = createSlice({
-  name: "post",
+  name: 'post',
   initialState,
   reducers: {
     openDrawer: (state, action) => {
@@ -16,8 +17,8 @@ const drawerHOCSlide = createSlice({
         ...state,
         title: action.payload.title,
         visible: true,
-        ComponentContentDrawer: action.payload.component
-      }
+        ComponentContentDrawer: action.payload.component,
+      };
     },
     closeDrawer: (state, action) => {
       return {
@@ -32,9 +33,11 @@ const drawerHOCSlide = createSlice({
       };
     },
     submitDrawer: (state, action) => {},
+    setLoading: (state, action) => {
+      return { ...state, loading: action.payload };
+    },
   },
 });
 
-export const { openDrawer, submitDrawer, callBackSubmitDrawer, closeDrawer } =
-  drawerHOCSlide.actions;
+export const { openDrawer, submitDrawer, callBackSubmitDrawer, closeDrawer, setLoading } = drawerHOCSlide.actions;
 export default drawerHOCSlide.reducer;

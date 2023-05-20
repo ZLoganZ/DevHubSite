@@ -1,47 +1,51 @@
-import {
-  Avatar,
-  Button,
-  ConfigProvider,
-  Divider,
-  Form,
-  Input,
-  message,
-  Popover,
-  Upload,
-} from "antd";
-import Quill from "quill";
-import "react-quill/dist/quill.snow.css";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { getTheme } from "../../../util/functions/ThemeFunction";
-import StyleTotal from "./cssEditPostForm";
-import ImageCompress from "quill-image-compress";
-import dataEmoji from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-import { useFormik } from "formik";
-import { TOKEN } from "../../../util/constants/SettingSystem";
-import { UPDATE_POST_SAGA } from "../../../redux/actionSaga/PostActionSaga";
-import { UploadOutlined } from "@ant-design/icons";
-import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
-Quill.register("modules/imageCompress", ImageCompress);
+import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload, UploadFile } from 'antd';
+import Quill from 'quill';
+import 'react-quill/dist/quill.snow.css';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTheme } from '../../../util/functions/ThemeFunction';
+import StyleTotal from './cssEditPostForm';
+import ImageCompress from 'quill-image-compress';
+import dataEmoji from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import { useFormik } from 'formik';
+import { TOKEN } from '../../../util/constants/SettingSystem';
+import { GET_ALL_POST_BY_USERID_SAGA, UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
+import { UploadOutlined } from '@ant-design/icons';
+import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
+import { RcFile } from 'antd/es/upload';
+import { sha1 } from 'crypto-hash';
+// import hljs from 'highlight.js/lib/core';
+// import javascript from 'highlight.js/lib/languages/javascript';
+// import 'highlight.js/styles/monokai-sublime.css';
+
+Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
-  ["bold", "italic", "underline", "clean"],
-  [{ list: "ordered" }, { list: "bullet" }],
+  ['bold', 'italic', 'underline', 'clean'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
-  ["link", "image"],
+  ['link'],
 ];
+
+// hljs.registerLanguage('javascript', javascript);
+// hljs.registerLanguage('javascript', javascript);
+// hljs.registerLanguage('javascript', javascript);
+
+// hljs.configure({
+//   languages: ['javascript', 'ruby', 'python'],
+// });
 
 interface PostProps {
   id: any;
   title: any;
   content: any;
+  img?: any;
 }
 
-const EditPostForm = (PostProps: any) => {
+const EditPostForm = (PostProps: PostProps) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -49,6 +53,51 @@ const EditPostForm = (PostProps: any) => {
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
 
   // Formik
   const formik = useFormik({
@@ -58,35 +107,70 @@ const EditPostForm = (PostProps: any) => {
       linkImage: null,
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
-      if (quill.root.innerHTML === "<p><br></p>") {
+    onSubmit: async (values) => {
+      if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
+        dispatch(setLoading(true));
+        if (isChanged > 0) {
+          if (file) {
+            const result = await handleUploadImage(file);
+            values.linkImage = result.url;
+          }
+          if (PostProps.img) await handleRemoveImage(PostProps.img);
+        }
         dispatch(
           UPDATE_POST_SAGA({
             id: PostProps.id,
             postUpdate: values,
-          })
+          }),
         );
       }
     },
   });
 
+  const beforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 3;
+    if (!isLt2M) {
+      messageApi.error('Image must smaller than 3MB!');
+    }
+    return isLt2M;
+  };
+
   // Quill Editor
-  let [quill, setQuill]: any = useState(null);
+  let [quill, setQuill] = useState<any>(null);
 
   useEffect(() => {
     // Tạo quill
-    quill = new Quill("#editorDrawer", {
+    quill = new Quill('#editorDrawer', {
       modules: {
+        syntax: true,
         toolbar: toolbarOptions,
       },
-      theme: "snow",
-      scrollingContainer: "#scrolling-container",
+      theme: 'snow',
+      scrollingContainer: '#scrolling-container',
     });
-    quill.on("text-change", function () {
+    quill.on('text-change', function () {
       handleQuillChange();
     });
+
+    // Ngăn chặn paste text vào quill
+    // C1
+    quill.root.addEventListener('paste', (event: any) => {
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+
+      const textToHTMLWithTabAndSpace = text
+        .replace(/\n/g, '<br>')
+        .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+        .replace(/ /g, '&nbsp;');
+
+      console.log(textToHTMLWithTabAndSpace);
+
+      document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
+    });
+
+    setQuill(quill);
 
     // Dispatch callback submit lên cho DrawerHOC
     dispatch(callBackSubmitDrawer(formik.handleSubmit));
@@ -97,27 +181,49 @@ const EditPostForm = (PostProps: any) => {
     quill.root.innerHTML = PostProps.content;
     setQuill(quill);
     // Hiển thị lại title khi PostProps.title thay đổi
-    formik.setFieldValue("title", PostProps.title);
+    formik.setFieldValue('title', PostProps.title);
   }, [PostProps, quill]);
 
   const handleQuillChange = () => {
     const text = quill.root.innerHTML;
-    formik.setFieldValue("content", text);
+    formik.setFieldValue('content', text);
   };
 
   // Hàm hiển thị mesage
   const error = () => {
     messageApi.open({
-      type: "error",
-      content: "Please enter the content",
+      type: 'error',
+      content: 'Please enter the content',
     });
   };
 
+  const [isChanged, setIsChanged] = useState(0);
+
+  const nameImage = useMemo(() => {
+    if (PostProps.img) {
+      const nameSplit = PostProps.img.split('/');
+      const duplicateName = nameSplit.pop();
+      const name = duplicateName.replace(/_[^_]*\./, '.');
+      return name;
+    }
+    return undefined;
+  }, [PostProps.img]);
+
   const [file, setFile]: any = useState([]);
   const handleUpload = (info: any) => {
-    setFile(info.fileList[0].originFileObj);
-    formik.setFieldValue("linkImage", info.fileList[0].originFileObj);
+    setIsChanged(isChanged + 1);
+    setFile(info?.file?.originFileObj);
+    formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
   };
+
+  const fileList: UploadFile[] = [
+    {
+      uid: '-1',
+      name: nameImage,
+      status: 'done',
+      url: PostProps.img,
+    },
+  ];
 
   return (
     <ConfigProvider
@@ -154,39 +260,38 @@ const EditPostForm = (PostProps: any) => {
               <Popover
                 placement="top"
                 trigger="click"
-                title={"Members"}
+                title={'Members'}
                 content={
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
                       quill.focus();
-                      quill.insertText(
-                        quill.getSelection().index,
-                        emoji.native
-                      );
+                      quill.insertText(quill.getSelection().index, emoji.native);
                     }}
                   />
                 }
               >
                 <span className="emoji">
-                  <FontAwesomeIcon
-                    className="item mr-3 ml-3"
-                    size="lg"
-                    icon={faFaceSmile}
-                  />
+                  <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
-              <span className="code">
-                <FontAwesomeIcon className="item" size="lg" icon={faCode} />
-              </span>
               <span>
-                <Upload listType="picture" onChange={handleUpload}>
+                <Upload
+                  name="linkImage"
+                  listType="picture"
+                  onChange={handleUpload}
+                  accept="image/png, image/jpeg, image/jpg"
+                  defaultFileList={PostProps.img ? [...fileList] : []}
+                  maxCount={1}
+                  customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
+                    onSuccess('ok');
+                  }}
+                  beforeUpload={beforeUpload}
+                >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
             </div>
-            {/* <div className="newPostFooter__right">
-            </div> */}
           </div>
         </div>
       </StyleTotal>

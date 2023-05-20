@@ -16,7 +16,7 @@ const AddTagComponent = (Props: any) => {
 
   const descArray = [...descArrays];
 
-  const [addTagArr, setAddTagArr] = React.useState<any>([...Props.descriptions]);
+  const [addTagArr, setAddTagArr] = React.useState<any>([...Props.tags]);
 
   let addTagArrTemp = [...addTagArr];
 

@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_POSTSHARE_BY_ID_SAGA } from "../../redux/actionSaga/PostActionSaga";
-import OpenPostShareDetail from "../ActionComponent/OpenPostDetail/OpenPostShareDetail";
-import OpenMyPostShareDetail from "../ActionComponent/OpenPostDetail/OpenMyPostShareDetail";
-import { GET_USER_ID } from "../../redux/actionSaga/AuthActionSaga";
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_POSTSHARE_BY_ID_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import OpenPostShareDetail from '../ActionComponent/OpenPostDetail/OpenPostShareDetail';
+import OpenMyPostShareDetail from '../ActionComponent/OpenPostDetail/OpenMyPostShareDetail';
+import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 
 const PostShareWrapper = () => {
   const { postID } = useParams();
@@ -19,16 +19,14 @@ const PostShareWrapper = () => {
     dispatch(
       GET_POSTSHARE_BY_ID_SAGA({
         id: postID,
-      })
+      }),
     );
     dispatch(GET_USER_ID());
   }, []);
 
   if (!userInfo) {
-  } else if (userInfo.id === userID) {
-    return <OpenMyPostShareDetail post={post} userInfo={userInfo} />;
   } else {
-    return <OpenPostShareDetail post={post} userInfo={userInfo} />;
+    return <OpenPostShareDetail key={post._id} post={post} userInfo={userInfo} />;
   }
 };
 

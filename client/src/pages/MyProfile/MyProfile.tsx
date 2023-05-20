@@ -1,28 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import {
-  Avatar,
-  Button,
-  Col,
-  ConfigProvider,
-  Empty,
-  Input,
-  Row,
-  Skeleton,
-  Space,
-  Switch,
-  Tabs,
-  Tag,
-  theme,
-  Tooltip,
-} from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -35,9 +17,10 @@ import MyPostShare from '../../components/Post/MyPostShare';
 import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
-import 'react-quill/dist/quill.snow.css';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { usePostsData } from '../../util/functions/DataProvider';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -55,6 +38,7 @@ const MyProfile = () => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(true));
   }, []);
 
   useEffect(() => {
@@ -76,9 +60,21 @@ const MyProfile = () => {
 
   const ownerInfoRef = React.useRef(ownerInfo);
 
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
+
   useEffect(() => {
+    if (!isNotAlreadyChanged) return;
+
     setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
-  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
+
+    if (!isNotAlreadyChanged) {
+      ownerInfoRef.current = ownerInfo;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
+
+  // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
   return (
     <ConfigProvider
@@ -96,20 +92,25 @@ const MyProfile = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("${ownerInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden">
-                  <img
+                <div className="avatar rounded-full overflow-hidden object-cover flex">
+                  <Image
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </Col>
-              <Col offset={4} span={16}>
+              <Col offset={3} span={18}>
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6} span={12}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
@@ -132,12 +133,12 @@ const MyProfile = () => {
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
                       <div className="editProfile">
                         <button
-                          className="btnEditProfile px-4 py-2"
+                          className="btnEditProfile px-6 py-3 rounded-full"
                           onClick={() => {
                             dispatch(
                               openDrawer({
                                 title: 'Edit Profile',
-                                component: <EditProfileForm />,
+                                component: <EditProfileForm key={Math.random()} />,
                               }),
                             );
                           }}
@@ -149,20 +150,20 @@ const MyProfile = () => {
                   </Col>
                 </Row>
                 <div className="id_address_join">
-                  <span className="id item mr-2">@tianrongliew</span>
+                  <span className="id item mr-2">@{ownerInfo.alias ? ownerInfo.alias : 'user'}</span>
                   <span className="address item mr-2">
                     <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
-                    Global
+                    {ownerInfo.location ? ownerInfo.location : 'Global'}
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
-                    Joined Jun 2020
+                    Joined {ownerInfo.dayJoined}
                   </span>
                 </div>
                 <Col span={18} className="mt-5">
-                  <div className="description flex flex-wrap">
+                  <div className="tags flex flex-wrap">
                     {descArray.map((item, index) => {
-                      if (userInfo?.descriptions?.indexOf(item.title) !== -1) {
+                      if (ownerInfo?.tags?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
                             className="item mx-2 my-2 px-4 py-1"
@@ -183,13 +184,16 @@ const MyProfile = () => {
                 </Col>
                 <div className="follow mt-5">
                   <span className="follower item mr-2">
-                    <span className="mr-1">{2710}</span> Follower
+                    <span className="mr-1">{ownerInfo.followers.length}</span>{' '}
+                    {ownerInfo.followers.length > 1 ? 'Followers' : 'Follower'}
                   </span>
                   <span className="following item mr-2">
-                    <span className="mr-1">{78}</span> Following
+                    <span className="mr-1">{ownerInfo.following.length}</span>{' '}
+                    {ownerInfo.following.length > 1 ? 'Followings' : 'Following'}
                   </span>
                   <span className="post mr-2">
-                    <span className="mr-1">{56}</span> Post
+                    <span className="mr-1">{ownerInfo.posts.length}</span>{' '}
+                    {ownerInfo.posts.length > 1 ? 'Posts' : 'Post'}
                   </span>
                 </div>
                 <div className="experience mt-5">
@@ -216,11 +220,72 @@ const MyProfile = () => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
+                    {ownerInfo?.contacts?.map((item: any, index: any) => {
+                      switch (item.key) {
+                        case '0':
+                          return (
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '1':
+                          return (
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '2':
+                          return (
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '3':
+                          return (
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '4':
+                          return (
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                              />
+                            </Tooltip>
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">
@@ -248,7 +313,7 @@ const MyProfile = () => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <MyPost key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>

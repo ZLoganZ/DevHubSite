@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Comment, Icon } from '@ant-design/compatible';
-import { Avatar, ConfigProvider, Tooltip } from 'antd';
+import { Avatar, ConfigProvider, Skeleton, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -71,7 +71,7 @@ const CommentDetail = (Props: CommentProps) => {
       </Tooltip>
       <span style={{ paddingLeft: 8, cursor: 'auto' }}>{likes}</span>
     </span>,
-    <span key=' key="comment-basic-dislike"'>
+    <span key="comment-basic-dislike">
       <Tooltip title="Dislike">
         <Icon
           type="dislike"
@@ -113,6 +113,7 @@ const CommentDetail = (Props: CommentProps) => {
       )),
     },
   ];
+
   return (
     <ConfigProvider
       theme={{
@@ -120,32 +121,36 @@ const CommentDetail = (Props: CommentProps) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div className="">
-          <Comment
-            author={
-              <div
-                style={{
-                  fontWeight: 600,
-                  color: themeColorSet.colorText1,
-                  fontSize: '0.85rem',
-                }}
-              >
-                {Props.comment.user.username}
-              </div>
-            }
-            actions={actions}
-            avatar={
-              Props.comment.user?.userImage ? (
-                <Avatar src={Props.comment.user?.userImage} alt={Props.comment.user.username} />
-              ) : (
-                <Avatar style={{ backgroundColor: '#87d068' }} icon="user" alt={Props.comment.user.username} />
-              )
-            }
-            content={<div className="">{Props.comment.content}</div>}
-          >
-            {Props.children}
-          </Comment>
-        </div>
+        {!Props.comment?.user?.username ? (
+         <Skeleton avatar paragraph={{ rows: 2 }} active/>
+        ) : (
+          <div className="commentDetail">
+            <Comment
+              author={
+                <div
+                  style={{
+                    fontWeight: 600,
+                    color: themeColorSet.colorText1,
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  {Props.comment?.user?.username}
+                </div>
+              }
+              actions={actions}
+              avatar={
+                Props.comment?.user?.userImage ? (
+                  <Avatar src={Props.comment?.user?.userImage} alt={Props.comment?.user?.username} />
+                ) : (
+                  <Avatar style={{ backgroundColor: '#87d068' }} icon="user" alt={Props.comment?.user?.username} />
+                )
+              }
+              content={<div className="">{Props.comment?.content}</div>}
+            >
+              {Props.children}
+            </Comment>
+          </div>
+        )}
       </StyleTotal>
     </ConfigProvider>
   );

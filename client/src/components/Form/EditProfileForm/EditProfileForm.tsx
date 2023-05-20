@@ -1,16 +1,32 @@
-import { ConfigProvider, Space, Tag } from "antd";
-import React from "react";
-import StyleTotal from "./cssEditProfileForm";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../../util/functions/ThemeFunction";
-import { commonColor } from "../../../util/cssVariable/cssVariable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { openModal } from "../../../redux/Slice/ModalHOCSlice";
-import AddTagComponent from "../../AddTagComponent/AddTagComponent";
-import descArray from "../../../util/constants/Description";
-import { UPDATE_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
-import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
+import { ConfigProvider, Space, Tag, Avatar, Tooltip, Upload, Image, message } from 'antd';
+import React, { useCallback, useMemo } from 'react';
+import StyleTotal from './cssEditProfileForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../../util/functions/ThemeFunction';
+import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { commonColor } from '../../../util/cssVariable/cssVariable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { openModal } from '../../../redux/Slice/ModalHOCSlice';
+import AddTagComponent from '../../AddTagComponent/AddTagComponent';
+import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
+import descArray from '../../../util/constants/Description';
+import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
+import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { RcFile } from 'antd/es/upload';
+import { sha1 } from 'crypto-hash';
+
+// const link = [
+//   {
+//     key: '0',
+//     link: 'https://www.facebook.com/',
+//   },
+//   {
+//     key: '1',
+//     link: 'https://www.github.com/',
+//   },
+// ];
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -20,14 +36,98 @@ const EditProfileForm = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const [descriptions, setDescriptions] = React.useState(userInfo.descriptions);
+  const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
+
+  const [tags, setTags] = React.useState(userInfo?.tags);
+
+  const [links, setLinks] = React.useState<any>(userInfo?.contacts || []);
 
   const isHaveCover = true;
 
-  const [firstname, setFirstName] = React.useState(userInfo.firstname);
-  const [lastname, setLastName] = React.useState(userInfo.lastname);
+  const [firstname, setFirstName] = React.useState(userInfo?.firstname);
+
+  const [lastname, setLastName] = React.useState(userInfo?.lastname);
+
+  const [alias, setAlias] = React.useState(userInfo?.alias || '');
+
+  const [location, setLocation] = React.useState(userInfo?.location || '');
+
+  const [avatar, setAvatar] = React.useState(userInfo?.userImage || '/images/TimeLinePage/avatar.jpg');
+  const [fileAvatar, setFileAvatar] = React.useState<any>(null);
+
+  const [cover, setCover] = React.useState(userInfo?.coverImage || '/images/ProfilePage/cover.jpg');
+  const [fileCover, setFileCover] = React.useState<any>(null);
+
+  const { loading } = useSelector((state: any) => state.drawerHOCReducer);
+
+  const initialAvatar = useMemo(() => {
+    return userInfo?.userImage || null;
+  }, [userInfo?.userImage]);
+
+  const initialCover = useMemo(() => {
+    return userInfo?.coverImage || null;
+  }, [userInfo?.coverImage]);
+
+  const handleChangeAvatar = useCallback((image: any) => {
+    setAvatar(URL.createObjectURL(image));
+    setFileAvatar(image);
+  }, []);
+
+  const handleChangeCover = useCallback((image: any) => {
+    setCover(URL.createObjectURL(image));
+    setFileCover(image);
+  }, []);
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   const handleChangeFirstName = (e: any) => {
     setFirstName(e.target.value);
@@ -37,44 +137,72 @@ const EditProfileForm = () => {
     setLastName(e.target.value);
   };
 
-  const handleChangeDescriptions = (descriptions: any) => {
-    setDescriptions(descriptions);
+  const handleChangeTags = (tags: any) => {
+    setTags(tags);
   };
 
-  const onSubmit = () => {
+  const handleChangeLinks = (links: any) => {
+    setLinks(links);
+  };
+
+  const handleChangeAlias = (e: any) => {
+    setAlias(e.target.value);
+  };
+
+  const handleChangeLocation = (e: any) => {
+    setLocation(e.target.value);
+  };
+
+  const onSubmit = async () => {
+    dispatch(setLoading(true));
+    const formData = new FormData();
+    if (fileAvatar) {
+      const res = await handleUploadImage(fileAvatar);
+      formData.append('userImage', res.url);
+      if (initialAvatar) await handleRemoveImage(initialAvatar);
+    }
+    if (fileCover) {
+      const res = await handleUploadImage(fileCover);
+      formData.append('coverImage', res.url);
+      if (initialCover) await handleRemoveImage(initialCover);
+    }
     dispatch(
       UPDATE_USER_SAGA({
-        id: userInfo.id,
+        id: userInfo?.id,
         userUpdate: {
-          description: descriptions,
-          firstname: firstname,
           lastname: lastname,
+          firstname: firstname,
+          username: lastname + ' ' + firstname,
+          alias: alias,
+          location: location,
+          userImage: fileAvatar ? formData.get('userImage') : undefined,
+          coverImage: fileCover ? formData.get('coverImage') : undefined,
+          tags: tags,
+          contacts: links,
         },
-      })
+      }),
     );
   };
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [descriptions, firstname, lastname]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location]);
 
-  const componentNoInfo = (
-    title: String,
-    description: String,
-    buttonContent: String
-  ) => {
+  const beforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 3;
+    if (!isLt2M) {
+      messageApi.error('Image must smaller than 3MB!');
+    }
+    return isLt2M;
+  };
+
+  const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
       <div className="componentNoInfo text-center px-16">
-        <div
-          className="title mb-3"
-          style={{ fontSize: "1.1rem", fontWeight: 600 }}
-        >
+        <div className="title mb-3" style={{ fontSize: '1.1rem', fontWeight: 600 }}>
           {title}
         </div>
-        <div
-          className="description"
-          style={{ color: themeColorSet.colorText3 }}
-        >
+        <div className="tags" style={{ color: themeColorSet.colorText3 }}>
           {description}
         </div>
         <button
@@ -98,6 +226,7 @@ const EditProfileForm = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
+        {contextHolder}
         <div className="editProfileForm">
           <section className="coverSection">
             <div
@@ -105,34 +234,34 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1rem",
+                fontSize: '1rem',
               }}
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">
-              Recommended dimensions 1500px x 400px (max. 4MB)
-            </div>
-            <div className="cover relative">
-              <div
-                className="coverImage w-full h-72 rounded-xl"
+            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 3MB)</div>
+            <div className="cover relative flex w-full h-72 mb-8 justify-center items-center bg-black rounded-lg">
+              <Image
+                className="coverImage rounded-xl"
+                src={cover}
                 style={{
-                  backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
+                  objectFit: 'cover',
+                  maxHeight: '18rem',
+                  width: '100%',
                 }}
-              ></div>
+              ></Image>
               <Space className="coverButton absolute bottom-8 right-5">
-                <button
+                <Upload
                   className="btnChangeCover px-4 py-2"
-                  style={{
-                    backgroundColor: commonColor.colorBlue2,
-                    fontWeight: 600,
-                  }}
+                  customRequest={() => {}}
+                  maxCount={1}
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(file) => handleChangeCover(file?.file?.originFileObj)}
+                  showUploadList={false}
+                  beforeUpload={beforeUpload}
                 >
                   Change Cover Image
-                </button>
+                </Upload>
                 <button
                   className="btnRemove px-4 py-2"
                   style={{
@@ -147,36 +276,111 @@ const EditProfileForm = () => {
           </section>
           <section className="avatar mt-3 flex items-center">
             <div className="avatarImage">
-              <img
-                src="https://lh3.googleusercontent.com/a/AGNmyxZvsAlaggV_fSB9ID1lO4I0urHL8s13mzmcJU-kqQ=s288"
+              <Image
+                src={avatar}
                 alt="avatar"
                 style={{
-                  width: "7rem",
-                  height: "7rem",
-                  borderRadius: "50%",
+                  width: '7rem',
+                  height: '7rem',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
                 }}
               />
             </div>
             <Space className="changeAvatar ml-3" direction="vertical">
-              <div style={{ fontSize: "1.2rem", fontWeight: 600 }}>
-                Set profile photo
-              </div>
-              <button
+              <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Set profile photo</div>
+              <Upload
+                accept="image/png, image/jpeg, image/jpg"
+                customRequest={() => {}}
+                maxCount={1}
+                onChange={(file) => handleChangeAvatar(file?.file?.originFileObj)}
+                showUploadList={false}
                 className="btnChange px-4 py-2"
-                style={{
-                  backgroundColor: commonColor.colorBlue2,
-                  fontWeight: 600,
-                }}
               >
-                Change photo
-              </button>
+                Change Avatar
+              </Upload>
             </Space>
           </section>
           <section className="addLinks mt-3">
+            {links?.map((item: any, index: any) => {
+              switch (item.key) {
+                case '0':
+                  return (
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '1':
+                  return (
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '2':
+                  return (
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '3':
+                  return (
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '4':
+                  return (
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                      />
+                    </Tooltip>
+                  );
+                default:
+                  return null;
+              }
+            })}
             <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
+              onClick={() => {
+                dispatch(
+                  openModal({
+                    title: 'Update Social Links',
+                    component: <AddLinkComponent key={Math.random()} callback={handleChangeLinks} links={links} />,
+                    footer: false,
+                  }),
+                );
+              }}
               style={{
-                border: "1px solid",
+                border: '1px solid',
                 borderColor: themeColorSet.colorBg4,
               }}
             >
@@ -190,36 +394,16 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Information
             </div>
             <div className="line1 flex justify-between items-center mb-5">
-              <div
-                className="firstName form__group field"
-                style={{ width: "48%" }}
-              >
-                <input
-                  defaultValue={userInfo?.firstname}
-                  type="input"
-                  className="form__field"
-                  placeholder="First Name"
-                  name="firstname"
-                  id="firstname"
-                  required
-                  onChange={handleChangeFirstName}
-                />
-                <label htmlFor="name" className="form__label">
-                  First Name
-                </label>
-              </div>
-              <div
-                className="LastName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="LastName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue={userInfo?.lastname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
                   placeholder="Last Name"
@@ -227,42 +411,59 @@ const EditProfileForm = () => {
                   id="lastname"
                   required
                   onChange={handleChangeLastName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Last Name
                 </label>
               </div>
-            </div>
-            <div className="line2 flex justify-between items-center">
-              <div
-                className="firstName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="firstName form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="@nguyenhoanghai"
+                  defaultValue={userInfo?.firstname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
-                  placeholder="User ID"
-                  name="userID"
-                  id="userID"
+                  placeholder="First Name"
+                  name="firstname"
+                  id="firstname"
                   required
+                  onChange={handleChangeFirstName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
-                  User ID
+                  First Name
                 </label>
               </div>
-              <div
-                className="LastName form__group field"
-                style={{ width: "48%" }}
-              >
+            </div>
+            <div className="line2 flex justify-between items-center">
+              <div className="alias form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="Ninh Hòa- Khánh Hòa - Việt Nam"
+                  defaultValue={userInfo?.alias}
                   type="input"
                   className="form__field"
-                  placeholder="Location"
-                  name="name"
-                  id="name"
+                  placeholder="ex: johndoe"
+                  name="alias"
+                  id="alias"
                   required
+                  onChange={handleChangeAlias}
+                  autoComplete="off"
+                />
+                <label htmlFor="name" className="form__label">
+                  Alias
+                </label>
+              </div>
+              <div className="location form__group field" style={{ width: '48%' }}>
+                <input
+                  defaultValue={userInfo?.location}
+                  pattern="[A-Za-z ]*"
+                  type="input"
+                  className="form__field"
+                  placeholder="ex: Viet Nam"
+                  name="location"
+                  id="location"
+                  required
+                  onChange={handleChangeLocation}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Location
@@ -277,21 +478,21 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Expertise
             </div>
-            <div className="description flex flex-wrap">
+            <div className="tags flex flex-wrap">
               {descArray.map((item, index) => {
-                if (descriptions?.indexOf(item.title) !== -1) {
+                if (tags?.indexOf(item.title) !== -1) {
                   return (
                     <Tag
                       className="item mx-2 my-2 px-4 py-1"
                       key={index}
                       color={themeColorSet.colorBg1}
                       style={{
-                        border: "none",
+                        border: 'none',
                       }}
                     >
                       {item.svg} &nbsp;
@@ -304,21 +505,16 @@ const EditProfileForm = () => {
               <button
                 className="addTags mt-2 px-4 py-1 cursor-pointer"
                 style={{
-                  border: "1px solid",
+                  border: '1px solid',
                   borderColor: themeColorSet.colorBg4,
                 }}
                 onClick={() => {
                   dispatch(
                     openModal({
-                      title: "Add Tags",
-                      component: (
-                        <AddTagComponent
-                          callback={handleChangeDescriptions}
-                          descriptions={descriptions}
-                        />
-                      ),
+                      title: 'Add Tags',
+                      component: <AddTagComponent key={Math.random()} callback={handleChangeTags} tags={tags} />,
                       footer: true,
-                    })
+                    }),
                   );
                 }}
               >
@@ -333,15 +529,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               About
             </div>
             {componentNoInfo(
-              "Share something about yourself",
-              "Use Markdown to share more about who you are with the developer community on Showwcase.",
-              "Add About"
+              'Share something about yourself',
+              'Use Markdown to share more about who you are with the developer community on Showwcase.',
+              'Add About',
             )}
           </section>
           <section className="experiences mt-7">
@@ -350,15 +546,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Experiences
             </div>
             {componentNoInfo(
-              "Share a timeline of your Positions",
-              "Add your professional history so others know you’ve put your skills to good use.",
-              "Add Positions"
+              'Share a timeline of your Positions',
+              'Add your professional history so others know you’ve put your skills to good use.',
+              'Add Positions',
             )}
           </section>
           <section className="techStack mt-7">
@@ -367,15 +563,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Tech Stack
             </div>
             {componentNoInfo(
-              "Add your familiar Skills",
-              "Showcase your familiar skills and technologies and label them by years of experience so others know what you like working with.",
-              "Add Tech Stack"
+              'Add your familiar Skills',
+              'Showcase your familiar skills and technologies and label them by years of experience so others know what you like working with.',
+              'Add Tech Stack',
             )}
           </section>
           <section className="repositories mt-7">
@@ -384,15 +580,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Repositories
             </div>
             {componentNoInfo(
-              "Highlight your top Repositories",
-              "Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!",
-              "Feature Repositories"
+              'Highlight your top Repositories',
+              'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
+              'Feature Repositories',
             )}
           </section>
           <section className="memberOf mt-7">
@@ -401,15 +597,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Member of
             </div>
             {componentNoInfo(
-              "You currently have no featured Communities",
-              "Showcase your featured communities to be highlighted on your profile",
-              "Feature Communities"
+              'You currently have no featured Communities',
+              'Showcase your featured communities to be highlighted on your profile',
+              'Feature Communities',
             )}
           </section>
         </div>

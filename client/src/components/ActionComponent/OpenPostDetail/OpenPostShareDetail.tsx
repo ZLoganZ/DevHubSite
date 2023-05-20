@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
+import { Avatar, ConfigProvider, Input, Popover, Button, Row, Col } from 'antd';
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -45,11 +45,11 @@ const OpenPostShareDetail = (Props: Props) => {
   };
 
   const handleSubmitComment = () => {
-    if (Props.post.postShare) {
+    if (Props.post?.postShare) {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -63,7 +63,7 @@ const OpenPostShareDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -71,7 +71,7 @@ const OpenPostShareDetail = (Props: Props) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -85,7 +85,7 @@ const OpenPostShareDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -108,18 +108,18 @@ const OpenPostShareDetail = (Props: Props) => {
       <PostDetail
         onData={handleData}
         post={Props.post}
-        userInfo={Props.post.user}
+        userInfo={Props.post?.user}
         data={data}
-        postShare={Props.post.PostShared}
-        owner={Props.post.owner}
+        postShare={Props.post?.PostShared}
+        owner={Props.post?.owner}
       />
     ),
     [Props.post, data],
   );
 
-  const memoizedIputComment = useMemo(
+  const memoizedInputComment = useMemo(
     () => (
-      <div className=" commentInput text-right flex items-center">
+      <div className=" commentInput text-right flex items-center px-4 pb-5 mt-4">
         <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
         <div className="input w-full">
           <Input
@@ -186,10 +186,19 @@ const OpenPostShareDetail = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div>
-          {memoizedComponent}
-          {memoizedIputComment}
-        </div>
+        <Row className="py-10">
+        <Col offset={3} span={18}>
+            <div
+              style={{
+                backgroundColor: themeColorSet.colorBg2,
+              }}
+              className="rounded-lg"
+            >
+              {memoizedComponent}
+              {memoizedInputComment}
+            </div>
+          </Col>
+        </Row>
       </StyleTotal>
     </ConfigProvider>
   );

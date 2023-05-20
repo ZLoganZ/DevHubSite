@@ -9,6 +9,7 @@ const StyleTotal = styled.div`
     background-color: ${commonColor.colorBlue2};
     bottom: 10%;
     right: 0%;
+    border-radius: 1.5rem;
     :hover {
       background-color: ${commonColor.colorBlue3};
       cursor: pointer;

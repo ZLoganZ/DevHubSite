@@ -1,6 +1,6 @@
-import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
-import styled, { css } from "styled-components";
-import { commonColor } from "../../util/cssVariable/cssVariable";
+import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
+import styled, { css } from 'styled-components';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
@@ -20,11 +20,9 @@ const StyleTotal = styled.div`
   .chat_Follow {
     .editProfile {
       .btnEditProfile {
-        border: 1px solid ${(props) => props.theme.colorText1};
         color: ${(props) => props.theme.colorText1};
-        border-radius: 0;
+        background-color: ${(props) => props.theme.colorBg2};
         :hover {
-          border-color: ${commonColor.colorBlue1};
           color: ${commonColor.colorBlue1};
           cursor: pointer;
           transition: all 0.5s;
@@ -37,12 +35,12 @@ const StyleTotal = styled.div`
     .item {
       display: inline-block;
       ::after {
-        content: "•";
+        content: '•';
         margin-left: 0.5rem;
       }
     }
   }
-  .description {
+  .tags {
     .item {
       border: 2px solid ${(props) => props.theme.colorText3};
       border-radius: 0.8rem;
@@ -59,7 +57,7 @@ const StyleTotal = styled.div`
     .item {
       display: inline-block;
       ::after {
-        content: "•";
+        content: '•';
         margin-left: 0.5rem;
       }
     }

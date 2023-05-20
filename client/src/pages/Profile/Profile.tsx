@@ -1,37 +1,23 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, { useEffect, useMemo, useState } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import {
-  Avatar,
-  Col,
-  ConfigProvider,
-  Empty,
-  Input,
-  Row,
-  Skeleton,
-  Space,
-  Switch,
-  Tabs,
-  Tag,
-  theme,
-  Tooltip,
-} from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import TabPane from 'antd/es/tabs/TabPane';
 import Post from '../../components/Post/Post';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
+import { messageService } from '../../services/MessageService';
 
 interface Props {
   userID: any;
@@ -39,6 +25,7 @@ interface Props {
 
 const Profile = (Props: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { userID } = Props;
 
@@ -53,6 +40,7 @@ const Profile = (Props: Props) => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(false));
   }, [dispatch, userID]);
 
   useEffect(() => {
@@ -75,8 +63,26 @@ const Profile = (Props: Props) => {
   const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
+    if (!isNotAlreadyChanged) return;
+
     setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
-  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
+
+    if (!isNotAlreadyChanged) {
+      ownerInfoRef.current = ownerInfo;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
+
+  // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
+
+  // isShared
+  const [isFollowing, setIsFollowing] = useState(true);
+  useEffect(() => {
+    setIsFollowing(ownerInfo.isFollowing);
+  }, [ownerInfo]);
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   return (
     <ConfigProvider
@@ -94,20 +100,25 @@ const Profile = (Props: Props) => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("${ownerInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden">
-                  <img
+                <div className="avatar rounded-full overflow-hidden object-cover flex">
+                  <Image
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </Col>
-              <Col offset={4} span={16}>
+              <Col offset={3} span={18}>
                 <Row className="py-5">
                   <Col offset={6} span={12}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
@@ -128,30 +139,33 @@ const Profile = (Props: Props) => {
                   </Col>
                   <Col span={6}>
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
-                      <div className="chat px-2 py-2 text-base rounded-full">
-                        <FontAwesomeIcon className="icon" icon={faComments} />
-                      </div>
-                      <div className="follow px-4 py-2">
-                        <span>Follow</span>
+                      <div
+                        className="follow px-4 py-2 rounded-full"
+                        onClick={() => {
+                          setIsFollowing(!isFollowing);
+                          dispatch(FOLLOW_USER_SAGA(ownerInfo.id));
+                        }}
+                      >
+                        <span>{isFollowing ? 'Following' : 'Follow'}</span>
                       </div>
                     </div>
                   </Col>
                 </Row>
                 <div className="id_address_join">
-                  <span className="id item mr-2">@tianrongliew</span>
+                  <span className="id item mr-2">@{ownerInfo.alias ? ownerInfo.alias : 'user'}</span>
                   <span className="address item mr-2">
                     <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
-                    Global
+                    {ownerInfo.location ? ownerInfo.location : 'Global'}
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
-                    Joined Jun 2020
+                    Joined {ownerInfo.dayJoined}
                   </span>
                 </div>
                 <Col span={18} className="mt-5">
-                  <div className="description flex flex-wrap">
+                  <div className="tags flex flex-wrap">
                     {descArray.map((item, index) => {
-                      if (ownerInfo?.descriptions?.indexOf(item.title) !== -1) {
+                      if (ownerInfo?.tags?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
                             className="item mx-2 my-2 px-4 py-1"
@@ -172,13 +186,16 @@ const Profile = (Props: Props) => {
                 </Col>
                 <div className="follow mt-5">
                   <span className="follower item mr-2">
-                    <span className="mr-1">{2710}</span> Follower
+                    <span className="mr-1">{ownerInfo.followers.length}</span>{' '}
+                    {ownerInfo.followers.length > 1 ? 'Followers' : 'Follower'}
                   </span>
                   <span className="following item mr-2">
-                    <span className="mr-1">{78}</span> Following
+                    <span className="mr-1">{ownerInfo.following.length}</span>{' '}
+                    {ownerInfo.following.length > 1 ? 'Followings' : 'Following'}
                   </span>
                   <span className="post mr-2">
-                    <span className="mr-1">{56}</span> Post
+                    <span className="mr-1">{ownerInfo.posts.length}</span>{' '}
+                    {ownerInfo.posts.length > 1 ? 'Posts' : 'Post'}
                   </span>
                 </div>
                 <div className="experience mt-5">
@@ -205,22 +222,83 @@ const Profile = (Props: Props) => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
+                    {ownerInfo?.contacts?.map((item: any, index: any) => {
+                      switch (item.key) {
+                        case '0':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '1':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '2':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '3':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '4':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                              />
+                            </Tooltip>
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">
                   <Tabs
-                    defaultActiveKey="2"
+                    defaultActiveKey="2.2"
                     // onChange={onChange}
                   >
-                    <TabPane tab="Introduce" key="1" className="mt-10">
+                    <TabPane tab="Introduce" key="1.1" className="mt-10">
                       Introduce
                     </TabPane>
-                    <TabPane tab="Post" key="2" className="mt-10">
+                    <TabPane tab="Post" key="2.2" className="mt-10">
                       {postArray.length === 0 && (
                         <div className="w-8/12">
                           <Empty
@@ -234,20 +312,20 @@ const Profile = (Props: Props) => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>
                         );
                       })}
                     </TabPane>
-                    <TabPane tab="Show" key="3" className="mt-10">
+                    <TabPane tab="Show" key="3.3" className="mt-10">
                       Show
                     </TabPane>
-                    <TabPane tab="Seri" key="4" className="mt-10">
+                    <TabPane tab="Seri" key="4.4" className="mt-10">
                       Seri
                     </TabPane>
-                    <TabPane tab="Guest book" key="5" className="mt-10">
+                    <TabPane tab="Guest book" key="5.5" className="mt-10">
                       Guest book
                     </TabPane>
                   </Tabs>

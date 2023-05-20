@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { commonColor } from "../../../util/cssVariable/cssVariable";
+import styled from 'styled-components';
+import { commonColor } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   .form__group {
@@ -75,12 +75,18 @@ const StyleTotal = styled.div`
     }
     .coverSection {
       .btnChangeCover {
+        background-color: ${commonColor.colorBlue2}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorBlue3}!important;
           transition: all 0.5s;
         }
       }
       .btnRemove {
+        background-color: ${commonColor.colorRed1}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorRed2}!important;
           transition: all 0.5s;
@@ -89,6 +95,9 @@ const StyleTotal = styled.div`
     }
     .avatar {
       .btnChange {
+        background-color: ${commonColor.colorBlue2}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorBlue3}!important;
           transition: all 0.5s;
@@ -102,6 +111,15 @@ const StyleTotal = styled.div`
           transition: all 0.5s;
         }
       }
+      .item {
+        background-color: ${(props) => props.theme.colorBg3};
+        margin-right: 8px;
+        :hover {
+          background-color: ${(props) => props.theme.colorBg4};
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+      }
     }
     .expertise {
       .addTags {
@@ -112,7 +130,7 @@ const StyleTotal = styled.div`
       }
     }
   }
-  .description {
+  .tags {
     .item {
       border: 2px solid ${(props) => props.theme.colorText3};
       border-radius: 0.8rem;

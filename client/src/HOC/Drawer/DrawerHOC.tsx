@@ -1,10 +1,10 @@
-import { ConfigProvider } from "antd";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssDrawerHOC";
-import { Button, Drawer, Space } from "antd";
-import { closeDrawer } from "../../redux/Slice/DrawerHOCSlice";
+import { ConfigProvider } from 'antd';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../util/functions/ThemeFunction';
+import StyleTotal from './cssDrawerHOC';
+import { Button, Drawer, Space } from 'antd';
+import { closeDrawer } from '../../redux/Slice/DrawerHOCSlice';
 
 const DrawerHOC = () => {
   const dispatch = useDispatch();
@@ -14,8 +14,9 @@ const DrawerHOC = () => {
   const { themeColorSet } = getTheme();
 
   // Hàm xử lý Drawer
-  const { visible, ComponentContentDrawer, callBackSubmit, title } =
-    useSelector((state: any) => state.drawerHOCReducer);
+  const { visible, ComponentContentDrawer, callBackSubmit, title, loading } = useSelector(
+    (state: any) => state.drawerHOCReducer,
+  );
 
   const onClose = () => {
     dispatch(closeDrawer({}));
@@ -35,7 +36,7 @@ const DrawerHOC = () => {
             onClose={onClose}
             open={visible}
             footer={
-              <div style={{ textAlign: "right" }}>
+              <div style={{ textAlign: 'right' }}>
                 <Space>
                   <Button
                     className="btnCancelDrawer"
@@ -44,15 +45,16 @@ const DrawerHOC = () => {
                       color: themeColorSet.colorText1,
                     }}
                     onClick={onClose}
+                    disabled={loading}
                   >
                     Cancel
                   </Button>
                   <Button
                     onClick={() => {
                       callBackSubmit();
-                      onClose();
                     }}
                     type="primary"
+                    loading={loading}
                   >
                     Submit
                   </Button>

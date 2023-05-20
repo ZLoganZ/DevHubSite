@@ -1,10 +1,10 @@
-import { Col, Row, Skeleton } from "antd";
+import { Col, Row, Skeleton } from 'antd';
 
 export const LoadingProfileComponent = () => {
   return (
     <div className="loadingProfileComponent">
       <Row>
-        <Col offset={4} span={16}>
+        <Col offset={3} span={18}>
           <div className="cover w-full rounded-br-lg rounded-bl-lg relative mb-10">
             <Skeleton className="pt-4" active paragraph={{ rows: 6 }} />
           </div>
@@ -12,9 +12,9 @@ export const LoadingProfileComponent = () => {
             <Skeleton.Image
               active
               style={{
-                width: "10rem",
-                height: "10rem",
-                borderRadius: "50%",
+                width: '10rem',
+                height: '10rem',
+                borderRadius: '50%',
               }}
             />
           </div>
@@ -34,10 +34,10 @@ export const LoadingProfileComponent = () => {
             <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
           </Col>
           <div className="mainContain mt-16">
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
           </div>
         </Col>
       </Row>

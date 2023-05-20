@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { sha1 } from 'crypto-hash';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssNewPost';
 import ImageCompress from 'quill-image-compress';
@@ -15,18 +16,31 @@ import { useFormik } from 'formik';
 import { TOKEN } from '../../util/constants/SettingSystem';
 import { CREATE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/es/upload';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/monokai-sublime.css';
+
 Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'clean'],
   [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
-  ['link', 'image'],
+  ['link'],
 ];
+
+hljs.registerLanguage('javascript', javascript);
+
+hljs.configure({
+  languages: ['javascript', 'ruby', 'python'],
+});
 
 interface Props {
   userInfo: any;
 }
+
+//===================================================
 
 const NewPost = (Props: Props) => {
   const dispatch = useDispatch();
@@ -42,7 +56,9 @@ const NewPost = (Props: Props) => {
 
   useEffect(() => {
     quill = new Quill('#editor', {
+      placeholder: 'Add a Content',
       modules: {
+        syntax: true,
         toolbar: toolbarOptions,
       },
       theme: 'snow',
@@ -50,6 +66,14 @@ const NewPost = (Props: Props) => {
     quill.on('text-change', function () {
       handleQuillChange();
     });
+    // Ngăn chặn paste text vào quill
+    // C1
+    quill.root.addEventListener('paste', (event: any) => {
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+      document.execCommand('insertHTML', false, text);
+    });
+
     setQuill(quill);
   }, []);
 
@@ -71,26 +95,74 @@ const NewPost = (Props: Props) => {
     initialValues: {
       title: '',
       content: '',
-      linkImage: null,
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
-        dispatch(
-          CREATE_POST_SAGA({
-            postCreate: values,
-          }),
-        );
-        quill.root.innerHTML = '<p><br></p>';
+        setLoading(true);
+        const result = await handleUploadImage(file);
+        if (result.status === 'done') {
+          dispatch(
+            CREATE_POST_SAGA({
+              postCreate: values,
+              linkImage: result.url,
+            }),
+          );
+          setLoading(false);
+          quill.root.innerHTML = '<p><br></p>';
+          messageApi.success('Create post successfully');
+        }
       }
     },
   });
 
-  const [file, setFile]: any = useState([]);
+  const [file, setFile]: any = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
   const handleUpload = (info: any) => {
-    setFile(info.fileList[0].originFileObj);
-    formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
+    if (info.fileList.length === 0) return;
+
+    setFile(info?.fileList[0]?.originFileObj);
+  };
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async () => {
+    formik.setFieldValue('linkImage', null);
+    const formData = new FormData();
+    const public_id = file.public_id;
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    setFile(data);
   };
 
   return (
@@ -107,7 +179,7 @@ const NewPost = (Props: Props) => {
       {contextHolder}
       <StyleTotal theme={themeColorSet} className="rounded-lg mb-4">
         <div className="newPost px-4 py-3">
-          <div className="newPostHeader text-center text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
+          <div className="newPostHeader text-center text-xl font-bold" style={{ color: themeColorSet.colorText1 }}>
             Create Post
           </div>
           <div className="newPostBody">
@@ -119,19 +191,18 @@ const NewPost = (Props: Props) => {
                 }
               />
               <div className="name font-bold ml-2">
-                <NavLink to={`/${Props.userInfo.id}`}>{Props.userInfo.username}</NavLink>
+                <NavLink to={`/user/${Props.userInfo?.id}`}>{Props.userInfo?.username}</NavLink>
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">
-              <Form.Item name="title">
-                <Input
-                  placeholder="Add a Title"
-                  allowClear
-                  style={{ borderColor: themeColorSet.colorText3 }}
-                  maxLength={150}
-                  onChange={formik.handleChange}
-                ></Input>
-              </Form.Item>
+              <Input
+                name="title"
+                placeholder="Add a Title"
+                allowClear
+                style={{ borderColor: themeColorSet.colorText3 }}
+                maxLength={150}
+                onChange={formik.handleChange}
+              ></Input>
             </div>
             <div className="AddContent mt-4">
               <div id="editor" />
@@ -157,26 +228,38 @@ const NewPost = (Props: Props) => {
                   <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
-              <span className="code">
-                <FontAwesomeIcon className="item" size="lg" icon={faCode} />
-              </span>
               <span>
-                <Upload listType="picture" onChange={handleUpload}>
+                <Upload
+                  accept="image/*"
+                  maxCount={1}
+                  customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
+                    onSuccess('ok');
+                  }}
+                  data={(file: any) => {
+                    return {};
+                  }}
+                  listType="picture"
+                  onChange={handleUpload}
+                  onRemove={() => {
+                    setFile(null);
+                  }}
+                >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
             </div>
             <div className="newPostFooter__right">
-              <button
-                type="submit"
-                className="createButton w-full font-bold px-4 py-2"
+              <Button
+                type="primary"
+                className="createButton w-full font-bold px-6 py-2 rounded-3xl h-auto"
                 style={{ color: themeColorSet.colorText1 }}
                 onClick={() => {
                   formik.handleSubmit();
                 }}
+                loading={loading}
               >
-                Create
-              </button>
+                {loading ? 'Creating...' : 'Create'}
+              </Button>
             </div>
           </div>
         </div>
