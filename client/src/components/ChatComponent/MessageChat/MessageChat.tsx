@@ -61,8 +61,6 @@ const MessageChat = (Props: IParams) => {
   useEffect(() => {
     pusherClient.subscribe(Props.conversationId);
 
-    console.log('start');
-
     const messageHandler = async (message: any) => {
       seenMessage();
 
@@ -113,9 +111,6 @@ const MessageChat = (Props: IParams) => {
     if (count === 0) return;
     bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messagesState]);
-
-  console.log(messagesState);
-  console.log(count);
 
   const styleStatus = useMemo(() => {
     return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
