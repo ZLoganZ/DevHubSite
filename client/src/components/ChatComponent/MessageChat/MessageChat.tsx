@@ -71,6 +71,8 @@ const MessageChat = (Props: IParams) => {
 
         return [...current, message];
       });
+
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -105,11 +107,6 @@ const MessageChat = (Props: IParams) => {
     return () => {
       setCount(0);
     };
-  }, [messagesState]);
-
-  useEffect(() => {
-    if (count === 0) return;
-    bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messagesState]);
 
   const styleStatus = useMemo(() => {
