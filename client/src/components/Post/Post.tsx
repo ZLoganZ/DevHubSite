@@ -8,7 +8,7 @@ import {
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, ConfigProvider, Divider, Dropdown, Popover, Space } from 'antd';
+import { Avatar, ConfigProvider, Divider, Dropdown, Image, Popover, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
+import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 
 interface PostProps {
   post: any;
@@ -102,13 +103,21 @@ const Post = (PostProps: PostProps) => {
     PostProps.post?.isSaved ? setSaveColor('yellow') : setSaveColor('white');
   }, [PostProps.post?.isSaved]);
 
+  const formatDateTime = (date: any) => {
+    if (isToday(date)) {
+      return format(date, 'p'); // Display only time for today
+    } else if (isThisWeek(date)) {
+      return format(date, 'iiii, p'); // Display full day of the week and time for this week
+    } else if (isThisYear(date)) {
+      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
+    } else {
+      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
+    }
+  };
+
   const createdAt = new Date(PostProps.post?.createdAt);
   //format date to get full date
-  const date = createdAt.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const date = formatDateTime(createdAt);
 
   // post setting
   const items: MenuProps['items'] = [
@@ -207,7 +216,7 @@ const Post = (PostProps: PostProps) => {
                     </div>
                   </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
-                    <NavLink to={`/post/${PostProps.post?._id}`} style={{color: themeColorSet.colorText3}}>
+                    <NavLink to={`/post/${PostProps.post?._id}`} style={{ color: themeColorSet.colorText3 }}>
                       <span>{'Data Analyst'} • </span>
                       <span>{date}</span>
                     </NavLink>
@@ -247,7 +256,7 @@ const Post = (PostProps: PostProps) => {
               </div>
               {PostProps.post.url ? (
                 <div className="contentImage mt-3">
-                  <img src={PostProps.post.url} alt="" style={{ width: '100%' }} />
+                  <Image src={PostProps.post.url} alt="" style={{ width: '100%' }} />
                 </div>
               ) : link ? (
                 <a

@@ -80,7 +80,7 @@ const MenuMain = () => {
             left: 0,
             top: 76,
             bottom: 0,
-            zIndex: 2000,
+            zIndex: 1000,
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

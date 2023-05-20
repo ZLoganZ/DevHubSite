@@ -8,7 +8,7 @@ import {
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, ConfigProvider, Dropdown, Space, Modal, notification, Popover } from 'antd';
+import { Avatar, ConfigProvider, Dropdown, Space, Modal, notification, Popover, Image } from 'antd';
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
+import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 
 interface PostShareProps {
   post: any;
@@ -62,21 +63,25 @@ const MyPostShare = (PostProps: PostShareProps) => {
     setIsLiked(PostProps.post?.isLiked);
   }, [PostProps.post?.isLiked]);
 
+  const formatDateTime = (date: any) => {
+    if (isToday(date)) {
+      return format(date, 'p'); // Display only time for today
+    } else if (isThisWeek(date)) {
+      return format(date, 'iiii, p'); // Display full day of the week and time for this week
+    } else if (isThisYear(date)) {
+      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
+    } else {
+      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
+    }
+  };
+
   const createdAt = new Date(PostProps.post?.createdAt);
   //format date to get full date
-  const date = createdAt.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const date = formatDateTime(createdAt);
 
   const postCreatedAt = new Date(PostProps.post?.postCreatedAt);
   //format date to get full date
-  const postDate = postCreatedAt.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const postDate = formatDateTime(postCreatedAt);
 
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -300,7 +305,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                 </div>
                 {PostProps.post.url ? (
                   <div className="contentImage mt-3">
-                    <img src={PostProps.post.url} alt="" style={{ width: '100%' }} />
+                    <Image src={PostProps.post.url} alt="" style={{ width: '100%' }} />
                   </div>
                 ) : link ? (
                   <a
