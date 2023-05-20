@@ -1,4 +1,4 @@
-export const DOMAIN_NAME = 'https://dev-hub-pro.herokuapp.com/api';
+export const DOMAIN_NAME = 'https://devhubpro.onrender.com/api';
 
 export const TOKEN = 'access_token';
 export const USER_LOGIN = 'user_login';
