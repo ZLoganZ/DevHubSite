@@ -61,6 +61,8 @@ const MessageChat = (Props: IParams) => {
   useEffect(() => {
     pusherClient.subscribe(Props.conversationId);
 
+    console.log('start');
+
     const messageHandler = async (message: any) => {
       seenMessage();
 

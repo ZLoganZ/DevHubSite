@@ -120,6 +120,7 @@ const useMessagesData = (conversationID: any) => {
       const { data } = await messageService.getMessages(conversationID);
       return data;
     },
+    enabled: !!conversationID,
   });
 
   return {
