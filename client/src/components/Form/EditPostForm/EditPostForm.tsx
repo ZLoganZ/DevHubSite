@@ -119,6 +119,7 @@ const EditPostForm = (PostProps: PostProps) => {
           }
           if (PostProps.img) await handleRemoveImage(PostProps.img);
         }
+        values.linkImage = values.linkImage ? values.linkImage : PostProps.img;
         dispatch(
           UPDATE_POST_SAGA({
             id: PostProps.id,
