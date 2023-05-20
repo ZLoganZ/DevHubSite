@@ -72,6 +72,9 @@ const MessageChat = (Props: IParams) => {
         return [...current, message];
       });
 
+      // call 3 lần để đảm bảo scroll đến cuối =))))
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
