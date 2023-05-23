@@ -58,9 +58,9 @@ const PostShare = (PostProps: PostShareProps) => {
     } else if (isThisWeek(date, { weekStartsOn: 1 })) {
       return format(date, 'iiii, p'); // Display full day of the week and time for this week
     } else if (isThisYear(date)) {
-      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
+      return format(date, 'eeee, MMMM d - p'); // Display full day of the week, date, and time for this year
     } else {
-      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
+      return format(date, 'eeee, MMMM d, yyyy - p'); // Display full day of the week, date, year, and time for other cases
     }
   };
 
@@ -166,7 +166,7 @@ const PostShare = (PostProps: PostShareProps) => {
                   </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
                     <NavLink to={`/postshare/${PostProps.post?._id}`} style={{ color: themeColorSet.colorText3 }}>
-                      <span>{'Data Analyst'} • </span>
+                      {/* <span>{'Data Analyst'} • </span> */}
                       <span>{date}</span>
                     </NavLink>
                   </div>
@@ -202,7 +202,7 @@ const PostShare = (PostProps: PostShareProps) => {
                     </Popover>
                     <div className="time" style={{ color: themeColorSet.colorText3 }}>
                       <NavLink to={`/post/${PostProps.post?.postID}`} style={{ color: themeColorSet.colorText3 }}>
-                        <span>{'Data Analyst'} • </span>
+                        {/* <span>{'Data Analyst'} • </span> */}
                         <span>{postDate}</span>
                       </NavLink>
                     </div>
