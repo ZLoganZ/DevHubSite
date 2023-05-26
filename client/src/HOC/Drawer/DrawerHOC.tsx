@@ -5,6 +5,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssDrawerHOC';
 import { Button, Drawer, Space } from 'antd';
 import { closeDrawer } from '../../redux/Slice/DrawerHOCSlice';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 const DrawerHOC = () => {
   const dispatch = useDispatch();
@@ -50,10 +51,11 @@ const DrawerHOC = () => {
                     Cancel
                   </Button>
                   <Button
+                  style={{backgroundColor: commonColor.colorBlue2, color: commonColor.colorWhile1}}
+                  className="btnSubmitDrawer"
                     onClick={() => {
                       callBackSubmit();
                     }}
-                    type="primary"
                     loading={loading}
                   >
                     Submit

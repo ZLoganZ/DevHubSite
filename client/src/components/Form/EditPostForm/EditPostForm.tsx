@@ -12,14 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
 import { TOKEN } from '../../../util/constants/SettingSystem';
-import { GET_ALL_POST_BY_USERID_SAGA, UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
+import { UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
 import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
 import { RcFile } from 'antd/es/upload';
 import { sha1 } from 'crypto-hash';
-// import hljs from 'highlight.js/lib/core';
-// import javascript from 'highlight.js/lib/languages/javascript';
-// import 'highlight.js/styles/monokai-sublime.css';
 
 Quill.register('modules/imageCompress', ImageCompress);
 
@@ -29,14 +26,6 @@ var toolbarOptions = [
   [{ align: [] }],
   ['link'],
 ];
-
-// hljs.registerLanguage('javascript', javascript);
-// hljs.registerLanguage('javascript', javascript);
-// hljs.registerLanguage('javascript', javascript);
-
-// hljs.configure({
-//   languages: ['javascript', 'ruby', 'python'],
-// });
 
 interface PostProps {
   id: any;
@@ -166,7 +155,7 @@ const EditPostForm = (PostProps: PostProps) => {
         .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
         .replace(/ /g, '&nbsp;');
 
-      console.log(textToHTMLWithTabAndSpace);
+      // console.log(textToHTMLWithTabAndSpace);
 
       document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
     });

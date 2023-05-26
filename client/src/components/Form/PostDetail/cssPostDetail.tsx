@@ -6,11 +6,9 @@ const StyleTotal = styled.div`
   max-height: calc(100vh - 5rem);
 
   .postDetail {
-    /* .commentTotal { */
     &::-webkit-scrollbar {
       display: none;
     }
-    /* } */
   }
 `;
 

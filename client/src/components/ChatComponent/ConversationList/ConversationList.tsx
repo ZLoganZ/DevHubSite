@@ -182,7 +182,7 @@ const ConversationList = (Props: ConversationListProps) => {
               </div>
             </div>
             <div className="iconPlus cursor-pointer" onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}>
-              <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
+              <FontAwesomeIcon className="text-xl" icon={faUsersLine} color={themeColorSet.colorText1} />
             </div>
           </Space>
           <div
@@ -207,8 +207,7 @@ const ConversationList = (Props: ConversationListProps) => {
                   token: {
                     lineWidth: 0,
                     controlHeight: 40,
-                    // borderRadius: 0,
-                    colorBgBase: 'transparent',
+                    borderRadius: 0,
                   },
                 }}
               >
@@ -227,22 +226,28 @@ const ConversationList = (Props: ConversationListProps) => {
             style={{
               borderBottom: '1px solid',
               borderColor: themeColorSet.colorBg4,
-              height: '20%',
+              height: '27%',
             }}
           >
             <div
               className="title"
               style={{
                 fontWeight: 600,
+                color: themeColorSet.colorText1,
               }}
             >
               People
             </div>
-            <div className="listUser flex mt-5">
+            <div
+              className="listUser flex mt-5"
+              style={{
+                overflow: 'auto',
+              }}
+            >
               {Props.users.map((item: any) => {
                 return (
                   <div
-                    className="user flex flex-col justify-center items-center mr-10 cursor-pointer"
+                    className="user flex flex-col justify-center items-center cursor-pointer w-1/2"
                     key={item._id}
                     onClick={() => HandleOnClick(item._id)}
                   >
@@ -253,6 +258,7 @@ const ConversationList = (Props: ConversationListProps) => {
                       className="name text-center mt-2"
                       style={{
                         fontSize: '0.9rem',
+                        color: themeColorSet.colorText1,
                       }}
                     >
                       {formatUsername(item.username)}

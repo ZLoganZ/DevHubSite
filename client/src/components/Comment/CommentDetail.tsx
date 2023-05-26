@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Comment, Icon } from '@ant-design/compatible';
 import { Avatar, ConfigProvider, Skeleton, Tooltip } from 'antd';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from '../Post/cssPost';
+import { DISLIKE_COMMENT_POST_SAGA, LIKE_COMMENT_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 
 interface CommentProps {
   comment: any;
@@ -14,38 +15,45 @@ interface CommentProps {
   selectedCommentId?: string | null;
   onSelectComment: (commentId: string | null) => void;
   isReply?: boolean;
+  postID?: string;
 }
 
 const CommentDetail = (Props: CommentProps) => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
+  const dispatch = useDispatch();
+
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const [likes, setLike] = useState(0);
-  const [dislikes, setDislike] = useState(0);
-  const [action, setAction] = useState('');
+  const [likes, setLike] = useState<number>(Props.comment?.likes?.length || 0);
+  const [dislikes, setDislike] = useState<number>(Props.comment?.dislikes?.length || 0);
+  const [action, setAction] = useState(
+    Props.comment?.isLiked || Props.comment?.isDisliked ? (Props.comment?.isLiked ? 'liked' : 'disliked') : '',
+  );
 
   const like = () => {
     if (action === 'liked') {
-      setLike(0);
+      setLike((prev: number) => prev - 1);
       setAction('');
     } else {
-      setLike(1);
-      setDislike(0);
+      setLike((prev: number) => prev + 1);
+      if (action === 'disliked') setDislike((prev: any) => prev - 1);
       setAction('liked');
     }
+    dispatch(LIKE_COMMENT_POST_SAGA({ idComment: Props.comment._id, postID: Props.postID }));
   };
 
   const dislike = () => {
     if (action === 'disliked') {
-      setDislike(0);
+      setDislike((prev: number) => prev - 1);
       setAction('');
     } else {
-      setDislike(1);
-      setLike(0);
+      setDislike((prev: number) => prev + 1);
+      if (action === 'liked') setLike((prev: any) => prev - 1);
       setAction('disliked');
     }
+    dispatch(DISLIKE_COMMENT_POST_SAGA({ idComment: Props.comment._id, postID: Props.postID }));
   };
 
   const setReply = () => {
@@ -108,7 +116,9 @@ const CommentDetail = (Props: CommentProps) => {
                 },
               })}
         >
-          {Props.selectedCommentId === Props.comment._id ? 'Cancel' : 'Reply'}
+          <span style={{ color: themeColorSet.colorText3 }}>
+            {Props.selectedCommentId === Props.comment._id ? 'Cancel' : 'Reply'}
+          </span>
         </span>
       )),
     },
@@ -122,7 +132,7 @@ const CommentDetail = (Props: CommentProps) => {
     >
       <StyleTotal theme={themeColorSet}>
         {!Props.comment?.user?.username ? (
-         <Skeleton avatar paragraph={{ rows: 2 }} active/>
+          <Skeleton avatar paragraph={{ rows: 2 }} active />
         ) : (
           <div className="commentDetail">
             <Comment

@@ -52,10 +52,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
   }, [PostProps.post?.likes?.length]);
 
   // Like color
-  const [likeColor, setLikeColor] = useState('white');
+  const [likeColor, setLikeColor] = useState(themeColorSet.colorText1);
   useEffect(() => {
-    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor('white');
-  }, [PostProps.post?.isLiked]);
+    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor(themeColorSet.colorText1);
+  }, [PostProps.post?.isLiked, change]);
 
   // isLiked
   const [isLiked, setIsLiked] = useState(true);
@@ -69,9 +69,9 @@ const MyPostShare = (PostProps: PostShareProps) => {
     } else if (isThisWeek(date, { weekStartsOn: 1 })) {
       return format(date, 'iiii, p'); // Display full day of the week and time for this week
     } else if (isThisYear(date)) {
-      return format(date, 'eeee, MMMM d - p'); // Display full day of the week, date, and time for this year
+      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
     } else {
-      return format(date, 'eeee, MMMM d, yyyy - p'); // Display full day of the week, date, year, and time for other cases
+      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
     }
   };
 
@@ -354,7 +354,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                   onClick={(e: any) => {
                     if (isLiked) {
                       setLikeNumber(likeNumber - 1);
-                      setLikeColor('white');
+                      setLikeColor(themeColorSet.colorText1);
                       setIsLiked(false);
                     } else {
                       setLikeNumber(likeNumber + 1);
@@ -376,7 +376,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
-                  icon={<FontAwesomeIcon icon={faComment} />}
+                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
                   }}

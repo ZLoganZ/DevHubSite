@@ -58,10 +58,10 @@ const Post = (PostProps: PostProps) => {
   }, [PostProps.post?.likes?.length]);
 
   // Like color
-  const [likeColor, setLikeColor] = useState('white');
+  const [likeColor, setLikeColor] = useState(themeColorSet.colorText1);
   useEffect(() => {
-    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor('white');
-  }, [PostProps.post?.isLiked]);
+    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor(themeColorSet.colorText1);
+  }, [PostProps.post?.isLiked, change]);
 
   // isLiked
   const [isLiked, setIsLiked] = useState(true);
@@ -78,10 +78,10 @@ const Post = (PostProps: PostProps) => {
   }, [PostProps.post?.shares?.length]);
 
   // Share color
-  const [shareColor, setShareColor] = useState('white');
+  const [shareColor, setShareColor] = useState(themeColorSet.colorText1);
   useEffect(() => {
-    PostProps.post?.isShared ? setShareColor('blue') : setShareColor('white');
-  }, [PostProps.post?.isShared]);
+    PostProps.post?.isShared ? setShareColor('blue') : setShareColor(themeColorSet.colorText1);
+  }, [PostProps.post?.isShared, change]);
 
   // isShared
   const [isShared, setIsShared] = useState(true);
@@ -98,10 +98,10 @@ const Post = (PostProps: PostProps) => {
   }, [PostProps.post?.isSaved]);
 
   // Save color
-  const [saveColor, setSaveColor] = useState('white');
+  const [saveColor, setSaveColor] = useState(themeColorSet.colorText1);
   useEffect(() => {
-    PostProps.post?.isSaved ? setSaveColor('yellow') : setSaveColor('white');
-  }, [PostProps.post?.isSaved]);
+    PostProps.post?.isSaved ? setSaveColor('yellow') : setSaveColor(themeColorSet.colorText1);
+  }, [PostProps.post?.isSaved, change]);
 
   const formatDateTime = (date: any) => {
     if (isToday(date)) {
@@ -109,9 +109,9 @@ const Post = (PostProps: PostProps) => {
     } else if (isThisWeek(date, { weekStartsOn: 1 })) {
       return format(date, 'iiii, p'); // Display full day of the week and time for this week
     } else if (isThisYear(date)) {
-      return format(date, 'eeee, MMMM d - p'); // Display full day of the week, date, and time for this year
+      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
     } else {
-      return format(date, 'eeee, MMMM d, yyyy - p'); // Display full day of the week, date, year, and time for other cases
+      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
     }
   };
 
@@ -217,7 +217,6 @@ const Post = (PostProps: PostProps) => {
                   </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
                     <NavLink to={`/post/${PostProps.post?._id}`} style={{ color: themeColorSet.colorText3 }}>
-                      {/* <span>{'Data Analyst'} • </span> */}
                       <span>{date}</span>
                     </NavLink>
                   </div>
@@ -305,7 +304,7 @@ const Post = (PostProps: PostProps) => {
                   onClick={(e: any) => {
                     if (isLiked) {
                       setLikeNumber(likeNumber - 1);
-                      setLikeColor('white');
+                      setLikeColor(themeColorSet.colorText1);
                       setIsLiked(false);
                     } else {
                       setLikeNumber(likeNumber + 1);
@@ -329,7 +328,7 @@ const Post = (PostProps: PostProps) => {
                   onClick={(e: any) => {
                     if (isShared) {
                       setShareNumber(shareNumber - 1);
-                      setShareColor('white');
+                      setShareColor(themeColorSet.colorText1);
                       setIsShared(false);
                     } else {
                       setShareNumber(shareNumber + 1);
@@ -351,7 +350,7 @@ const Post = (PostProps: PostProps) => {
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
-                  icon={<FontAwesomeIcon icon={faComment} />}
+                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
                   }}
@@ -369,7 +368,7 @@ const Post = (PostProps: PostProps) => {
                     onClick={(e: any) => {
                       if (isSaved) {
                         setIsSaved(false);
-                        setSaveColor('white');
+                        setSaveColor(themeColorSet.colorText1);
                       } else {
                         setIsSaved(true);
                         setSaveColor('yellow');

@@ -1,34 +1,35 @@
-import React from "react";
-import { useFormik } from "formik";
-import { UserOutlined, MailOutlined } from "@ant-design/icons";
-import { Form } from "antd";
-import ConfigProvider from "antd/es/config-provider";
-import Input from "antd/es/input";
+import React from 'react';
+import { useFormik } from 'formik';
+import { UserOutlined, MailOutlined } from '@ant-design/icons';
+import { Form } from 'antd';
+import ConfigProvider from 'antd/es/config-provider';
+import Input from 'antd/es/input';
 
-import StyleTotal from "./cssRegister";
-import { useDispatch } from "react-redux";
-import { REGIS_USER_SAGA } from "../../redux/actionSaga/UserActionSaga";
+import StyleTotal from './cssRegister';
+import { useDispatch } from 'react-redux';
+import { REGIS_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
+import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
 
 const Register = () => {
-
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
-      confirm: "",
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      confirm: '',
     },
     onSubmit: (values) => {
       dispatch(
         REGIS_USER_SAGA({
-          userRegister: values
-        })
+          userRegister: values,
+        }),
       );
     },
-
   });
 
   return (
@@ -38,50 +39,49 @@ const Register = () => {
           <div className="content">
             <div className="lineTop mt-5">
               <span className="anyWhere">
-                <span className="circle mr-3"></span>
-                <span>SocialNework app</span>
+                <span className="circle ml-5 mr-2">
+                  <FontAwesomeIcon className="icon" icon={faSnowflake} />
+                </span>
+                <span>DevHub</span>
               </span>
-              <span className="home">Home</span>
-              <span className="john">Join</span>
             </div>
             <div className="account mt-12 px-14">
               <div className="startFree">START FOR FREE</div>
               <div className="createAccount">Create new account</div>
               <div className="member mt-3">
                 <span className="memberEd">Already a member?</span>
-                <span className="login ml-1">Login</span>
+                <NavLink to="/login">
+                  <span className="login ml-1">Login</span>
+                </NavLink>
               </div>
               <ConfigProvider
                 theme={{
                   token: {
-                    colorTextBase: "#d4d4d4",
-                    colorBgBase: "#333345",
+                    colorTextBase: '#d4d4d4',
+                    colorBgBase: '#333345',
                     lineWidth: 0,
                     controlHeight: 40,
                   },
                 }}
               >
-                <Form
-                  className="mt-5 formAccount"
-                  onFinish={formik.handleSubmit}
-                >
+                <Form className="mt-5 formAccount" onFinish={formik.handleSubmit}>
                   <Form.Item>
-                    <Form.Item
+                  <Form.Item
                       style={{
-                        display: "inline-block",
-                        width: "calc(50% - 8px)",
-                        marginRight: "16px",
+                        display: 'inline-block',
+                        width: 'calc(50% - 8px)',
+                        marginRight: '16px',
                       }}
-                      name="firstname"
+                      name="lastname"
                       rules={[
                         {
                           required: true,
-                          message: "Please input your firstname!",
+                          message: 'Please input your lastname!',
                         },
                       ]}
                     >
                       <Input
-                        placeholder="First name"
+                        placeholder="Last name"
                         allowClear
                         prefix={<UserOutlined />}
                         onChange={formik.handleChange}
@@ -89,19 +89,19 @@ const Register = () => {
                     </Form.Item>
                     <Form.Item
                       style={{
-                        display: "inline-block",
-                        width: "calc(50% - 8px)",
+                        display: 'inline-block',
+                        width: 'calc(50% - 8px)',
                       }}
-                      name="lastname"
+                      name="firstname"
                       rules={[
                         {
                           required: true,
-                          message: "Please input your lastname!",
+                          message: 'Please input your firstname!',
                         },
                       ]}
                     >
                       <Input
-                        placeholder="Last name"
+                        placeholder="First name"
                         allowClear
                         prefix={<UserOutlined />}
                         onChange={formik.handleChange}
@@ -113,12 +113,11 @@ const Register = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your E-mail!"
-                       
+                        message: 'Please input your E-mail!',
                       },
                       {
-                        type: "email",
-                        message: "The input is not valid E-mail!"
+                        type: 'email',
+                        message: 'The input is not valid E-mail!',
                       },
                     ]}
                   >
@@ -134,43 +133,33 @@ const Register = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your password!",
+                        message: 'Please input your password!',
                       },
                     ]}
                     hasFeedback
                   >
-                    <Input.Password 
-                    placeholder="Password"
-                    onChange={formik.handleChange}
-                    ></Input.Password>
+                    <Input.Password placeholder="Password" onChange={formik.handleChange}></Input.Password>
                   </Form.Item>
                   <Form.Item
                     name="confirm"
-                    dependencies={["password"]}
+                    dependencies={['password']}
                     hasFeedback
                     rules={[
                       {
                         required: true,
-                        message: "Please confirm your password!",
+                        message: 'Please confirm your password!',
                       },
                       ({ getFieldValue }) => ({
                         validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
+                          if (!value || getFieldValue('password') === value) {
                             return Promise.resolve();
                           }
-                          return Promise.reject(
-                            new Error(
-                              "The two passwords that you entered do not match!"
-                            )
-                          );
+                          return Promise.reject(new Error('The two passwords that you entered do not match!'));
                         },
                       }),
                     ]}
                   >
-                    <Input.Password 
-                    placeholder="Confirm Password"
-                    onChange={formik.handleChange}
-                    ></Input.Password>
+                    <Input.Password placeholder="Confirm Password" onChange={formik.handleChange}></Input.Password>
                   </Form.Item>
                   <button className="buttonCreate mt-3" type="submit">
                     Create account

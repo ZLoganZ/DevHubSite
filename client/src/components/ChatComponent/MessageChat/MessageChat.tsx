@@ -134,7 +134,7 @@ const MessageChat = (Props: IParams) => {
                 <Avatar key={otherUser} user={otherUser} />
               )}
               <div className="flex flex-col">
-                <div>{currentConversation.name || otherUser.username}</div>
+                <div style={{color: themeColorSet.colorText1}}>{currentConversation.name || otherUser.username}</div>
                 <div
                   className="text-sm"
                   style={{

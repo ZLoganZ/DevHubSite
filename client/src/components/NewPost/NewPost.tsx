@@ -20,6 +20,7 @@ import { RcFile } from 'antd/es/upload';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
+import { commonColor } from '../../util/cssVariable/cssVariable';
 
 Quill.register('modules/imageCompress', ImageCompress);
 
@@ -258,7 +259,7 @@ const NewPost = (Props: Props) => {
                 }}
                 loading={loading}
               >
-                {loading ? 'Creating...' : 'Create'}
+                <span style={{color: commonColor.colorWhile1}}>{loading ? 'Creating...' : 'Create'}</span>
               </Button>
             </div>
           </div>

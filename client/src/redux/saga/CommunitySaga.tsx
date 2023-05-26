@@ -3,6 +3,7 @@ import { setCommunity } from '../Slice/CommunitySlide';
 import { STATUS_CODE } from '../../util/constants/SettingSystem';
 import { communityService } from '../../services/CommunityService';
 import { GET_COMMUNITY_BYID_SAGA } from '../actionSaga/CommunityActionSaga';
+import { setUser } from '../Slice/UserSlice';
 
 // Get Community By ID Saga
 function* getCommunityByIDSaga({ payload }: any) {
@@ -11,6 +12,7 @@ function* getCommunityByIDSaga({ payload }: any) {
     const { data, status } = yield communityService.getCommunityByID(payload);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setCommunity(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);

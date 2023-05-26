@@ -37,3 +37,5 @@ export const INCREASE_VIEW_SAGA = createAction('INCREASE_VIEW_SAGA', (data) => (
 export const INCREASE_VIEW_SHARE_SAGA = createAction('INCREASE_VIEW_SHARE_SAGA', (data) => ({
   payload: data,
 }));
+export const LIKE_COMMENT_POST_SAGA = createAction('LIKE_COMMENT_POST_SAGA', (data) => ({ payload: data }));
+export const DISLIKE_COMMENT_POST_SAGA = createAction('DISLIKE_COMMENT_POST_SAGA', (data) => ({ payload: data }));

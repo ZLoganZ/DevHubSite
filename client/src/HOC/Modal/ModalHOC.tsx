@@ -41,7 +41,7 @@ const ModalHOC = () => {
               footer === true ? (
                 <>
                   <button
-                    className="btnCancel px-4 py-2 mr-2"
+                    className="btnCancel px-4 py-2 mr-2 rounded-2xl"
                     style={{
                       border: '1px solid',
                       borderColor: themeColorSet.colorText2,
@@ -53,7 +53,7 @@ const ModalHOC = () => {
                     Cancel
                   </button>
                   <button
-                    className="btnAccept px-4 py-2"
+                    className="btnAccept px-4 py-2 rounded-2xl"
                     style={{
                       backgroundColor: commonColor.colorBlue2,
                       color: themeColorSet.colorText1,
@@ -63,7 +63,7 @@ const ModalHOC = () => {
                       onClose();
                     }}
                   >
-                    Update
+                    <span style={{color: commonColor.colorWhile1}}>Update</span>
                   </button>
                 </>
               ) : (

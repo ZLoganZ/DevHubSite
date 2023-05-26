@@ -13,7 +13,7 @@ const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <GoogleOAuthProvider clientId="580455071680-4pet8dk6qfj6c2jpj7aso1jbl1lbc0db.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <BrowserRouter>

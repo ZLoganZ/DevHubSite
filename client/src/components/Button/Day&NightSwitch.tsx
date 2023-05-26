@@ -22,7 +22,7 @@ const DayNightSwitch = (Props: Props) => {
         token: themeColor,
       }}
     >
-      <div className="containerButton">
+      <div className="containerButton inline">
         <div className="switch">
           <label htmlFor="toggle">
             <input

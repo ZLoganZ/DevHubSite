@@ -2,6 +2,13 @@ import styled from 'styled-components';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
+
+  .ql-editor{
+    font-size: 14px;
+    color: ${(props) => props.theme.colorText1};
+    line-height: 2rem;
+  }
+
   .form__group {
     position: relative;
     padding: 15px 0 0;
@@ -16,7 +23,7 @@ const StyleTotal = styled.div`
     border-bottom: 2px solid #9b9b9b;
     outline: 0;
     font-size: 1rem;
-    color: #fff;
+    color: ${(props) => props.theme.colorText1};
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
@@ -43,7 +50,7 @@ const StyleTotal = styled.div`
     display: block;
     transition: 0.2s;
     font-size: 1rem;
-    color: #9b9b9b;
+    color: ${(props) => props.theme.colorText3};
   }
 
   .form__field:focus {
@@ -53,14 +60,11 @@ const StyleTotal = styled.div`
       display: block;
       transition: 0.2s;
       font-size: 1rem;
-      color: #1f57b8;
+      color: ${commonColor.colorBlue3}
     }
     padding-bottom: 6px;
     border-width: 3px;
-    /* border-image: linear-gradient(to right, #11998e, #38ef7d); */
-    /* border-image: linear-gradient(to right, #111f99, #be38ef); */
-    /* border-image: linear-gradient(to right, #1f57b8, #1f57b8); */
-    border-color: #1f57b8;
+    border-color: ${commonColor.colorBlue3};
     border-image-slice: 1;
   }
 
@@ -123,6 +127,7 @@ const StyleTotal = styled.div`
     }
     .expertise {
       .addTags {
+        color: ${(props) => props.theme.colorText3};
         :hover {
           background-color: ${(props) => props.theme.colorBg4};
           transition: all 0.5s;

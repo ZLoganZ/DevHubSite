@@ -19,6 +19,8 @@ import {
   GET_ALL_POST_SAGA,
   INCREASE_VIEW_SAGA,
   INCREASE_VIEW_SHARE_SAGA,
+  LIKE_COMMENT_POST_SAGA,
+  DISLIKE_COMMENT_POST_SAGA,
 } from '../actionSaga/PostActionSaga';
 import { setAllPost, setOwnerInfo, setPost, setPostArr, updatePosts } from '../Slice/PostSlice';
 import { setUser } from '../Slice/UserSlice';
@@ -370,4 +372,44 @@ export function* increaseViewPostShareSaga({ payload }: any) {
 
 export function* theoDoiIncreaseViewPostShareSaga() {
   yield takeLatest(INCREASE_VIEW_SHARE_SAGA, increaseViewPostShareSaga);
+}
+
+// Like comment post Saga
+export function* likeCommentPostSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.likeCommentPost(payload.idComment);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_POST_BY_ID_SAGA({
+          id: payload.postID,
+        }),
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiLikeCommentPostSaga() {
+  yield takeLatest(LIKE_COMMENT_POST_SAGA, likeCommentPostSaga);
+}
+
+// Dislike comment post Saga
+export function* dislikeCommentPostSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.dislikeCommentPost(payload.idComment);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_POST_BY_ID_SAGA({
+          id: payload.postID,
+        }),
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiDislikeCommentPostSaga() {
+  yield takeLatest(DISLIKE_COMMENT_POST_SAGA, dislikeCommentPostSaga);
 }

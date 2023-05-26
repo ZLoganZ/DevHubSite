@@ -21,12 +21,11 @@ function* registerUserSaga({ payload }: any) {
     const { data, status } = yield userService.registerUser(payload.userRegister);
     if (status === STATUS_CODE.CREATED) {
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
-      yield put(setLogin({ login: true }));
-      const { navigate } = yield select((state) => state.functionReducer);
+      
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      navigate('/');
+      window.location.href = '/';
     }
   } catch (err: any) {
     localStorage.removeItem(TOKEN);

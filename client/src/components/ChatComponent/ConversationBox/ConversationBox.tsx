@@ -55,9 +55,9 @@ const ConversationBox = (Props: ConversationBoxProps) => {
     } else if (isThisWeek(date, { weekStartsOn: 1 })) {
       return format(date, 'iiii, p'); // Display full day of the week and time for this week
     } else if (isThisYear(date)) {
-      return format(date, 'eeee, MMMM d - p'); // Display full day of the week, date, and time for this year
+      return format(date, 'eeee, MMMM d • p'); // Display full day of the week, date, and time for this year
     } else {
-      return format(date, 'eeee, MMMM d, yyyy - p'); // Display full day of the week, date, year, and time for other cases
+      return format(date, 'eeee, MMMM d, yyyy • p'); // Display full day of the week, date, year, and time for other cases
     }
   };
 
@@ -84,7 +84,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
                 color: themeColorSet.colorText1,
               }}
             >
-              {Props.data.name || otherUser.username}
+              <span style={{color: themeColorSet.colorText1}}>{Props.data.name || otherUser.username}</span>
             </p>
             {lastMessage?.createdAt && (
               <p
@@ -93,6 +93,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
                   text-gray-400 
                   font-light
                 "
+                style={{color: themeColorSet.colorText3}}
               >
                 {formatDateTime(new Date(lastMessage.createdAt))}
               </p>
@@ -103,7 +104,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
               hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText1 + ' shadow-xl font-extrabold'
             }`}
           >
-            {isOwn ? `You: ${lastMessageText}` : lastMessageText}
+            <span style={{color: themeColorSet.colorText2}}>{isOwn ? `You: ${lastMessageText}` : lastMessageText}</span>
           </p>
         </div>
       </div>

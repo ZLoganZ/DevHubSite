@@ -56,6 +56,12 @@ export class PostService extends BaseService {
   increaseViewPostShare = (id: string) => {
     return this.post(`/postshare/${id}/views`, null);
   };
+  likeCommentPost = (id: string) => {
+    return this.post(`/comment/${id}/like`, '');
+  };
+  dislikeCommentPost = (id: string) => {
+    return this.post(`/comment/${id}/dislike`, '');
+  };
 }
 
 export const postService = new PostService();

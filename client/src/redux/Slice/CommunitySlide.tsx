@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  community: {},
+  community: null,
 };
 
 const communitySlice = createSlice({
@@ -11,7 +11,7 @@ const communitySlice = createSlice({
     setCommunity: (state, action) => {
       return {
         ...state,
-        community: action.payload,
+        community: action.payload.community,
       };
     },
   },

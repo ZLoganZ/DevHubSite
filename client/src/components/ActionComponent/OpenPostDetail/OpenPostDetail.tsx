@@ -15,6 +15,7 @@ import {
   SAVE_REPLY_POSTSHARE_SAGA,
 } from '../../../redux/actionSaga/PostActionSaga';
 import { useParams } from 'react-router-dom';
+import LoadingDetailPost from '../../GlobalSetting/LoadingDetailPost/LoadingDetailPost';
 
 interface Props {
   post: any;
@@ -102,81 +103,94 @@ const OpenPostDetail = (Props: Props) => {
     }
   };
 
-  const memoizedComponent = useMemo(
-    () => (
-      <PostDetail
-        onData={handleData}
-        post={Props.post}
-        userInfo={Props.post?.user}
-        data={data}
-        postShare={Props.post?.PostShared}
-        owner={Props.post?.owner}
-      />
-    ),
-    [Props.post, data],
-  );
+  let memoizedComponent: JSX.Element;
 
-  const memoizedInputComment = useMemo(
-    () => (
-      <div className=" commentInput text-right flex items-center px-4 pb-5 mt-4">
-        <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
-        <div className="input w-full">
-          <Input
-            value={commentContent}
-            placeholder="Add a Comment"
-            // allowClear
-            onChange={(e) => {
-              handleComment(e.target.value);
-            }}
-            style={{
-              borderColor: themeColorSet.colorText3,
-            }}
-            maxLength={150}
-            addonAfter={
-              <Popover
-                placement="right"
-                trigger="click"
-                title={'Emoji'}
-                content={
-                  <Picker
-                    data={dataEmoji}
-                    onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
-                    }}
-                  />
-                }
-              >
-                <span
-                  className="emoji cursor-pointer hover:text-blue-700"
-                  style={{
-                    transition: 'all 0.3s',
-                  }}
+  if (Props.post?._id) {
+    memoizedComponent = useMemo(
+      () => (
+        <PostDetail
+          onData={handleData}
+          post={Props.post}
+          userInfo={Props.post?.user}
+          data={data}
+          postShare={Props.post?.PostShared}
+          owner={Props.post?.owner}
+        />
+      ),
+      [Props.post, data],
+    );
+  } else {
+    memoizedComponent = useMemo(() => <LoadingDetailPost />, [Props.post, data]);
+  }
+
+  let memoizedInputComment: JSX.Element;
+
+  if (Props.post?._id) {
+    memoizedInputComment = useMemo(
+      () => (
+        <div className=" commentInput text-right flex items-center px-4 pb-5 mt-4">
+          <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
+          <div className="input w-full">
+            <Input
+              value={commentContent}
+              placeholder="Add a Comment"
+              // allowClear
+              onChange={(e) => {
+                handleComment(e.target.value);
+              }}
+              style={{
+                borderColor: themeColorSet.colorText3,
+              }}
+              maxLength={150}
+              addonAfter={
+                <Popover
+                  placement="right"
+                  trigger="click"
+                  title={'Emoji'}
+                  content={
+                    <Picker
+                      data={dataEmoji}
+                      onEmojiSelect={(emoji: any) => {
+                        handleComment(commentContent + emoji.native);
+                      }}
+                    />
+                  }
                 >
-                  <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
-                </span>
-              </Popover>
-            }
-          ></Input>
-          <span
-            className="sendComment cursor-pointer hover:text-blue-700"
-            {...(checkEmpty()
-              ? {
-                  style: {
-                    color: 'gray',
-                    //hover disabled
-                    cursor: 'not-allowed',
-                  },
-                }
-              : { transition: 'all 0.3s' })}
-            onClick={handleSubmitComment}
-          >
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </span>
+                  <span
+                    className="emoji cursor-pointer hover:text-blue-700"
+                    style={{
+                      transition: 'all 0.3s',
+                    }}
+                  >
+                    <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
+                  </span>
+                </Popover>
+              }
+            ></Input>
+            <span
+              className="sendComment cursor-pointer hover:text-blue-700"
+              {...(checkEmpty()
+                ? {
+                    style: {
+                      color: 'gray',
+                      //hover disabled
+                      cursor: 'not-allowed',
+                    },
+                  }
+                : { transition: 'all 0.3s' })}
+              onClick={handleSubmitComment}
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </span>
+          </div>
         </div>
-      </div>
-    ),
-    [commentContent],
-  );
+      ),
+      [commentContent],
+    );
+  } else{
+    memoizedInputComment = useMemo(() => <></>, [commentContent]);
+  }
+ 
 
   return (
     <ConfigProvider
@@ -185,8 +199,8 @@ const OpenPostDetail = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <Row className="py-10">
-        <Col offset={3} span={18}>
+        <Row className="py-7">
+          <Col offset={3} span={18}>
             <div
               style={{
                 backgroundColor: themeColorSet.colorBg2,

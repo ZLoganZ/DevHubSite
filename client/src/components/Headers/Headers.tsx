@@ -250,7 +250,8 @@ const Headers = () => {
                         <Avatar
                           className="messageButton cursor-pointer"
                           shape="circle"
-                          icon={<CommentOutlined className="text-xl" />}
+                          icon={<CommentOutlined className="text-xl" />
+                        }
                         />
                       </Badge>
                     </NavLink>

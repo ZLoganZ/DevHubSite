@@ -4,8 +4,11 @@ const StyleTotal = styled.div`
   .messageButton,
   .notiButton,
   .avatarButton {
+    background-color: ${(props) => props.theme.colorBg3};
+    color: ${(props) => props.theme.colorText1};
     &:hover {
       background-color: ${(props) => props.theme.colorBg4};
+      transition: all 0.3s;
     }
   }
 

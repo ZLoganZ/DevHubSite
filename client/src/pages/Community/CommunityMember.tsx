@@ -35,7 +35,6 @@ import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fort
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
-import TabPane from 'antd/es/tabs/TabPane';
 import MyPost from '../../components/Post/MyPost';
 import NewPost from '../../components/NewPost/NewPost';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
@@ -44,121 +43,13 @@ import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
-import { GET_COMMUNITY_BYID_SAGA } from '../../redux/actionSaga/CommunityActionSaga';
 import { isThisWeek, isThisYear, isToday, format } from 'date-fns';
 
 const { Panel } = Collapse;
+const { TabPane } = Tabs;
 
-const tagArr = [
-  {
-    id: 1,
-    name: 'React',
-  },
-  {
-    id: 2,
-    name: 'Javascript',
-  },
-  {
-    id: 3,
-    name: 'NodeJS',
-  },
-];
-
-const adminArr = [
-  {
-    id: 1,
-    name: 'Rong',
-    userName: '@tianrongliew',
-    userImage:
-      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
-  },
-  {
-    id: 2,
-    name: 'Sriparno Roy',
-    userName: '@sriparno01465',
-    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
-  },
-  {
-    id: 3,
-    name: 'Lena Lee',
-    userName: '@lenalee123',
-    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
-  },
-];
-
-const memberArr = [
-  {
-    id: 1,
-    name: 'Rong',
-    userName: '@tianrongliew',
-    userImage:
-      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
-  },
-  {
-    id: 2,
-    name: 'Sriparno Roy',
-    userName: '@sriparno01465',
-    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
-  },
-  {
-    id: 3,
-    name: 'Lena Lee',
-    userName: '@lenalee123',
-    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
-  },
-  {
-    id: 4,
-    name: 'Sarah Smith',
-    userName: '@sarahcodes',
-    userImage:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMti6Y58F9U28BKZAOQMWDh9auJ5gfJahe5uKYMjr0kSNaXP4MZYkvDomyRUVKOfiPT5g&usqp=CAU',
-  },
-  {
-    id: 5,
-    name: 'John Doe',
-    userName: '@johndoe87',
-    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-NFn1a5QD_qi-HzSeySBUfx5AALewRHYw-g&usqp=CAU',
-  },
-];
-
-const recentlyJoinedArr = [
-  {
-    id: 1,
-    name: 'Rong',
-    userName: '@tianrongliew',
-    userImage:
-      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
-  },
-  {
-    id: 2,
-    name: 'Sriparno Roy',
-    userName: '@sriparno01465',
-    userImage: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
-  },
-  {
-    id: 3,
-    name: 'Lena Lee',
-    userName: '@lenalee123',
-    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijUsFF_9lkZWtXXSK5npYSueYZjA13sfjnQ&usqp=CAU',
-  },
-  {
-    id: 4,
-    name: 'Sarah Smith',
-    userName: '@sarahcodes',
-    userImage:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMti6Y58F9U28BKZAOQMWDh9auJ5gfJahe5uKYMjr0kSNaXP4MZYkvDomyRUVKOfiPT5g&usqp=CAU',
-  },
-  {
-    id: 5,
-    name: 'John Doe',
-    userName: '@johndoe87',
-    userImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-NFn1a5QD_qi-HzSeySBUfx5AALewRHYw-g&usqp=CAU',
-  },
-];
-
-const Community = () => {
+const CommunityMember = () => {
   const dispatch = useDispatch();
-  const { communityID } = useParams();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -166,13 +57,6 @@ const Community = () => {
   const { themeColorSet } = getTheme();
 
   useEffect(() => {
-    dispatch(
-      GET_ALL_POST_BY_USERID_SAGA({
-        userId: 'me',
-      }),
-    );
-
-    dispatch(GET_COMMUNITY_BYID_SAGA(communityID));
 
     window.scrollTo({
       top: 0,
@@ -182,19 +66,7 @@ const Community = () => {
 
   const community = useSelector((state: any) => state.communityReducer.community);
 
-  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
-
-  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
-  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
-
-  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
-
-  const userInfoRef = React.useRef(userInfo);
-
-  useEffect(() => {
-    setIsNotAlreadyChanged(userInfoRef.current === userInfo);
-  }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   return (
     <ConfigProvider
@@ -203,7 +75,7 @@ const Community = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || isNotAlreadyChanged ? (
+        {!community ? (
           <LoadingProfileComponent />
         ) : (
           <div className="communityPage">
@@ -212,15 +84,15 @@ const Community = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
+                    backgroundImage: `url("${community?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden">
+                <div className="avatar rounded-full overflow-hidden object-fill flex">
                   <img
-                    src={userInfo?.userImage ? userInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
+                    src={community?.communityImage || '/images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
                   />
                 </div>
@@ -258,7 +130,7 @@ const Community = () => {
                     >
                       <TabPane tab="All" key="1" className="mt-10">
                         <NewPost userInfo={userInfo} />
-                        {postArray.length === 0 && (
+                        {community.posts.length === 0 && (
                           <Empty
                             className="mt-10 mb-20"
                             image={Empty.PRESENTED_IMAGE_DEFAULT}
@@ -269,7 +141,7 @@ const Community = () => {
                           return (
                             <div key={index}>
                               {item.PostShared && (
-                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.owner} />
+                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
                               )}
                               {!item.PostShared && <MyPost key={item._id} post={item} userInfo={userInfo} />}
                             </div>
@@ -342,7 +214,7 @@ const Community = () => {
                       <div className="content">
                         {community.admins.map((item: any, index: number) => {
                           return (
-                            <NavLink key={index} to={`/user/${item._id}`} className="item flex items-center px-2 py-2">
+                            <div className="item flex items-center px-2 py-2" key={index}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -355,7 +227,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </NavLink>
+                            </div>
                           );
                         })}
                       </div>
@@ -370,7 +242,7 @@ const Community = () => {
                       <div className="content">
                         {community.members.map((item: any, index: number) => {
                           return (
-                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
+                            <div className="item flex items-center px-2 py-2" key={index}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -384,7 +256,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </NavLink>
+                            </div>
                           );
                         })}
                       </div>
@@ -416,7 +288,7 @@ const Community = () => {
                       <div className="content">
                         {community.recentlyJoined.map((item: any, index: number) => {
                           return (
-                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
+                            <div className="item flex items-center px-2 py-2" key={index}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -430,7 +302,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </NavLink>
+                            </div>
                           );
                         })}
                       </div>
@@ -446,4 +318,4 @@ const Community = () => {
   );
 };
 
-export default Community;
+export default CommunityMember;

@@ -24,16 +24,13 @@ const StyleTotal = styled.div`
       .content {
         width: 40%;
         .lineTop {
-          ${flex_center_row};
-          justify-content: space-around;
           .anyWhere {
             font-weight: 500;
             .circle {
-              display: inline-block;
               width: 20px;
               height: 20px;
-              border-radius: 50%;
-              background-color: #1f67e3;
+              align-items: center;
+              justify-content: center;
             }
           }
           .home,

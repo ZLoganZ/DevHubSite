@@ -31,7 +31,7 @@ const RenderPeopleItem = ({ item }: any) => {
             }}
           >
             <img
-              src={item.userImage}
+              src={item.userImage || './images/DefaultAvatar/default_avatar.png'}
               alt=""
               style={{
                 borderRadius: '50%',
@@ -88,7 +88,7 @@ const RenderPeopleItem = ({ item }: any) => {
                 fontSize: '0.9rem',
               }}
             >
-              {item.description.length > 100 ? item.description.slice(0, 100) + '...' : item.description}
+              {item.description?.length > 100 ? item.description.slice(0, 100) + '...' : item.description}
             </div>
           </div>
           <div

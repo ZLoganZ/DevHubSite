@@ -6,8 +6,7 @@ const StyleTotal = styled.div`
   .ql-toolbar {
     border: none;
     svg {
-      /* filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%); */
-      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+      filter: ${(props) => props.theme.colorEditor};
     }
   }
   .ql-editor {

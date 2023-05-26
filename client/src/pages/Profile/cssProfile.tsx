@@ -12,7 +12,7 @@ const StyleTotal = styled.div`
       height: 170px;
       position: absolute;
       bottom: -6rem;
-      left: 17rem;
+      left: 15rem;
       z-index: 1;
     }
   }

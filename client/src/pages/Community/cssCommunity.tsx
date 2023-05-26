@@ -13,16 +13,14 @@ const StyleTotal = styled.div`
         height: 170px;
         position: absolute;
         bottom: -7rem;
-        left: 17rem;
+        left: 15rem;
         z-index: 1;
       }
     }
     .mainContain {
     }
     .infoCommunity {
-      .admin,
-      .member,
-      .recentlyJoined {
+      .admin, .member, .recentlyJoined {
         .content {
           .item {
             :hover {

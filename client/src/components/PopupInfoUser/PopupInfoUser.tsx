@@ -85,7 +85,7 @@ const PopupInfoUser = ({ userInfo, isMe }: any) => {
                       setIsFollowing(!isFollowing);
                     }}
                   >
-                    {isFollowing ? 'Following' : 'Follow'}
+                    <span style={{color: commonColor.colorWhile1}}>{isFollowing ? 'Following' : 'Follow'}</span>
                   </button>
                 </div>
                 <div className="optionButton ">

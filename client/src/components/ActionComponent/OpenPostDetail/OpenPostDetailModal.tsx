@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
-import React, { useMemo, useLayoutEffect, useState, useEffect } from 'react';
+import React, { useMemo, useLayoutEffect, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -27,6 +27,7 @@ interface PostProps {
 
 const OpenPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
+  const searchRef = useRef<any>(null);
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);

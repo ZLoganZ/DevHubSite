@@ -16,25 +16,69 @@ export const darkThemeSet = {
   colorBg2: '#1D1D1D',
   colorBg3: '#4B4B4B',
   colorBg4: '#3b3a3a',
+
+  colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorPicker: 'dark',
 };
+
+// export const darkTheme = {
+//     colorTextBase: '#d4d4d4',
+//     colorBgBase: '#1d1d1d7e',
+  
+//     controlItemBgActive: '#3b3a3a79',
+//   };
+//   export const darkThemeSet = {
+//     colorText1: '#FFFFFFD9',
+//     colorText2: '#d4d4d4',
+//     colorText3: '#FFFFFF73',
+//     colorBg1: '#0a0a0a7a',
+//     colorBg2: '#1d1d1d73',
+//     colorBg3: '#4b4b4b72',
+//     colorBg4: '#3b3a3a67',
+  
+//     colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//     colorPicker: 'dark',
+//   };
 
 //--------------------------------------------
 
 export const lightTheme = {
-  colorTextBase: '#101011',
-  colorBgBase: '#d4d4d4',
+  colorTextBase: '#1f1f23',
+  colorBgBase: '#FFFFFF',
 
-  controlItemBgActive: '#4e4b4b',
+  controlItemBgActive: '#d7d7d7',
 };
 export const lightThemeSet = {
   colorText1: '#101011',
   colorText2: '#1f1f23',
   colorText3: '#27272c',
-  colorBg1: '#e8e8f1',
-  colorBg2: '#527575',
-  colorBg3: '#4785cd',
-  colorBg4: '#2fc2b3',
+  colorBg1: '#F0F2F5',
+  colorBg2: '#FFFFFF',
+  colorBg3: '#E4E5EB',
+  colorBg4: '#D8D9DF',
+
+  colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorPicker: "light"
 };
+
+// export const lightTheme = {
+//   colorTextBase: '#1f1f23',
+//   colorBgBase: '#ffffff8e',
+
+//   controlItemBgActive: '#d7d7d799',
+// };
+// export const lightThemeSet = {
+//   colorText1: '#101011',
+//   colorText2: '#1f1f23',
+//   colorText3: '#27272c',
+//   colorBg1: '#f0f2f58d',
+//   colorBg2: '#ffffff90',
+//   colorBg3: '#e4e5eb5c',
+//   colorBg4: '#d8d9df76',
+
+//   colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//   colorPicker: "light"
+// };
 
 //--------------------------------------------
 
@@ -45,6 +89,8 @@ export const commonColor = {
   colorGreen1: '#00ae8c',
   colorRed1: '#c2032f',
   colorRed2: '#aa052c',
+  colorWhile1: '#FFFFFFD9',
+  colorWhile2: '#d4d4d4',
   colorWarning1: '#ff6b6b',
 };
 

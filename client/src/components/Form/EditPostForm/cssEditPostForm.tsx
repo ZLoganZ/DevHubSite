@@ -5,13 +5,13 @@ const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
   .ql-toolbar {
     svg {
-      /* filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%); */
-      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+      filter: ${(props) => props.theme.colorEditor};
     }
   }
   .ql-editor {
     font-size: 14px;
     -webkit-user-modify: 'read-write-plaintext-only';
+    color: ${(props) => props.theme.colorText2};
   }
   .newPostBody {
     .name_avatar {

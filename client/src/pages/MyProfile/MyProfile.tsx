@@ -174,7 +174,7 @@ const MyProfile = () => {
                             }}
                           >
                             {item.svg} &nbsp;
-                            {item.title}
+                            <span style={{ color: themeColorSet.colorText1 }}>{item.title}</span>
                           </Tag>
                         );
                       }
@@ -224,63 +224,58 @@ const MyProfile = () => {
                       switch (item.key) {
                         case '0':
                           return (
-                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
-                              <Avatar
-                                onClick={() => {
-                                  openInNewTab(item.link);
-                                }}
-                                className="item"
-                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
-                              />
-                            </Tooltip>
+                            <Avatar
+                              style={{ color: themeColorSet.colorText1 }}
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                            />
                           );
                         case '1':
                           return (
-                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
-                              <Avatar
-                                onClick={() => {
-                                  openInNewTab(item.link);
-                                }}
-                                className="item"
-                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
-                              />
-                            </Tooltip>
+                            <Avatar
+                              style={{ color: themeColorSet.colorText1 }}
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                            />
                           );
                         case '2':
                           return (
-                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
-                              <Avatar
-                                onClick={() => {
-                                  openInNewTab(item.link);
-                                }}
-                                className="item"
-                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
-                              />
-                            </Tooltip>
+                            <Avatar
+                              style={{ color: themeColorSet.colorText1 }}
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                            />
                           );
                         case '3':
                           return (
-                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
-                              <Avatar
-                                onClick={() => {
-                                  openInNewTab(item.link);
-                                }}
-                                className="item"
-                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
-                              />
-                            </Tooltip>
+                            <Avatar
+                              style={{ color: themeColorSet.colorText1 }}
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                            />
                           );
                         case '4':
                           return (
-                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
-                              <Avatar
-                                onClick={() => {
-                                  openInNewTab(item.link);
-                                }}
-                                className="item"
-                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
-                              />
-                            </Tooltip>
+                            <Avatar
+                              style={{ color: themeColorSet.colorText1 }}
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                            />
                           );
                         default:
                           return null;

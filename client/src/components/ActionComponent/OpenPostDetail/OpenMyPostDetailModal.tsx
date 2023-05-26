@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
-import React, { useMemo, useLayoutEffect, useState } from 'react';
+import React, { useMemo, useLayoutEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -27,13 +27,14 @@ interface PostProps {
 
 const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
-
+  const searchRef = useRef<any>(null);
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
+  const [subCommentContent, setSubCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
@@ -44,7 +45,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     } else {
       dispatch(GET_POST_BY_ID_SAGA({ id: PostProps.post._id }));
     }
-  }, [PostProps.post, PostProps.postShare]);
+  }, []);
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
@@ -125,18 +126,17 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [PostProps.post, PostProps.userInfo, data],
   );
 
+  console.log(subCommentContent);
+
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
-            value={commentContent}
+            value={subCommentContent}
             placeholder="Add a Comment"
-            // allowClear
-
             onKeyUp={(e) => {
-              // get cursor position
               const cursorPosition = e.currentTarget.selectionStart;
               setCursor(cursorPosition || 0);
             }}
@@ -145,7 +145,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
               setCursor(cursor || 0);
             }}
             onChange={(e) => {
-              setCommentContent(e.currentTarget.value);
+              setSubCommentContent(e.currentTarget.value);
               const cursor = e.currentTarget.selectionStart;
               setCursor(cursor || 0);
             }}
@@ -163,7 +163,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
+                      // setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }

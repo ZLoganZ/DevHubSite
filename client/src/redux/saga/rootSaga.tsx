@@ -40,6 +40,8 @@ export function* rootSaga() {
     postSaga.theoDoiGetPostByIdSaga(),
     postSaga.theoDoiIncreaseViewPostSaga(),
     postSaga.theoDoiIncreaseViewPostShareSaga(),
+    postSaga.theoDoiLikeCommentPostSaga(),
+    postSaga.theoDoiDislikeCommentPostSaga(),
 
     // messageSaga
     messageSaga.theoDoiGetConversationsSaga(),

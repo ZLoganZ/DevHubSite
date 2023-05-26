@@ -15,12 +15,14 @@ import ProfileWrapper from './components/Wrapper/ProfileWrapper';
 import PostWrapper from './components/Wrapper/PostWrapper';
 import PostShareWrapper from './components/Wrapper/PostShareWrapper';
 import NewFeed from './pages/NewsFeed/Newsfeed';
-import Community from './pages/Community/Community';
+import CommunityMember from './pages/Community/CommunityMember';
 import React from 'react';
 import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
 const LazyLoadingAuth = React.lazy(() => import('./components/ActionComponent/Authentication/Auth'));
 const LazyLoadingAlreadyAuth = React.lazy(() => import('./components/ActionComponent/Authentication/AlreadyAuth'));
 import LoadingLogo from './components/GlobalSetting/LoadingLogo/LoadingLogo';
+import NotFound404 from './pages/NotFound404/NotFound404';
+import CommunityWrapper from './pages/Community/CommunityWrapper';
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -65,7 +67,8 @@ const App = () => {
           <Route path="/me" element={<MainTemplate Component={ProfileWrapper} />} />
           <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
           <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
-          <Route path="/community/:communityID" element={<MainTemplate Component={Community} />} />
+          <Route path="/community/:communityID" element={<MainTemplate Component={CommunityWrapper} />} />
+          <Route path="*" element={<NotFound404 login={true}/>} />
         </Route>
       </Routes>
     </>

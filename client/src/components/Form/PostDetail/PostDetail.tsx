@@ -29,7 +29,7 @@ const PostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          maxHeight: '78vh',
+          maxHeight: '75vh', 
           overflow: 'auto',
         }}
       >
@@ -38,7 +38,7 @@ const PostDetail = (Props: PostProps) => {
         ) : (
           <Post key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
         )}
-        <div className="commentTotal ml-4">
+        <div className="commentTotal px-3 ml-4">
           {Props.post?.comments?.map((item: any) => {
             return (
               <div key={item?._id}>
@@ -50,6 +50,7 @@ const PostDetail = (Props: PostProps) => {
                     userInfo={Props.userInfo}
                     selectedCommentId={selectedCommentId}
                     onSelectComment={handleSelectComment}
+                    postID={Props.post._id}
                   >
                     {item.listReply?.map((item: any) => {
                       return (
@@ -61,6 +62,7 @@ const PostDetail = (Props: PostProps) => {
                           selectedCommentId={selectedCommentId}
                           onSelectComment={handleSelectComment}
                           isReply={true}
+                          postID={Props.post._id}
                         />
                       );
                     })}
