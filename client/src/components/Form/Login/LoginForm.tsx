@@ -34,9 +34,7 @@ const LoginForm = () => {
     const popup = window.open(GetGitHubUrl(), 'GithubAuth', `width=${width},height=${height},left=${left},top=${top}`);
 
     const handleMessage = (event: any) => {
-      console.log(event.origin);
-      console.log(import.meta.env.VITE_CLIENT_URL);
-      if (event.origin === import.meta.env.VITE_CLIENT_URL) {
+      if (event.origin === import.meta.env.VITE_SERVER_ENDPOINT) {
         // Check the origin of the message for security
         // Handle the received data from the server
         const userData = event.data;
