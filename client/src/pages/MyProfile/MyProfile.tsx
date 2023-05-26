@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,8 @@ import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileFo
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { usePostsData } from '../../util/functions/DataProvider';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -288,8 +289,17 @@ const MyProfile = () => {
                     defaultActiveKey="2"
                     // onChange={onChange}
                   >
-                    <TabPane tab="Introduce" key="1" className="mt-10">
-                      Introduce
+                    <TabPane tab="Introduce" key="1" className="mb-10">
+                      <div className="w-8/12">
+                        <ReactQuill
+                          value={ownerInfo?.about}
+                          readOnly={true}
+                          theme="bubble"
+                          modules={{
+                            syntax: true,
+                          }}
+                        />
+                      </div>
                     </TabPane>
                     <TabPane tab="Post" key="2" className="mt-10">
                       <div className="w-8/12">

@@ -1,13 +1,14 @@
 import { Image } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import Avatar from '../../Avatar/Avatar';
+import Avatar from '../../Avatar/AvatarMessage';
 import format from 'date-fns/format';
 import isToday from 'date-fns/isToday';
 import isThisWeek from 'date-fns/isThisWeek';
 import isThisYear from 'date-fns/isThisYear';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssMessageBox';
+import { NavLink } from 'react-router-dom';
 
 interface MessageBoxProps {
   data: any;
@@ -51,9 +52,9 @@ const MessageBox = (Props: MessageBoxProps) => {
   return (
     <StyleTotal theme={themeColorSet}>
       <div className={container}>
-        <div className={avatar}>
+        <NavLink className={avatar} to={`/user/${Props.data.sender._id}`}>
           <Avatar key={Props.data.sender._id} user={Props.data.sender} />
-        </div>
+        </NavLink>
         <div className={body}>
           <div className={`body-message flex flex-col ${isOwn && 'items-end'}`}>
             <div className="flex items-center gap-1 mb-1">

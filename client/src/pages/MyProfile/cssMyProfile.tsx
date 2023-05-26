@@ -7,6 +7,12 @@ const StyleTotal = styled.div`
   height: fit-content;
   color: ${(props) => props.theme.colorText1};
 
+  .ql-editor {
+    line-height: 2rem;
+    border: none;
+    font-size: 0.88rem;
+  }
+
   .avatar_cover {
     .avatar {
       width: 170px;

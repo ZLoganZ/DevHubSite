@@ -5,7 +5,7 @@ interface AvatarProps {
   user?: any;
 }
 
-const Avatar = (Props: AvatarProps) => {
+const AvatarMessage = (Props: AvatarProps) => {
   const { members } = useSelector((state: any) => state.activeListReducer);
   const isActive = members?.indexOf(Props.user?.id ? Props.user?.id : Props.user._id) !== -1 || false;
 
@@ -30,4 +30,4 @@ const Avatar = (Props: AvatarProps) => {
   );
 };
 
-export default Avatar;
+export default AvatarMessage;

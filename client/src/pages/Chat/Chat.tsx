@@ -1,4 +1,4 @@
-import { ConfigProvider, Input, Popover, Skeleton, Space, message } from 'antd';
+import { ConfigProvider, Input, Popover, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -18,7 +18,6 @@ import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { messageService } from '../../services/MessageService';
 import UploadComponent from '../../components/UploadComponent/UploadComponent';
 import SharedMedia from '../../components/ChatComponent/SharedMedia/SharedMedia';
-import { set } from 'lodash';
 import LoadingChat from './LoadingChat';
 import LoadingConversation from './LoadingConversation';
 
@@ -178,13 +177,13 @@ const Chat = () => {
                         trigger="click"
                         title={'Emoji'}
                         content={
-                            <Picker
-                              data={dataEmoji}
-                              onEmojiSelect={(emoji: any) => {
-                                setMessage(message.slice(0, cursor) + emoji.native + message.slice(cursor));
-                              }}
-                              theme={themeColorSet.colorPicker}
-                            />
+                          <Picker
+                            data={dataEmoji}
+                            onEmojiSelect={(emoji: any) => {
+                              setMessage(message.slice(0, cursor) + emoji.native + message.slice(cursor));
+                            }}
+                            theme={themeColorSet.colorPicker}
+                          />
                         }
                       >
                         <span className="emoji">

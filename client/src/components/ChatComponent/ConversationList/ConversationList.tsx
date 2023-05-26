@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsersLine } from '@fortawesome/free-solid-svg-icons';
 import { SearchOutlined } from '@ant-design/icons';
 import { pusherClient } from '../../../util/functions/Pusher';
-import Avatar from '../../Avatar/Avatar';
+import Avatar from '../../Avatar/AvatarMessage';
 import { find } from 'lodash';
 import ConversationBox from '../ConversationBox/ConversationBox';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -98,6 +98,66 @@ const ConversationList = (Props: ConversationListProps) => {
     pusherClient.bind('conversation-remove', removeHandler);
   }, [pusherKey]);
 
+  const [messages, setMessages] = React.useState<any[]>(Props.initialItems);
+
+  useEffect(() => {
+    if (!messages) return;
+
+    const unseenConversations = messages.filter((conversation: any) => {
+      if (conversation.messages?.length === 0) return false;
+      const seenList = conversation.messages[conversation.messages.length - 1].seen || [];
+      return !seenList.some((user: any) => user._id === userInfo.id);
+    });
+
+    if (unseenConversations.length > 0) {
+      document.title = `(${unseenConversations.length}) DevHub Message`;
+    } else {
+      document.title = `DevHub Message`;
+    }
+  }, [messages]);
+
+  const playNotiMessage = new Audio('/sounds/sound-noti-message.wav');
+
+  useEffect(() => {
+    if (!pusherKey) return;
+
+    pusherClient.subscribe(pusherKey);
+
+    const updateHandler = (conversation: any) => {
+      setMessages((current: any) =>
+        current.map((currentConversation: any) => {
+          if (currentConversation._id === conversation.id) {
+            playNotiMessage.play();
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+
+          return currentConversation;
+        }),
+      );
+    };
+
+    const updateHandlerSeen = (conversation: any) => {
+      setMessages((current: any) =>
+        current.map((currentConversation: any) => {
+          if (currentConversation._id === conversation.id) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+
+          return currentConversation;
+        }),
+      );
+    };
+
+    pusherClient.bind('conversation-update-seen', updateHandlerSeen);
+    pusherClient.bind('conversation-update-noti', updateHandler);
+  }, [pusherKey]);
+
   const HandleOnClick = async (item: any) => {
     const { data } = await messageService.createConversation({ users: [item, userInfo.id] });
     navigate(`/message/${data.content.conversation._id}`);
@@ -158,19 +218,23 @@ const ConversationList = (Props: ConversationListProps) => {
             }}
           >
             <div className="flex">
-              <div className="avatar mr-3">
-                <Avatar key={userInfo.id} user={userInfo} />
-              </div>
-              <div className="name_career">
-                <div
-                  className="name mb-1"
-                  style={{
-                    color: themeColorSet.colorText1,
-                    fontWeight: 600,
-                  }}
-                >
-                  {userInfo.username}
+              <NavLink to={`/user/${userInfo.id}`}>
+                <div className="avatar mr-3">
+                  <Avatar key={userInfo.id} user={userInfo} />
                 </div>
+              </NavLink>
+              <div className="name_career">
+                <NavLink to={`/user/${userInfo.id}`}>
+                  <div
+                    className="name mb-1"
+                    style={{
+                      color: themeColorSet.colorText1,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {userInfo.username}
+                  </div>
+                </NavLink>
                 <div
                   className="career"
                   style={{
@@ -247,7 +311,7 @@ const ConversationList = (Props: ConversationListProps) => {
               {Props.users.map((item: any) => {
                 return (
                   <div
-                    className="user flex flex-col justify-center items-center cursor-pointer w-1/2"
+                    className="user flex flex-col items-center cursor-pointer w-1/2 mt-5"
                     key={item._id}
                     onClick={() => HandleOnClick(item._id)}
                   >

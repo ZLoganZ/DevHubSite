@@ -4,7 +4,7 @@ import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssMessageChat';
 import AvatarGroup from '../../Avatar/AvatarGroup';
 import OtherUser from '../../../util/functions/OtherUser';
-import Avatar from '../../Avatar/Avatar';
+import Avatar from '../../Avatar/AvatarMessage';
 import MessageBox from '../MessageBox/MessageBox';
 import { pusherClient } from '../../../util/functions/Pusher';
 import { find } from 'lodash';
@@ -13,6 +13,7 @@ import { messageService } from '../../../services/MessageService';
 import useIntersectionObserverNow from '../../../util/functions/useIntersectionObserverNow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router-dom';
 
 interface IParams {
   conversationId: string;
@@ -71,11 +72,6 @@ const MessageChat = (Props: IParams) => {
 
         return [...current, message];
       });
-
-      // call 3 lần để đảm bảo scroll đến cuối =))))
-      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -104,14 +100,25 @@ const MessageChat = (Props: IParams) => {
 
   useEffect(() => {
     if (messagesState.length === 0) return;
-    if (count > 0) return;
-    bottomRef?.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    if (count > 0) bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    if (count === 0) bottomRef?.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
     setCount(count + 1);
-  }, [messagesState]);
+    return () => {
+      setCount(0);
+    };
+  }, [messagesState.length]);
+
+  useEffect(() => {
+    seenMessage();
+  }, []);
 
   const styleStatus = useMemo(() => {
     return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
   }, [isActive]);
+
+  useEffect(() => {
+    seenMessage();
+  }, []);
 
   return (
     <StyleTotal className="h-full" theme={themeColorSet}>
@@ -131,10 +138,14 @@ const MessageChat = (Props: IParams) => {
               {currentConversation.isGroup ? (
                 <AvatarGroup key={currentConversation._id} users={currentConversation.users} />
               ) : (
-                <Avatar key={otherUser} user={otherUser} />
+                <NavLink to={`/user/${otherUser._id}`}>
+                  <Avatar key={otherUser} user={otherUser} />
+                </NavLink>
               )}
               <div className="flex flex-col">
-                <div style={{color: themeColorSet.colorText1}}>{currentConversation.name || otherUser.username}</div>
+                <div style={{ color: themeColorSet.colorText1 }}>
+                  {currentConversation.name || <NavLink to={`/user/${otherUser._id}`}>{otherUser.username}</NavLink>}
+                </div>
                 <div
                   className="text-sm"
                   style={{

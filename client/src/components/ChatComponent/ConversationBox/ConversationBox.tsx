@@ -3,7 +3,7 @@ import OtherUser from '../../../util/functions/OtherUser';
 import { useMemo } from 'react';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 import AvatarGroup from '../../Avatar/AvatarGroup';
-import Avatar from '../../Avatar/Avatar';
+import Avatar from '../../Avatar/AvatarMessage';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 
 interface ConversationBoxProps {
@@ -84,7 +84,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
                 color: themeColorSet.colorText1,
               }}
             >
-              <span style={{color: themeColorSet.colorText1}}>{Props.data.name || otherUser.username}</span>
+              <span style={{ color: themeColorSet.colorText1 }}>{Props.data.name || otherUser.username}</span>
             </p>
             {lastMessage?.createdAt && (
               <p
@@ -93,7 +93,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
                   text-gray-400 
                   font-light
                 "
-                style={{color: themeColorSet.colorText3}}
+                style={{ color: themeColorSet.colorText3 }}
               >
                 {formatDateTime(new Date(lastMessage.createdAt))}
               </p>
@@ -104,7 +104,9 @@ const ConversationBox = (Props: ConversationBoxProps) => {
               hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText1 + ' shadow-xl font-extrabold'
             }`}
           >
-            <span style={{color: themeColorSet.colorText2}}>{isOwn ? `You: ${lastMessageText}` : lastMessageText}</span>
+            <span style={{ color: themeColorSet.colorText2 }}>
+              {isOwn ? `You: ${lastMessageText}` : lastMessageText}
+            </span>
           </p>
         </div>
       </div>

@@ -22,7 +22,7 @@ import {
   LIKE_COMMENT_POST_SAGA,
   DISLIKE_COMMENT_POST_SAGA,
 } from '../actionSaga/PostActionSaga';
-import { setAllPost, setOwnerInfo, setPost, setPostArr, updatePosts } from '../Slice/PostSlice';
+import { setOwnerInfo, setPost, setPostArr, updatePosts } from '../Slice/PostSlice';
 import { setUser } from '../Slice/UserSlice';
 import { closeDrawer, setLoading } from '../Slice/DrawerHOCSlice';
 
@@ -137,8 +137,8 @@ export function* updatePostSaga({ payload }: any) {
     const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: 'me',
+        GET_POST_BY_ID_SAGA({
+          id: payload.id,
         }),
       );
       yield put(setLoading(false));
@@ -279,11 +279,14 @@ export function* sharePostSaga({ payload }: any) {
     const { data, status } = yield postService.sharePost(payload.id);
 
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_POST_BY_ID_SAGA({
-          id: payload.id,
-        }),
-      );
+      const isInProfile: boolean = yield select((state) => state.postReducer.isInProfile);
+      if (isInProfile) {
+        yield put(
+          GET_ALL_POST_BY_USERID_SAGA({
+            userId: 'me',
+          }),
+        );
+      }
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -379,11 +382,11 @@ export function* likeCommentPostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.likeCommentPost(payload.idComment);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_POST_BY_ID_SAGA({
-          id: payload.postID,
-        }),
-      );
+      // yield put(
+      //   GET_POST_BY_ID_SAGA({
+      //     id: payload.postID,
+      //   }),
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -399,11 +402,11 @@ export function* dislikeCommentPostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.dislikeCommentPost(payload.idComment);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_POST_BY_ID_SAGA({
-          id: payload.postID,
-        }),
-      );
+      // yield put(
+      //   GET_POST_BY_ID_SAGA({
+      //     id: payload.postID,
+      //   }),
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
