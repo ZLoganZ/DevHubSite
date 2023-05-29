@@ -11,6 +11,7 @@ import { REGIS_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
+import { darkThemeSet } from '../../util/cssVariable/cssVariable';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -33,40 +34,41 @@ const Register = () => {
   });
 
   return (
-    <StyleTotal className="w-screen h-screen">
-      <div className="register relative">
-        <div className="cover absolute top-0 left-0">
-          <div className="content">
-            <div className="lineTop mt-5">
-              <span className="anyWhere">
-                <span className="circle ml-5 mr-2">
-                  <FontAwesomeIcon className="icon" icon={faSnowflake} />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorTextBase: darkThemeSet.colorText2,
+          colorBgBase: darkThemeSet.colorBg2,
+          lineWidth: 0,
+          controlHeight: 40,
+        },
+      }}
+    >
+      <StyleTotal className="w-screen h-screen">
+        <div className="register relative">
+          <div className="cover absolute top-0 left-0">
+            <div className="content">
+              <div className="lineTop mt-5">
+                <span className="anyWhere">
+                  <span className="circle ml-5 mr-2">
+                    <FontAwesomeIcon className="icon" icon={faSnowflake} />
+                  </span>
+                  <span>DevHub</span>
                 </span>
-                <span>DevHub</span>
-              </span>
-            </div>
-            <div className="account mt-12 px-14">
-              <div className="startFree">START FOR FREE</div>
-              <div className="createAccount">Create new account</div>
-              <div className="member mt-3">
-                <span className="memberEd">Already a member?</span>
-                <NavLink to="/login">
-                  <span className="login ml-1">Login</span>
-                </NavLink>
               </div>
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorTextBase: '#d4d4d4',
-                    colorBgBase: '#333345',
-                    lineWidth: 0,
-                    controlHeight: 40,
-                  },
-                }}
-              >
+              <div className="account mt-12 px-14">
+                <div className="startFree">START FOR FREE</div>
+                <div className="createAccount">Create new account</div>
+                <div className="member mt-3">
+                  <span className="memberEd">Already a member?</span>
+                  <NavLink to="/login">
+                    <span className="login ml-1">Login</span>
+                  </NavLink>
+                </div>
+
                 <Form className="mt-5 formAccount" onFinish={formik.handleSubmit}>
                   <Form.Item>
-                  <Form.Item
+                    <Form.Item
                       style={{
                         display: 'inline-block',
                         width: 'calc(50% - 8px)',
@@ -165,12 +167,12 @@ const Register = () => {
                     Create account
                   </button>
                 </Form>
-              </ConfigProvider>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </StyleTotal>
+      </StyleTotal>
+    </ConfigProvider>
   );
 };
 

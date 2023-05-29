@@ -6,7 +6,7 @@ const StyleTotal = styled.div`
   .ql-toolbar {
     border: none;
     svg {
-      filter: ${(props) => props.theme.colorEditor};
+      filter: ${(props) => props.theme.colorSVG};
     }
   }
   .ql-editor {
@@ -42,15 +42,6 @@ const StyleTotal = styled.div`
         :hover {
           cursor: pointer;
           color: ${(props) => props.theme.colorText2};
-          transition: all 0.5s;
-        }
-      }
-    }
-    .newPostFooter__right {
-      .createButton {
-        background-color: ${commonColor.colorBlue1};
-        :hover {
-          background-color: ${commonColor.colorBlue3};
           transition: all 0.5s;
         }
       }

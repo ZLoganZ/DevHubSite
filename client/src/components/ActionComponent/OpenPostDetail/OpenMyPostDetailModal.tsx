@@ -1,7 +1,6 @@
-import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
-import React, { useMemo, useLayoutEffect, useState, useRef } from 'react';
+import { Avatar, ConfigProvider, Input, Popover, Modal } from 'antd';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssOpenPostDetailModal';
 import dataEmoji from '@emoji-mart/data';
@@ -23,23 +22,25 @@ interface PostProps {
   userInfo: any;
   postShare?: any;
   owner?: any;
+  visible?: boolean;
+  setVisible?: any;
 }
 
 const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
-  const searchRef = useRef<any>(null);
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
-  const [subCommentContent, setSubCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  useLayoutEffect(() => {
+  const inputRef = React.useRef<any>(null);
+
+  useEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
     } else {
@@ -53,55 +54,45 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     setData(data);
   };
 
+  useEffect(() => {
+    if (data.isReply) inputRef.current.focus();
+  }, [data]);
+
+  useEffect(() => {
+    if (!PostProps.visible) setCommentContent('');
+  }, [PostProps.visible]);
+
   const handleSubmitComment = () => {
-    if (PostProps.postShare) {
-      if (data.isReply) {
-        dispatch(
-          SAVE_REPLY_POSTSHARE_SAGA({
-            id: PostProps.post?._id,
-            reply: {
-              contentComment: commentContent,
-              idComment: data.idComment,
-            },
-          }),
-        );
-        setData({ isReply: false, idComment: null });
-      } else {
-        dispatch(
-          SAVE_COMMENT_POSTSHARE_SAGA({
-            comment: {
-              contentComment: commentContent,
-            },
-            id: PostProps.post?._id,
-          }),
-        );
-      }
+    const { postShare, post } = PostProps;
+    const { isReply, idComment } = data;
+    const comment = {
+      contentComment: commentContent,
+    };
+
+    const saveCommentAction = postShare ? SAVE_COMMENT_POSTSHARE_SAGA : SAVE_COMMENT_SAGA;
+    const saveReplyAction = postShare ? SAVE_REPLY_POSTSHARE_SAGA : SAVE_REPLY_SAGA;
+
+    if (isReply) {
+      dispatch(
+        saveReplyAction({
+          id: post?._id,
+          reply: {
+            contentComment: commentContent,
+            idComment,
+          },
+        }),
+      );
+      setData({ isReply: false, idComment: null });
     } else {
-      if (data.isReply) {
-        dispatch(
-          SAVE_REPLY_SAGA({
-            id: PostProps.post?._id,
-            reply: {
-              contentComment: commentContent,
-              idComment: data.idComment,
-            },
-          }),
-        );
-        setData({ isReply: false, idComment: null });
-      } else {
-        dispatch(
-          SAVE_COMMENT_SAGA({
-            comment: {
-              contentComment: commentContent,
-            },
-            id: PostProps.post?._id,
-          }),
-        );
-      }
+      dispatch(
+        saveCommentAction({
+          comment,
+          id: post?._id,
+        }),
+      );
     }
-    setTimeout(() => {
-      setCommentContent('');
-    }, 1000);
+
+    setCommentContent('');
   };
 
   const checkEmpty = () => {
@@ -126,15 +117,14 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [PostProps.post, PostProps.userInfo, data],
   );
 
-  console.log(subCommentContent);
-
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
-            value={subCommentContent}
+            ref={inputRef}
+            value={commentContent}
             placeholder="Add a Comment"
             onKeyUp={(e) => {
               const cursorPosition = e.currentTarget.selectionStart;
@@ -145,7 +135,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
               setCursor(cursor || 0);
             }}
             onChange={(e) => {
-              setSubCommentContent(e.currentTarget.value);
+              setCommentContent(e.currentTarget.value);
               const cursor = e.currentTarget.selectionStart;
               setCursor(cursor || 0);
             }}
@@ -163,7 +153,8 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      // setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
+                      setCursor(cursor + emoji.native.length);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -178,14 +169,13 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                 </span>
               </Popover>
             }
-          ></Input>
+          />
           <span
             className="sendComment cursor-pointer hover:text-blue-700"
             {...(checkEmpty()
               ? {
                   style: {
                     color: 'gray',
-                    //hover disabled
                     cursor: 'not-allowed',
                   },
                 }
@@ -200,20 +190,6 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [commentContent, cursor],
   );
 
-  useLayoutEffect(() => {
-    dispatch(
-      openModal({
-        title: 'The post of ' + PostProps.userInfo?.username,
-        component: memoizedComponent,
-        footer: (
-          <ConfigProvider>
-            <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
-          </ConfigProvider>
-        ),
-      }),
-    );
-  }, [memoizedComponent, memoizedInputComment]);
-
   return (
     <ConfigProvider
       theme={{
@@ -221,7 +197,22 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div></div>
+        <Modal
+          centered
+          title={'The post of ' + PostProps.userInfo?.username}
+          width={720}
+          footer={
+            <ConfigProvider>
+              <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
+            </ConfigProvider>
+          }
+          open={PostProps.visible}
+          onCancel={() => {
+            PostProps.setVisible(false);
+          }}
+        >
+          {memoizedComponent}
+        </Modal>
       </StyleTotal>
     </ConfigProvider>
   );

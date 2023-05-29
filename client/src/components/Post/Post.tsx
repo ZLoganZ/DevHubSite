@@ -26,8 +26,6 @@ import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetai
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
-import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
@@ -138,14 +136,6 @@ const Post = (PostProps: PostProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   // Read more, read less
 
   function removeCode(htmlString: any): any {
@@ -192,9 +182,13 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
-      {isOpenPostDetail ? (
-        <OpenPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
-      ) : null}
+      <OpenPostDetailModal
+        key={PostProps.post?._id}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
@@ -296,7 +290,10 @@ const Post = (PostProps: PostProps) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{likeNumber} Like</span>
+                <span>
+                  {likeNumber}
+                  {likeNumber > 1 ? ' Likes' : ' Like'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -320,7 +317,10 @@ const Post = (PostProps: PostProps) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>{shareNumber} Share</span>
+                <span>
+                  {shareNumber}
+                  {shareNumber > 1 ? ' Shares' : ' Share'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -346,7 +346,10 @@ const Post = (PostProps: PostProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post?.comments?.length} Comment</span>
+                <span>
+                  {PostProps.post?.comments?.length}
+                  {PostProps.post?.comments?.length > 1 ? ' Comments' : ' Comment'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -358,7 +361,7 @@ const Post = (PostProps: PostProps) => {
               </Space>
               <Space className="like" direction="vertical" align="center">
                 <span>
-                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                  {PostProps.post.views} {PostProps.post.views > 1 ? 'Views' : 'View'}
                 </span>
                 <Space>
                   <Avatar

@@ -20,6 +20,21 @@ export class AuthService extends BaseService {
   getUserID = (token: any) => {
     return this.get(`/getUserID`);
   };
+  forgotPassword = (email: string) => {
+    return this.post(`/forgot`, email);
+  };
+  verifyCode = (data: object) => {
+    return this.post(`/verify`, data);
+  };
+  checkVerifyCode = (data: object) => {
+    return this.post(`/checkVerify`, data);
+  };
+  resetPassword = (data: object) => {
+    return this.post(`/reset`, data);
+  };
+  checkResetPassword = (data: object) => {
+    return this.post(`/checkReset`, data);
+  };
 }
 
 export const authService = new AuthService();

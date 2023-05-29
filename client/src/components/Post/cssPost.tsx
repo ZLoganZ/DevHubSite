@@ -20,6 +20,11 @@ const StyleTotal = styled.div`
     font-weight: 700;
     color: ${(props) => props.theme.colorText1};
   }
+  .disableElement {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
   .post {
     .postHeader {
       .postHeader__left {

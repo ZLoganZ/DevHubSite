@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_POST_BY_ID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetail from '../ActionComponent/OpenPostDetail/OpenPostDetail';
@@ -17,10 +17,15 @@ const PostWrapper = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  const postSlice = useSelector((state: any) => state.postReducer.post);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
-  const { userID } = useSelector((state: any) => state.authReducer);
+  const post = useMemo(() => postSlice, [postSlice]);
+  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+
+  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = useState(true);
+
+  const postRef = useRef(post);
 
   useEffect(() => {
     dispatch(
@@ -28,10 +33,19 @@ const PostWrapper = () => {
         id: postID,
       }),
     );
-    dispatch(GET_USER_ID());
   }, []);
 
-  if (!post || !userInfo) {
+  useEffect(() => {
+    if (!isNotAlreadyChanged) return;
+
+    setIsNotAlreadyChanged(postRef.current === post);
+
+    if (!isNotAlreadyChanged) {
+      postRef.current = post;
+    }
+  }, [userInfoSlice, postSlice, isNotAlreadyChanged, postRef]);
+
+  if (!post || !userInfo || isNotAlreadyChanged) {
     return (
       <ConfigProvider
         theme={{

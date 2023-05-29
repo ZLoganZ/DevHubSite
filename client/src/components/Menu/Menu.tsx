@@ -9,7 +9,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Button, ConfigProvider, Divider, Menu } from 'antd';
+import { Avatar, ConfigProvider, Divider, Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';

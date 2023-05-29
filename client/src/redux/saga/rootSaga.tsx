@@ -14,6 +14,11 @@ export function* rootSaga() {
     authSaga.theoDoiGetUserIDSaga(),
     authSaga.theoDoiLoginWithGoogleSaga(),
     authSaga.theoDoiCheckLoginSaga(),
+    authSaga.theoDoiForgotPasswordSaga(),
+    authSaga.theoDoiVerifyCodeSaga(),
+    authSaga.theoDoiResetPasswordSaga(),
+    authSaga.theoDoiCheckVerifyCodeSaga(),
+    authSaga.theoDoiCheckResetPasswordSaga(),
 
     // userSaga
     userSaga.theoDoiRegisterUserSaga(),
@@ -21,6 +26,7 @@ export function* rootSaga() {
     userSaga.theoDoiGetFollowersSaga(),
     userSaga.theoDoiGetUserInfoSaga(),
     userSaga.theoDoiFollowUserSaga(),
+    userSaga.theoDoiGetRepositoryGithubSaga(),
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),

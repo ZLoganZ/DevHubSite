@@ -29,7 +29,7 @@ const MyPostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          maxHeight: '75vh',
+          maxHeight: '74vh',
           overflow: 'auto',
         }}
       >

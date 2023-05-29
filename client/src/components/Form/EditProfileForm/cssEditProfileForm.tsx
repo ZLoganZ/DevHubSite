@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
-
-  .ql-editor{
+  .ql-editor {
     font-size: 14px;
     color: ${(props) => props.theme.colorText1};
     line-height: 2rem;
@@ -44,15 +43,6 @@ const StyleTotal = styled.div`
     }
   }
 
-  .form__label {
-    position: absolute;
-    top: 0;
-    display: block;
-    transition: 0.2s;
-    font-size: 1rem;
-    color: ${(props) => props.theme.colorText3};
-  }
-
   .form__field:focus {
     ~ .form__label {
       position: absolute;
@@ -60,12 +50,21 @@ const StyleTotal = styled.div`
       display: block;
       transition: 0.2s;
       font-size: 1rem;
-      color: ${commonColor.colorBlue3}
+      color: ${commonColor.colorBlue3};
     }
     padding-bottom: 6px;
     border-width: 3px;
     border-color: ${commonColor.colorBlue3};
     border-image-slice: 1;
+  }
+
+  .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: ${(props) => props.theme.colorText3};
   }
 
   .editProfileForm {
@@ -131,6 +130,32 @@ const StyleTotal = styled.div`
         :hover {
           background-color: ${(props) => props.theme.colorBg4};
           transition: all 0.5s;
+        }
+      }
+    }
+    .experiences {
+      .buttonAddExperience {
+        color: ${(props) => props.theme.colorText3};
+        :hover {
+          color: ${(props) => props.theme.colorText2};
+          transition: all 0.5s;
+        }
+      }
+    }
+    .repositories {
+      .renderRepositoryIem {
+        cursor: pointer;
+        :hover {
+          .top {
+            .name {
+              text-decoration: underline;
+            }
+          }
+        }
+        .top {
+          .iconRepos {
+            filter: ${(props) => props.theme.colorSVG};
+          }
         }
       }
     }

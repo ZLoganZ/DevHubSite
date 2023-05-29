@@ -98,14 +98,15 @@ const MessageChat = (Props: IParams) => {
 
   useIntersectionObserverNow(bottomRef, seenMessage);
 
+  const scrollToBottom = (type: ScrollBehavior) => {
+    if (bottomRef?.current) bottomRef?.current?.scrollIntoView({ behavior: type, block: 'end' });
+  };
+
   useEffect(() => {
     if (messagesState.length === 0) return;
-    if (count > 0) bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    if (count === 0) bottomRef?.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+    if (count > 0) scrollToBottom('smooth');
+    if (count === 0) scrollToBottom('auto');
     setCount(count + 1);
-    return () => {
-      setCount(0);
-    };
   }, [messagesState.length]);
 
   useEffect(() => {
@@ -179,7 +180,7 @@ const MessageChat = (Props: IParams) => {
                 messagesState?.map((message: any, i: any) => (
                   <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
                 ))}
-              <div className="pt-0.5" ref={bottomRef} />
+              <div className="pt-1" ref={bottomRef} />
             </div>
           </div>
         </>

@@ -1,4 +1,4 @@
-import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload } from 'antd';
+import { Avatar, Button, ConfigProvider, Input, message, Popover, Upload } from 'antd';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import React, { useEffect, useState } from 'react';
@@ -11,16 +11,16 @@ import ImageCompress from 'quill-image-compress';
 import dataEmoji from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import { faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
-import { TOKEN } from '../../util/constants/SettingSystem';
 import { CREATE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/es/upload';
+import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
 import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
 
 Quill.register('modules/imageCompress', ImageCompress);
 
@@ -51,6 +51,8 @@ const NewPost = (Props: Props) => {
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
+  const [random, setRandom] = useState(0);
 
   // Quill Editor
   let [quill, setQuill]: any = useState(null);
@@ -97,7 +99,7 @@ const NewPost = (Props: Props) => {
       title: '',
       content: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, helper) => {
       if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
@@ -112,6 +114,9 @@ const NewPost = (Props: Props) => {
           );
           setLoading(false);
           quill.root.innerHTML = '<p><br></p>';
+          setRandom(Math.random());
+          setFile(null);
+          formik.resetForm();
           messageApi.success('Create post successfully');
         }
       }
@@ -122,7 +127,7 @@ const NewPost = (Props: Props) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleUpload = (info: any) => {
+  const handleUpload = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.fileList.length === 0) return;
 
     setFile(info?.fileList[0]?.originFileObj);
@@ -232,11 +237,12 @@ const NewPost = (Props: Props) => {
               <span>
                 <Upload
                   accept="image/*"
+                  key={random}
                   maxCount={1}
                   customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
                     onSuccess('ok');
                   }}
-                  data={(file: any) => {
+                  data={(file) => {
                     return {};
                   }}
                   listType="picture"
@@ -250,17 +256,15 @@ const NewPost = (Props: Props) => {
               </span>
             </div>
             <div className="newPostFooter__right">
-              <Button
-                type="primary"
-                className="createButton w-full font-bold px-6 py-2 rounded-3xl h-auto"
-                style={{ color: themeColorSet.colorText1 }}
+              <ButtonActiveHover
+                rounded
                 onClick={() => {
                   formik.handleSubmit();
                 }}
                 loading={loading}
               >
-                <span style={{color: commonColor.colorWhile1}}>{loading ? 'Creating...' : 'Create'}</span>
-              </Button>
+                <span style={{ color: commonColor.colorWhile1 }}>{loading ? 'Creating..' : 'Create'}</span>
+              </ButtonActiveHover>
             </div>
           </div>
         </div>

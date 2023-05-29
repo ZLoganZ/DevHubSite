@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover, Button, Row, Col } from 'antd';
+import { Avatar, ConfigProvider, Input, Popover, Row, Col } from 'antd';
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -34,15 +34,18 @@ const OpenMyPostShareDetail = (Props: Props) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
+  const [cursor, setCursor] = useState(0);
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
+  const inputRef = React.useRef<any>(null);
+
+  useEffect(() => {
+    if (data.isReply) inputRef.current.focus();
+  }, [data]);
+
   const handleData = (data: any) => {
     setData(data);
-  };
-
-  const handleComment = (content: any) => {
-    setCommentContent(content);
   };
 
   const handleSubmitComment = () => {
@@ -124,12 +127,24 @@ const OpenMyPostShareDetail = (Props: Props) => {
         <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
         <div className="input w-full">
           <Input
+            ref={inputRef}
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
-            onChange={(e) => {
-              handleComment(e.target.value);
+            onKeyUp={(e) => {
+              const cursorPosition = e.currentTarget.selectionStart;
+              setCursor(cursorPosition || 0);
             }}
+            onClick={(e) => {
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
+            onChange={(e) => {
+              setCommentContent(e.currentTarget.value);
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
+            onPressEnter={handleSubmitComment}
             style={{
               borderColor: themeColorSet.colorText3,
             }}
@@ -143,7 +158,8 @@ const OpenMyPostShareDetail = (Props: Props) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
+                      setCursor(cursor + emoji.native.length);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -177,7 +193,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
         </div>
       </div>
     ),
-    [commentContent],
+    [commentContent, cursor],
   );
 
   return (
@@ -188,7 +204,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
     >
       <StyleTotal theme={themeColorSet}>
         <Row className="py-10">
-        <Col offset={3} span={18}>
+          <Col offset={3} span={18}>
             <div
               style={{
                 backgroundColor: themeColorSet.colorBg2,

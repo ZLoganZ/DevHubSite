@@ -7,6 +7,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssSelectInterest';
 import { CHOOSE_GET_INTEREST_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
 import descArray from '../../util/constants/Description';
+import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const SelectInterest = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ const SelectInterest = () => {
               style={{
                 fontSize: '1.8rem',
                 fontWeight: '600',
+                color: themeColorSet.colorText1,
               }}
             >
               Select your interest
@@ -126,23 +128,25 @@ const SelectInterest = () => {
                 ))}
               </div>
             </div>
-            <button
-              className="btnNext absolute px-4 py-2"
-              onClick={() => {
-                if (addArray.length < 5) {
-                  error();
-                  return;
-                }
-                dispatch(
-                  CHOOSE_GET_INTEREST_SAGA({
-                    des: addArray,
-                  }),
-                );
-                navigate('/select-community');
-              }}
-            >
-              Next
-            </button>
+            <div className="btnNext absolute">
+              <ButtonActiveHover
+                rounded
+                onClick={() => {
+                  if (addArray.length < 5) {
+                    error();
+                    return;
+                  }
+                  dispatch(
+                    CHOOSE_GET_INTEREST_SAGA({
+                      des: addArray,
+                    }),
+                  );
+                  navigate('/select-community');
+                }}
+              >
+                Next
+              </ButtonActiveHover>
+            </div>
           </div>
         </div>
       </StyleTotal>

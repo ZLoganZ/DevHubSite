@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 import { useGoogleLogin } from '@react-oauth/google';
 import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
+import { TOKEN, TOKEN_GITHUB } from '../../../util/constants/SettingSystem';
+import { darkThemeSet } from '../../../util/cssVariable/cssVariable';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -39,9 +41,10 @@ const LoginForm = () => {
         // Handle the received data from the server
         const userData = event.data;
         if (userData) {
-          localStorage.setItem('access_token', userData.accessToken);
+          localStorage.setItem(TOKEN, userData.accessToken);
+          localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
           // go to home page
-          window.location.href = '/';
+          window.location.replace('/');
         }
       }
     };
@@ -71,26 +74,26 @@ const LoginForm = () => {
   });
 
   return (
-    <StyleTotal>
-      <div className="loginForm">
-        <div className="welcomeBack mb-12">
-          <div className="icon_logo">
-            <FontAwesomeIcon className="icon" icon={faSnowflake} />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorTextBase: darkThemeSet.colorText2,
+          colorBgBase: darkThemeSet.colorBg2,
+          lineWidth: 0,
+          controlHeight: 40,
+          borderRadius: 0,
+        },
+      }}
+    >
+      <StyleTotal>
+        <div className="loginForm">
+          <div className="welcomeBack mb-12">
+            <div className="icon_logo">
+              <FontAwesomeIcon className="icon" icon={faSnowflake} />
+            </div>
+            <h2 className="title">Welcome back!</h2>
           </div>
-          <h2 className="title">Welcome back!</h2>
-        </div>
 
-        <ConfigProvider
-          theme={{
-            token: {
-              colorTextBase: '#d4d4d4',
-              colorBgBase: '#202021',
-              lineWidth: 0,
-              controlHeight: 40,
-              borderRadius: 0,
-            },
-          }}
-        >
           <Form className="w-full" style={{ width: '70%' }} onFinish={formik.handleSubmit}>
             <Form.Item
               name="email"
@@ -122,38 +125,39 @@ const LoginForm = () => {
               Login
             </button>
           </Form>
-        </ConfigProvider>
-        <div className="anotherLogin mt-10">
-          <div className="title relative">
-            <span className="absolute" style={{ color: '#d4d4d4' }}>
-              Or
-            </span>
-            <hr />
-          </div>
-          <div className="loginTool mt-10 w-full">
-            <div className="google h-10" onClick={() => handleSignInWithGoogle()}>
-              <span className="icon mr-2">
-                <img src="./images/google.svg" alt="google" />
-              </span>
-              <span>Continue with Gmail</span>
-            </div>
-            <div className="github mt-4 h-10" onClick={() => openPopup()}>
-              <span className="icon mr-2">
-                <img src="./images/github.svg" alt="github" />
-              </span>
-              <span>Continue with Github</span>
-            </div>
-          </div>
-        </div>
 
-        <div className="noAccount text-center mt-8">
-          <span>Don't you have an account yet? </span>
-          <span className="signUp ml-1">
-            <NavLink to="/register">Sign up</NavLink>
-          </span>
+          <div className="anotherLogin mt-10">
+            <div className="title relative">
+              <span className="absolute" style={{ color: darkThemeSet.colorText2 }}>
+                Or
+              </span>
+              <hr />
+            </div>
+            <div className="loginTool mt-10 w-full">
+              <div className="google h-10" onClick={() => handleSignInWithGoogle()}>
+                <span className="icon mr-2">
+                  <img src="./images/google.svg" alt="google" />
+                </span>
+                <span>Continue with Gmail</span>
+              </div>
+              <div className="github mt-4 h-10" onClick={() => openPopup()}>
+                <span className="icon mr-2">
+                  <img src="./images/github.svg" alt="github" />
+                </span>
+                <span>Continue with Github</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="noAccount text-center mt-8">
+            <span>Don't you have an account yet? </span>
+            <span className="signUp ml-1">
+              <NavLink to="/register">Sign up</NavLink>
+            </span>
+          </div>
         </div>
-      </div>
-    </StyleTotal>
+      </StyleTotal>
+    </ConfigProvider>
   );
 };
 

@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssChat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFaceSmile, faMicrophone, faPaperclip, faSnowflake } from '@fortawesome/free-solid-svg-icons';
-import dataEmoji from '@emoji-mart/data';
-import Picker from '@emoji-mart/react';
+import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
 import { CommentOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import { NavLink, useParams } from 'react-router-dom';
@@ -16,10 +14,10 @@ import MessageChat from '../../components/ChatComponent/MessageChat/MessageChat'
 import { useConversationsData, useCurrentConversationData, useFollowersData } from '../../util/functions/DataProvider';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { messageService } from '../../services/MessageService';
-import UploadComponent from '../../components/UploadComponent/UploadComponent';
 import SharedMedia from '../../components/ChatComponent/SharedMedia/SharedMedia';
 import LoadingChat from './LoadingChat';
 import LoadingConversation from './LoadingConversation';
+import { InputChat } from '../../components/ChatComponent/InputChat/InputChat';
 
 const Chat = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -37,38 +35,11 @@ const Chat = () => {
     dispatch(GET_USER_ID());
   }, []);
 
-  const [message, setMessage] = useState('');
-  const [cursor, setCursor] = useState(0);
-
-  const handleSubmit = async (data: any) => {
-    if (!conversationID) return;
-    if (!data) return;
-    setMessage('');
-    await messageService.sendMessage({
-      conversationID,
-      body: data,
-    });
-  };
-
   const { conversations, isLoadingConversations } = useConversationsData();
 
   const { followers, isLoadingFollowers } = useFollowersData(userID);
 
   const { isLoadingConversation } = useCurrentConversationData(conversationID ? conversationID : undefined);
-
-  const handleUpload = async (error: any, result: any, widget: any) => {
-    if (error) {
-      widget.close({
-        quiet: true,
-      });
-      return;
-    }
-
-    await messageService.sendMessage({
-      conversationID,
-      image: result?.info?.secure_url,
-    });
-  };
 
   const [isDisplayShare, setIsDisplayShare] = useState(false);
 
@@ -160,93 +131,7 @@ const Chat = () => {
                       isDisplayShare={isDisplayShare}
                     />
                   </div>
-                  <div
-                    className="footer flex justify-between items-center"
-                    style={{
-                      height: '8%',
-                    }}
-                  >
-                    <div
-                      className="iconEmoji text-center"
-                      style={{
-                        width: '5%',
-                      }}
-                    >
-                      <Popover
-                        placement="top"
-                        trigger="click"
-                        title={'Emoji'}
-                        content={
-                          <Picker
-                            data={dataEmoji}
-                            onEmojiSelect={(emoji: any) => {
-                              setMessage(message.slice(0, cursor) + emoji.native + message.slice(cursor));
-                            }}
-                            theme={themeColorSet.colorPicker}
-                          />
-                        }
-                      >
-                        <span className="emoji">
-                          <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
-                        </span>
-                      </Popover>
-                    </div>
-                    <div
-                      className="input"
-                      style={{
-                        width: '78%',
-                      }}
-                    >
-                      <ConfigProvider
-                        theme={{
-                          token: {
-                            controlHeight: 32,
-                            lineWidth: 0,
-                          },
-                        }}
-                      >
-                        <Input
-                          allowClear
-                          placeholder="Write a message"
-                          value={message}
-                          onKeyUp={(e) => {
-                            // get cursor position
-                            const cursorPosition = e.currentTarget.selectionStart;
-                            setCursor(cursorPosition || 0);
-                          }}
-                          onClick={(e) => {
-                            // get cursor position
-                            const cursorPosition = e.currentTarget.selectionStart;
-                            setCursor(cursorPosition || 0);
-                          }}
-                          onChange={(e) => {
-                            setMessage(e.currentTarget.value);
-                            // get cursor position
-                            const cursorPosition = e.currentTarget.selectionStart;
-                            setCursor(cursorPosition || 0);
-                          }}
-                          onPressEnter={(e) => {
-                            handleSubmit(e.currentTarget.value);
-                          }}
-                        />
-                      </ConfigProvider>
-                    </div>
-                    <Space
-                      className="extension text-center"
-                      style={{
-                        width: '12%',
-                      }}
-                    >
-                      <UploadComponent onUpload={handleUpload}>
-                        <div className="upload">
-                          <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faPaperclip} />
-                        </div>
-                      </UploadComponent>
-                      <div className="micro">
-                        <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faMicrophone} />
-                      </div>
-                    </Space>
-                  </div>
+                  <InputChat conversationID={conversationID} />
                 </>
               )}
             </div>

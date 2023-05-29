@@ -5,6 +5,7 @@ import { ConfigProvider, Divider, Space } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const RenderPeopleItem = ({ item }: any) => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -49,7 +50,7 @@ const RenderPeopleItem = ({ item }: any) => {
                 className="name"
                 style={{
                   color: themeColorSet.colorText1,
-                  fontSize: '1.2rem',
+                  fontSize: '1.1rem',
                   fontWeight: '600',
                 }}
               >
@@ -78,7 +79,7 @@ const RenderPeopleItem = ({ item }: any) => {
                   color: themeColorSet.colorText3,
                 }}
               >
-                {item._id}
+                {item.email.slice(0, item.email.indexOf('@'))}
               </span>
             </Space>
             <div
@@ -88,7 +89,11 @@ const RenderPeopleItem = ({ item }: any) => {
                 fontSize: '0.9rem',
               }}
             >
-              {item.description?.length > 100 ? item.description.slice(0, 100) + '...' : item.description}
+              {item?.experiences.length > 0
+                ? item?.experiences.length > 1
+                  ? item?.experiences[0].positionName + ' & ' + item?.experiences[1].positionName
+                  : item?.experiences[0].positionName
+                : ''}
             </div>
           </div>
           <div
@@ -97,15 +102,16 @@ const RenderPeopleItem = ({ item }: any) => {
               width: '10%',
             }}
           >
-            <button
-              className="btnFollow px-4 py-2"
+            <ButtonActiveHover
+              rounded
               onClick={() => {
                 setFollow(!follow);
                 dispatch(FOLLOW_USER_SAGA(item._id));
               }}
             >
+              {' '}
               {!follow ? 'Follow' : 'Following'}
-            </button>
+            </ButtonActiveHover>
           </div>
         </div>
         <Divider

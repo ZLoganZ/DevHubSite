@@ -4,6 +4,8 @@ const initialState = {
   username: 'Admintck1',
   password: 'Admintck1',
   userInfo: null,
+
+  repos: [],
 };
 
 const userSlice = createSlice({
@@ -23,8 +25,14 @@ const userSlice = createSlice({
         userInfo: action.payload.userInfo,
       };
     },
+    setRepos: (state, action) => {
+      return {
+        ...state,
+        repos: action.payload.repository,
+      };
+    },
   },
 });
 
-export const { loginUser, setUser } = userSlice.actions;
+export const { loginUser, setUser, setRepos } = userSlice.actions;
 export default userSlice.reducer;

@@ -5,7 +5,7 @@ const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
   .ql-toolbar {
     svg {
-      filter: ${(props) => props.theme.colorEditor};
+      filter: ${(props) => props.theme.colorSVG};
     }
   }
   .ql-editor {

@@ -6,7 +6,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { ConfigProvider } from 'antd';
 import StyleTotal from './cssQuillEdit';
 import ImageCompress from 'quill-image-compress';
-import { setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
+import { closeModal, setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
 
 Quill.register('modules/imageCompress', ImageCompress);
 var toolbarOptions = [
@@ -19,7 +19,7 @@ var toolbarOptions = [
 interface QuillEditProps {
   placeholder: string;
   content: string;
-  callbackFuntion: (value: String) => void;
+  callbackFunction: (value: String) => void;
 }
 
 const QuillEdit = (Props: QuillEditProps) => {
@@ -81,8 +81,9 @@ const QuillEdit = (Props: QuillEditProps) => {
   // Kiểm tra nội dung của value để set callback
   const handleQuillChangeValue = () => {
     const HTML = new DOMParser().parseFromString(value, 'text/html').body.innerText;
-    if (HTML === '') Props.callbackFuntion('');
-    else Props.callbackFuntion(value);
+    if (HTML === '') Props.callbackFunction('');
+    else Props.callbackFunction(value);
+    dispatch(closeModal());
   };
 
   useEffect(() => {

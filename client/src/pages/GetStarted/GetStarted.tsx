@@ -10,6 +10,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssGetStarted';
 import { CHOOSE_GET_STARTED_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
 import { set } from 'lodash';
+import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const GetStarted = () => {
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ const GetStarted = () => {
             <div
               className="text mt-4"
               style={{
+                color: themeColorSet.colorText1,
                 fontSize: '1.8rem',
                 fontWeight: '600',
               }}
@@ -141,8 +143,12 @@ const GetStarted = () => {
                     />
                   </span>
                   <span className="contentText">
-                    <div className="top">Connect with developers and the community</div>
-                    <div className="bottom">I'm looking for work</div>
+                    <div className="top font-semibold" style={{ color: themeColorSet.colorText1 }}>
+                      Connect with developers and the community
+                    </div>
+                    <div className="bottom mt-2" style={{ color: themeColorSet.colorText3, fontSize: '0.9rem' }}>
+                      Explore communities and build your developers network.
+                    </div>
                   </span>
                 </Space>
               </div>
@@ -176,26 +182,32 @@ const GetStarted = () => {
                     />
                   </span>
                   <span className="contentText">
-                    <div className="top">Connect with developers and the community</div>
-                    <div className="bottom">I'm looking for work</div>
+                    <div className="top font-semibold" style={{ color: themeColorSet.colorText1 }}>
+                      Connect with developers and the community
+                    </div>
+                    <div className="bottom mt-2" style={{ color: themeColorSet.colorText3, fontSize: '0.9rem' }}>
+                      Set preferencdes and explorer jobs tailored for you.
+                    </div>
                   </span>
                 </Space>
               </div>
             </div>
 
-            <button
-              className="btnNext absolute px-6 py-2"
-              onClick={(e) => {
-                if (value === 0) {
-                  error();
-                  return;
-                }
-                dispatch(CHOOSE_GET_STARTED_SAGA(value));
-                navigate('/select-interest');
-              }}
-            >
-              Next
-            </button>
+            <span className="btnNext absolute">
+              <ButtonActiveHover
+                rounded
+                onClick={() => {
+                  if (value === 0) {
+                    error();
+                    return;
+                  }
+                  dispatch(CHOOSE_GET_STARTED_SAGA(value));
+                  navigate('/select-interest');
+                }}
+              >
+                Next
+              </ButtonActiveHover>
+            </span>
           </div>
         </div>
       </StyleTotal>

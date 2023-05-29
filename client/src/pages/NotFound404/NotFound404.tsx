@@ -5,11 +5,13 @@ import { ConfigProvider } from 'antd';
 import StyleTotal from './cssNotFound404';
 import { NavLink } from 'react-router-dom';
 
-const NotFound404 = ({ login }: any) => {
+const NotFound404 = () => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
+  document.title = 'Not Found!';
 
   return (
     <ConfigProvider

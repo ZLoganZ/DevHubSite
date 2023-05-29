@@ -1,4 +1,4 @@
-import { Button, ConfigProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import React, { useState, useLayoutEffect } from 'react';
 import { messageService } from '../../../services/MessageService';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
 import StyleTotal from './cssOpenPostDetailModal';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import { set } from 'lodash';
+import { ButtonActiveHover, ButtonCancelHover } from '../../MiniComponent/MiniComponent';
 
 interface Props {
   users: [];
@@ -61,18 +62,18 @@ const OpenGroupModal = (Props: Props) => {
         title: 'Create a new group chat',
         component: <GroupChatModal setName={handleSetName} setValue={handleSetGroupMember} users={Props.users} />,
         footer: (
-          <div className="mt-6 flex items-center justify-end gap-x-6">
-            <Button
-              disabled={isLoading}
+          <div className="mt-6 flex items-center justify-end gap-x-3">
+            <ButtonCancelHover
               onClick={() => {
                 dispatch(closeModal());
               }}
+              disabled={isLoading}
             >
               Cancel
-            </Button>
-            <Button loading={isLoading} type="primary" onClick={onSubmit}>
+            </ButtonCancelHover>
+            <ButtonActiveHover rounded loading={isLoading} onClick={onSubmit}>
               Create
-            </Button>
+            </ButtonActiveHover>
           </div>
         ),
       }),

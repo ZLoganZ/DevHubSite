@@ -41,7 +41,7 @@ const Headers = () => {
   const { themeColorSet } = getTheme();
   const { algorithm } = getTheme();
 
-  const switchTheme = localStorage.getItem('theme') === 'dark';
+  const switchTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : true;
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   // Switch theme
@@ -195,7 +195,6 @@ const Headers = () => {
       setMessages((current: any) =>
         current.map((currentConversation: any) => {
           if (currentConversation._id === conversation.id) {
-            popupNotification(conversation.messages[conversation.messages.length - 1], currentConversation);
             return {
               ...currentConversation,
               messages: conversation.messages,

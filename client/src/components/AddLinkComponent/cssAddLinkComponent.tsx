@@ -18,6 +18,7 @@ const StyleTotal = styled.div`
     }
   }
   .inputlink {
+    box-shadow: none;
     :hover {
       border-color: ${commonColor.colorBlue1};
     }

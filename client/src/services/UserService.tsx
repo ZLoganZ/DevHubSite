@@ -20,7 +20,9 @@ export class UserService extends BaseService {
   followUser = (userID: any) => {
     return this.post(`/users/${userID}/follow`, '');
   };
- 
+  getRepositoryGithub = () => {
+    return this.getgithub(`/user/github`);
+  };
 }
 
 export const userService = new UserService();

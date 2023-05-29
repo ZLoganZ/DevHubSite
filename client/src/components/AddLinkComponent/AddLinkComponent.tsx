@@ -11,6 +11,9 @@ import { faTrashCan, faPlus, faInfo } from '@fortawesome/free-solid-svg-icons';
 import { forEach, set } from 'lodash';
 import { a } from '../../util/functions/UtilFunction';
 import { hover } from '@testing-library/user-event/dist/hover';
+import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
+
 const AddLinkComponent = (Props: any) => {
   const dispatch = useDispatch();
 
@@ -127,13 +130,13 @@ const AddLinkComponent = (Props: any) => {
   return (
     <ConfigProvider
       theme={{
-        token: themeColor,
+        token: { ...themeColor, colorBorder: themeColorSet.colorBg4, controlHeight: 40 },
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-7">
           {addLinkArrTemp.map((item: any, index: any) => (
-            <div className="flex flex-row items-center mb-2">
+            <div className="flex flex-row items-center mb-4">
               <Dropdown
                 menu={{
                   items: contactArray,
@@ -146,17 +149,12 @@ const AddLinkComponent = (Props: any) => {
                 <a onClick={(e) => e.preventDefault()}>
                   <Button
                     className="flex items-center"
-                    size="large"
                     style={{
-                      maxWidth: 200,
-                      width: 100,
-                      fontWeight: 600,
-                      fontSize: 16,
                       color: themeColorSet.colorText1,
                     }}
                   >
-                    <Avatar className="item" icon={contactArray[parseInt(item.key)].icon} />
-                    <DownOutlined style={{}} />
+                    <Avatar style={{color: themeColorSet.colorText1}} className="item" icon={contactArray[parseInt(item.key)].icon} size={'small'} />
+                    <DownOutlined style={{ fontSize: '0.8rem' }} />
                   </Button>
                 </a>
               </Dropdown>
@@ -201,60 +199,55 @@ const AddLinkComponent = (Props: any) => {
                   borderRadius: 8,
                 }}
               />
-              <Tooltip title="Click to edit tooltip">
-                <Button
-                  className="icon-edit-tooltip ml-3"
-                  shape="circle"
-                  style={{ border: 'none', backgroundColor: themeColorSet.colorBg3 }}
-                  onClick={() => {
-                    handleShowTooltip(index);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faInfo} className="w-4 h-4" />
-                </Button>
-              </Tooltip>
-              <Tooltip title="Remove" autoAdjustOverflow style={{ transition: 'all 1.5s' }}>
-                <Button
-                  className="icon-trash"
-                  style={{ border: 'none' }}
-                  onClick={() => {
-                    handleDelete(index);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} className="w-5 h-5" />
-                </Button>
-              </Tooltip>
+
+              <Button
+                className="icon-edit-tooltip ml-3"
+                shape="circle"
+                style={{ border: 'none', backgroundColor: themeColorSet.colorBg3 }}
+                onClick={() => {
+                  handleShowTooltip(index);
+                }}
+                size="small"
+              >
+                <FontAwesomeIcon icon={faInfo} style={{ color: commonColor.colorBlue2, fontSize: '1rem' }} />
+              </Button>
+
+              <Button
+                className="icon-trash"
+                style={{ border: 'none' }}
+                onClick={() => {
+                  handleDelete(index);
+                }}
+              >
+                <FontAwesomeIcon icon={faTrashCan} size='lg' />
+              </Button>
             </div>
           ))}
           <Button
-            className="mb-2"
+            className="my-3"
             onClick={() => {
               setAddLinkArr([...addLinkArr, { key: '0', tooltip: 'Facebook', link: '' }]);
               addLinkArrTemp = [...addLinkArr, { key: '0', tooltip: 'Facebook', link: '' }];
-              // console.log(addTooltips, addTooltipsTemp);
 
               setAddTooltips([...addTooltips, { key: '0', tooltip: 'Facebook', state: false }]);
               addTooltipsTemp = [...addTooltips, { key: '0', tooltip: 'Facebook', state: false }];
-              // console.log(addTooltips, addTooltipsTemp);
             }}
           >
             <FontAwesomeIcon icon={faPlus} className="mr-2" />
             Add
           </Button>
-          <Button
-            className="mb-2"
-            onClick={() => {
-              handleClickSubmit();
-              setAddLinkArr(addLinkArrTemp);
-              dispatch(closeModal(setSave(true)));
-            }}
-            style={{
-              backgroundColor: themeColorSet.colorBg4,
-              color: themeColorSet.colorText1,
-            }}
-          >
-            UPDATE
-          </Button>
+          <div className="mt-3">
+            <ButtonActiveHover
+              onClick={() => {
+                handleClickSubmit();
+                setAddLinkArr(addLinkArrTemp);
+                dispatch(closeModal(setSave(true)));
+              }}
+              block
+            >
+              UPDATE
+            </ButtonActiveHover>
+          </div>
         </div>
       </StyleTotal>
     </ConfigProvider>

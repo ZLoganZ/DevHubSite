@@ -1,26 +1,30 @@
-import styled, { css } from "styled-components";
-import { flex_center_column, flex_center_row } from "../../util/cssVariable/cssVariable";
+import styled, { css } from 'styled-components';
+import { flex_center_column, darkThemeSet, commonColor } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
-  background-color: #1f1f23;
+  background-color: ${darkThemeSet.colorBg1};
   ${flex_center_column};
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px ${darkThemeSet.colorBg2} inset !important;
+    -webkit-text-fill-color: ${darkThemeSet.colorText1} !important;
+  }
+
   .register {
     width: 70%;
     height: 85%;
     border-radius: 15px;
     overflow: hidden;
-    background-image: url("./images/registerPage/background.jpg");
+    background-image: url('./images/registerPage/background.jpg');
     background-size: cover;
     .cover {
       width: 100%;
       height: 100%;
-      color: #d4d4d4;
-      background-image: linear-gradient(
-        to right,
-        #161618,
-        #1e1d2bf4,
-        rgba(0, 0, 0, 0.5)
-      );
+      color: ${darkThemeSet.colorText2};
+      background-image: linear-gradient(to right, #161618d5, #1e1d2bb5, rgba(0, 0, 0, 0.21));
       .content {
         width: 40%;
         .lineTop {
@@ -33,52 +37,43 @@ const StyleTotal = styled.div`
               justify-content: center;
             }
           }
-          .home,
-          .john {
-            cursor: pointer;
-            color: #979797;
-            &:hover {
-              color: #d4d4d4;
-              transition: all 0.5s;
-            }
-          }
         }
         .account {
           .startFree {
             font-size: 1rem;
-            color: #979797;
+            color: ${darkThemeSet.colorText3};
           }
           .createAccount {
             font-size: 2rem;
             font-weight: 700;
           }
-          .member{
-                font-size: 0.8rem;
-            .memberEd{
-                color: #979797;
+          .member {
+            font-size: 0.8rem;
+            .memberEd {
+              color: ${darkThemeSet.colorText3};
             }
-            .login{
-                color: #1f67e3;
-                &:hover{
-                    cursor: pointer;
-                    color: #1353c1;
-                    transition: all 0.5s;
-                }
+            .login {
+              color: ${commonColor.colorBlue1};
+              &:hover {
+                cursor: pointer;
+                color: ${commonColor.colorBlue3};
+                transition: all 0.5s;
+              }
             }
           }
-          .formAccount{
-            .buttonCreate{
-                background-color: #1f67e3;
-                color: #d4d4d4;
-                font-size: 0.9rem;
-                font-weight: 700;
-                padding: 0.5rem 1rem;
-                border-radius: 25px;
-                &:hover{
-                    cursor: pointer;
-                    background-color: #1353c1;
-                    transition: all 0.5s;
-                }
+          .formAccount {
+            .buttonCreate {
+              background-color: ${commonColor.colorBlue1};
+              color: ${darkThemeSet.colorText2};
+              font-size: 0.9rem;
+              font-weight: 700;
+              padding: 0.5rem 1rem;
+              border-radius: 25px;
+              &:hover {
+                cursor: pointer;
+                background-color: ${commonColor.colorBlue3};
+                transition: all 0.5s;
+              }
             }
           }
         }

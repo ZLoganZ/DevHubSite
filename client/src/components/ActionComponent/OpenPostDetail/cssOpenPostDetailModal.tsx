@@ -13,6 +13,12 @@ const StyleTotal = styled.div`
     left: -5.5rem;
     z-index: 1;
   }
+
+  .commentInput{
+    input{
+      box-shadow: none;
+    }
+  }
 `;
 
 export default StyleTotal;

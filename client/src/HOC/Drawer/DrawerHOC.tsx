@@ -3,9 +3,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssDrawerHOC';
-import { Button, Drawer, Space } from 'antd';
+import { Drawer, Space } from 'antd';
 import { closeDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent/MiniComponent';
 
 const DrawerHOC = () => {
   const dispatch = useDispatch();
@@ -39,27 +40,18 @@ const DrawerHOC = () => {
             footer={
               <div style={{ textAlign: 'right' }}>
                 <Space>
-                  <Button
-                    className="btnCancelDrawer"
-                    style={{
-                      borderColor: themeColorSet.colorText1,
-                      color: themeColorSet.colorText1,
-                    }}
-                    onClick={onClose}
-                    disabled={loading}
-                  >
+                  <ButtonCancelHover onClick={onClose} disabled={loading}>
                     Cancel
-                  </Button>
-                  <Button
-                  style={{backgroundColor: commonColor.colorBlue2, color: commonColor.colorWhile1}}
-                  className="btnSubmitDrawer"
+                  </ButtonCancelHover>
+                  <ButtonActiveHover
                     onClick={() => {
                       callBackSubmit();
                     }}
                     loading={loading}
+                    rounded
                   >
                     Submit
-                  </Button>
+                  </ButtonActiveHover>
                 </Space>
               </div>
             }

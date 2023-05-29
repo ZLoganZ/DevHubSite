@@ -15,7 +15,7 @@ import { Avatar, ConfigProvider, Divider, Dropdown, Space, Modal, notification, 
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -37,6 +37,7 @@ import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
+import { sha1 } from 'crypto-hash';
 
 interface PostProps {
   post: any;
@@ -66,7 +67,7 @@ const MyPost = (PostProps: PostProps) => {
 
   // Like color
   const [likeColor, setLikeColor] = useState(themeColorSet.colorText1);
-  
+
   useEffect(() => {
     PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor(themeColorSet.colorText1);
   }, [PostProps.post?.isLiked, change]);
@@ -134,7 +135,33 @@ const MyPost = (PostProps: PostProps) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
+
+  const handleOk = async () => {
+    if (PostProps.post?.url) await handleRemoveImage(PostProps.post?.url);
     dispatch(
       DELETE_POST_SAGA({
         id: PostProps.post?._id,
@@ -213,14 +240,6 @@ const MyPost = (PostProps: PostProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   function removeCode(htmlString: any): any {
     const doc = new DOMParser().parseFromString(htmlString, 'text/html');
     const elements = doc.getElementsByClassName('ql-syntax');
@@ -294,9 +313,13 @@ const MyPost = (PostProps: PostProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? (
-        <OpenMyPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
-      ) : null}
+      <OpenMyPostDetailModal
+        key={PostProps.post?._id}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
@@ -385,7 +408,10 @@ const MyPost = (PostProps: PostProps) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{likeNumber} Like</span>
+                <span>
+                  {likeNumber}
+                  {likeNumber > 1 ? ' Likes' : ' Like'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -409,7 +435,10 @@ const MyPost = (PostProps: PostProps) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>{shareNumber} Share</span>
+                <span>
+                  {shareNumber}
+                  {shareNumber > 1 ? ' Shares' : ' Share'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -435,11 +464,14 @@ const MyPost = (PostProps: PostProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post?.comments?.length} Comment</span>
+                <span>
+                  {PostProps.post?.comments?.length}
+                  {PostProps.post?.comments?.length > 1 ? ' Comments' : ' Comment'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
-                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1}/>}
+                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
                   }}
@@ -447,7 +479,7 @@ const MyPost = (PostProps: PostProps) => {
               </Space>
               <Space className="like" direction="vertical" align="center">
                 <span>
-                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                  {PostProps.post.views} {PostProps.post.views > 1 ? 'Views' : 'View'}
                 </span>
                 <Space>
                   <Avatar

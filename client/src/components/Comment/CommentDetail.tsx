@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Comment, Icon } from '@ant-design/compatible';
+import { useState } from 'react';
+import { Comment } from '@ant-design/compatible';
 import { Avatar, ConfigProvider, Skeleton, Tooltip } from 'antd';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from '../Post/cssPost';
 import { DISLIKE_COMMENT_POST_SAGA, LIKE_COMMENT_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import Icon, { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
 
 interface CommentProps {
   comment: any;
@@ -70,7 +70,11 @@ const CommentDetail = (Props: CommentProps) => {
       <Tooltip title="Like">
         <Icon
           type="like"
-          theme={action === 'liked' ? 'filled' : 'outlined'}
+          component={
+            action === 'liked'
+              ? (LikeFilled as React.ForwardRefExoticComponent<any>)
+              : (LikeOutlined as React.ForwardRefExoticComponent<any>)
+          }
           onClick={like}
           style={{
             fontSize: '0.9rem',
@@ -83,7 +87,11 @@ const CommentDetail = (Props: CommentProps) => {
       <Tooltip title="Dislike">
         <Icon
           type="dislike"
-          theme={action === 'disliked' ? 'filled' : 'outlined'}
+          component={
+            action === 'disliked'
+              ? (DislikeFilled as React.ForwardRefExoticComponent<any>)
+              : (DislikeOutlined as React.ForwardRefExoticComponent<any>)
+          }
           onClick={dislike}
           style={{
             fontSize: '0.9rem',

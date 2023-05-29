@@ -11,6 +11,7 @@ import StyleTotal from './cssSelectFollow';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import { CHOOSE_SHOULD_FOLLOW_SAGA, GET_SHOULD_FOLLOWERS_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
 import RenderPeopleItem from './RenderPeopleItem';
+import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const SelectFollow = () => {
   const dispatch = useDispatch();
@@ -27,8 +28,6 @@ const SelectFollow = () => {
   }, []);
 
   const peopleArray = useSelector((state: any) => state.getStartedReducer.arrayShouldFollowers);
-
-  const peopleFollowArr: any = [];
 
   return (
     <ConfigProvider
@@ -92,6 +91,7 @@ const SelectFollow = () => {
               style={{
                 fontSize: '1.8rem',
                 fontWeight: '600',
+                color: themeColorSet.colorText1,
               }}
             >
               Here are some people with similar interests
@@ -101,9 +101,9 @@ const SelectFollow = () => {
                 <RenderPeopleItem item={item} key={index} />
               ))}
             </div>
-            <div className="button mt-16 mr-2 mb-10 text-right">
+            <div className="button mt-16 mb-10 text-right">
               <NavLink to="/">
-                <button className="btnDone px-4 py-2">Done</button>
+                <ButtonActiveHover rounded>Done</ButtonActiveHover>
               </NavLink>
             </div>
           </div>

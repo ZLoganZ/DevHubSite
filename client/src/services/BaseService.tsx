@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DOMAIN_NAME, TOKEN } from '../util/constants/SettingSystem';
+import { DOMAIN_NAME, TOKEN, TOKEN_GITHUB } from '../util/constants/SettingSystem';
 
 export class BaseService {
   put(url: string, model: any) {
@@ -37,6 +37,17 @@ export class BaseService {
       method: 'DELETE',
       withCredentials: true,
       headers: { Authorization: 'Bearer ' + localStorage.getItem(TOKEN) },
+    });
+  }
+  getgithub(url: string) {
+    return axios({
+      url: `${DOMAIN_NAME}${url}`,
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem(TOKEN),
+        access_token_github: localStorage.getItem(TOKEN_GITHUB),
+      },
     });
   }
 }

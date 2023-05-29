@@ -15,7 +15,6 @@ import ProfileWrapper from './components/Wrapper/ProfileWrapper';
 import PostWrapper from './components/Wrapper/PostWrapper';
 import PostShareWrapper from './components/Wrapper/PostShareWrapper';
 import NewFeed from './pages/NewsFeed/Newsfeed';
-import CommunityMember from './pages/Community/CommunityMember';
 import React from 'react';
 import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
 const LazyLoadingAuth = React.lazy(() => import('./components/ActionComponent/Authentication/Auth'));
@@ -23,6 +22,9 @@ const LazyLoadingAlreadyAuth = React.lazy(() => import('./components/ActionCompo
 import LoadingLogo from './components/GlobalSetting/LoadingLogo/LoadingLogo';
 import NotFound404 from './pages/NotFound404/NotFound404';
 import CommunityWrapper from './pages/Community/CommunityWrapper';
+import { ForgotPassword } from './pages/ForgotPassword/ForgotPassword';
+import { VerifyCode } from './pages/ForgotPassword/VerifyCode';
+import { ResetPassword } from './pages/ForgotPassword/ResetPassword';
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -49,6 +51,9 @@ const App = () => {
         >
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/verify" element={<VerifyCode />} />
+          <Route path="/reset" element={<ResetPassword />} />
         </Route>
         <Route
           element={
@@ -68,7 +73,7 @@ const App = () => {
           <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
           <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
           <Route path="/community/:communityID" element={<MainTemplate Component={CommunityWrapper} />} />
-          <Route path="*" element={<NotFound404 login={true}/>} />
+          <Route path="*" element={<NotFound404 />} />
         </Route>
       </Routes>
     </>

@@ -144,14 +144,6 @@ const MyPostShare = (PostProps: PostShareProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   // Read more
   const [expanded, setExpanded] = useState(false);
 
@@ -219,15 +211,15 @@ const MyPostShare = (PostProps: PostShareProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? (
-        <OpenMyPostDetailModal
-          key={PostProps.post?._id}
-          postShare={true}
-          post={PostProps.post}
-          userInfo={PostProps.userInfo}
-          owner={PostProps.owner}
-        />
-      ) : null}
+      <OpenMyPostDetailModal
+        key={PostProps.post?._id}
+        postShare={true}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        owner={PostProps.owner}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
@@ -346,7 +338,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{likeNumber} Like</span>
+                <span>
+                  {likeNumber}
+                  {likeNumber > 1 ? ' Likes' : ' Like'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -372,7 +367,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post?.comments?.length} Comment</span>
+                <span>
+                  {PostProps.post?.comments?.length}
+                  {PostProps.post?.comments?.length > 1 ? ' Comments' : ' Comment'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -384,7 +382,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
               </Space>
               <Space className="like" direction="vertical" align="center">
                 <span>
-                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                  {PostProps.post.views} {PostProps.post.views > 1 ? 'Views' : 'View'}
                 </span>
                 <Space>
                   <Avatar

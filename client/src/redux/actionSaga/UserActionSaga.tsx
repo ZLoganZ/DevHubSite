@@ -15,3 +15,5 @@ export const GET_USER_INFO_SAGA = createAction('GET_USER_INFO_SAGA');
 export const FOLLOW_USER_SAGA = createAction('FOLLOW_USER_SAGA', (data) => ({
   payload: data,
 }));
+
+export const GET_REPOSITORY_SAGA = createAction('GET_REPOSITORY_SAGA');

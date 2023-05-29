@@ -4,7 +4,7 @@ import { ConfigProvider, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssAddTagComponent';
-import { setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
+import { closeModal, setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
 
 const AddTagComponent = (Props: any) => {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const AddTagComponent = (Props: any) => {
 
   const handleSubmit = () => {
     Props.callback(addTagArr);
+    dispatch(closeModal());
   };
 
   useEffect(() => {

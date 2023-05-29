@@ -4,6 +4,7 @@ import { commonColor } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
+  min-height: calc(100vh - 5rem);
   height: fit-content;
   color: ${(props) => props.theme.colorText1};
 
@@ -81,6 +82,23 @@ const StyleTotal = styled.div`
         background-color: ${(props) => props.theme.colorBg4};
         cursor: pointer;
         transition: all 0.3s;
+      }
+    }
+  }
+  .mainContain {
+    .renderRepositoryIem {
+      cursor: pointer;
+      :hover {
+        .top {
+          .name {
+            text-decoration: underline;
+          }
+        }
+      }
+      .top {
+        .iconRepos {
+          filter: ${(props) => props.theme.colorSVG};
+        }
       }
     }
   }
