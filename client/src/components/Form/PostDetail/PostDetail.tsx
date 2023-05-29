@@ -3,6 +3,8 @@ import Post from '../../Post/Post';
 import { useState, useEffect } from 'react';
 import PostShare from '../../Post/PostShare';
 import StyleTotal from './cssPostDetail';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../util/functions/ThemeFunction';
 
 interface PostProps {
   post: any;
@@ -14,6 +16,11 @@ interface PostProps {
 }
 
 const PostDetail = (Props: PostProps) => {
+  // Lấy theme từ LocalStorage chuyển qua css
+  const { change } = useSelector((state: any) => state.themeReducer);
+  const { themeColor } = getTheme();
+  const { themeColorSet } = getTheme();
+
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(Props.data.idComment);
 
   useEffect(() => {
@@ -25,20 +32,20 @@ const PostDetail = (Props: PostProps) => {
   };
 
   return (
-    <StyleTotal>
-      <div
-        className="postDetail"
-        style={{
-          maxHeight: '74vh', 
-          overflow: 'auto',
-        }}
-      >
+    <StyleTotal theme={themeColorSet}>
+      <div className="postDetail">
         {Props.postShare ? (
           <PostShare key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
         ) : (
           <Post key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
         )}
-        <div className="commentTotal px-3 ml-4">
+        <div
+          className="commentTotal px-3 ml-4"
+          style={{
+            maxHeight: '30rem',
+            overflow: 'auto',
+          }}
+        >
           {Props.post?.comments?.map((item: any) => {
             return (
               <div key={item?._id}>

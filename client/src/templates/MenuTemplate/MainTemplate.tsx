@@ -36,7 +36,7 @@ const MainTemplate = (props: any) => {
         token: themeColor,
       }}
     >
-      <StyleTotal theme={themeColorSet}>
+      <StyleTotal className='abcdef' theme={themeColorSet}>
         <Layout style={{ backgroundColor: themeColorSet.colorBg1 }}>
           <FloatButton.BackTop />
           <Headers />

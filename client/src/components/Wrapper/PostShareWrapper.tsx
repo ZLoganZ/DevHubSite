@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_POSTSHARE_BY_ID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostShareDetail from '../ActionComponent/OpenPostDetail/OpenPostShareDetail';
-import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { Col, ConfigProvider, Row, Skeleton } from 'antd';
 import { getTheme } from '../../util/functions/ThemeFunction';
 
@@ -37,11 +36,13 @@ const PostShareWrapper = () => {
     if (!isNotAlreadyChanged) return;
 
     setIsNotAlreadyChanged(postRef.current === post);
+  }, [post, isNotAlreadyChanged]);
 
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postRef.current = post;
     }
-  }, [userInfoSlice, postSlice, isNotAlreadyChanged, postRef]);
+  }, [isNotAlreadyChanged, post]);
 
   if (!post || !userInfo || isNotAlreadyChanged) {
     return (

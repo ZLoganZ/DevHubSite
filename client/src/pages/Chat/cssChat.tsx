@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { commonColor, flex_center_row } from '../../util/cssVariable/cssVariable';
+import { commonColor, custom_scrollBar, flex_center_row } from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   height: fit-content;
@@ -48,9 +48,7 @@ const StyleTotal = styled.div`
       .header {
       }
       .body {
-        &::-webkit-scrollbar {
-          display: none;
-        }
+        ${custom_scrollBar}
       }
       .footer {
         .iconEmoji {

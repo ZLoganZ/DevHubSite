@@ -39,6 +39,8 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const [commentContent, setCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
+  const [visible, setVisible] = useState(PostProps.visible);
+
   useEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
@@ -124,7 +126,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
-          ref={inputRef}
+            ref={inputRef}
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
@@ -209,9 +211,12 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
               <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
             </ConfigProvider>
           }
-          open={PostProps.visible}
+          open={visible}
           onCancel={() => {
-            PostProps.setVisible(false);
+            setVisible(false);
+            setTimeout(() => {
+              PostProps.setVisible(false);
+            }, 300);
           }}
         >
           {memoizedComponent}

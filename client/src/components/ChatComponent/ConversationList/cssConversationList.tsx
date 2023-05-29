@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { commonColor } from "../../../util/cssVariable/cssVariable";
+import { commonColor, custom_scrollBar } from "../../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
@@ -15,9 +15,7 @@ const StyleTotal = styled.div`
     }
   }
   .userChat {
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    ${custom_scrollBar}
   }
 `;
 

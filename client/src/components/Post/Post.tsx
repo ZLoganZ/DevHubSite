@@ -182,13 +182,15 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
-      <OpenPostDetailModal
-        key={PostProps.post?._id}
-        post={PostProps.post}
-        userInfo={PostProps.userInfo}
-        visible={isOpenPostDetail}
-        setVisible={setIsOpenPostDetail}
-      />
+      {isOpenPostDetail && (
+        <OpenPostDetailModal
+          key={PostProps.post?._id}
+          post={PostProps.post}
+          userInfo={PostProps.userInfo}
+          visible={isOpenPostDetail}
+          setVisible={setIsOpenPostDetail}
+        />
+      )}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

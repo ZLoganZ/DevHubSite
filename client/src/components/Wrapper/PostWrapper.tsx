@@ -3,8 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_POST_BY_ID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetail from '../ActionComponent/OpenPostDetail/OpenPostDetail';
-import OpenMyPostDetail from '../ActionComponent/OpenPostDetail/OpenMyPostDetail';
-import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import { Col, ConfigProvider, Row, Skeleton } from 'antd';
 
@@ -39,11 +37,13 @@ const PostWrapper = () => {
     if (!isNotAlreadyChanged) return;
 
     setIsNotAlreadyChanged(postRef.current === post);
+  }, [post, isNotAlreadyChanged]);
 
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postRef.current = post;
     }
-  }, [userInfoSlice, postSlice, isNotAlreadyChanged, postRef]);
+  }, [isNotAlreadyChanged, post]);
 
   if (!post || !userInfo || isNotAlreadyChanged) {
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import { Checkbox, ConfigProvider, Space } from 'antd';
+import { Checkbox, ConfigProvider, Space, Spin } from 'antd';
 import StyleTotal from './cssAddRepositoryForm';
 import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
 import { GET_REPOSITORY_SAGA } from '../../../redux/actionSaga/UserActionSaga';
@@ -162,11 +162,12 @@ const AddRepositoryForm = (Props: ReposProps) => {
     >
       <StyleTotal theme={themeColorSet}>
         <div className="addRepositories">
-          {access_token_github ? (
-           <> <LoadingComponent />
-           <></>
-           </>
-            
+          {!access_token_github || repos.length === 0 ? (
+            <div className="py-20">
+              <Spin tip="Loading" size="large">
+                <div className="content" />
+              </Spin>
+            </div>
           ) : (
             // Nếu có access_token_github
             <div>

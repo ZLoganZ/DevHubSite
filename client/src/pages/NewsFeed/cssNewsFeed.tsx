@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import {} from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};

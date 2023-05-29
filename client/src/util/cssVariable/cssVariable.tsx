@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 
-
 // --------------------------------------------
 
 export const darkTheme = {
@@ -116,5 +115,25 @@ export const change_color_autoFill = css`
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px ${(props) => props.theme.colorBg2} inset !important;
     -webkit-text-fill-color: ${(props) => props.theme.colorText1} !important;
+  }
+`;
+export const custom_scrollBar = css`
+  &::-webkit-scrollbar {
+    width: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: ${(props) => props.theme.colorBg2};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ${(props) => props.theme.colorBg4};
   }
 `;

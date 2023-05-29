@@ -10,8 +10,6 @@ const LoadingComponent = () => {
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
-  const { isLoading } = useSelector((state: any) => state.loadingReducer);
-  if (!isLoading) return null;
 
   return (
     <ConfigProvider
@@ -20,11 +18,9 @@ const LoadingComponent = () => {
       }}
     >
       <StyleTotal>
-        <Space className="w-screen h-screen justify-center" direction="vertical">
-          <Spin size="large">
-            <div className="content" />
-          </Spin>
-        </Space>
+        <Spin tip="Loading" size="large">
+          <div className="content" />
+        </Spin>
       </StyleTotal>
     </ConfigProvider>
   );

@@ -4,7 +4,14 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSnowflake, faFileLines, faLocationDot, faBriefcase, faStar, faCodeFork } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSnowflake,
+  faFileLines,
+  faLocationDot,
+  faBriefcase,
+  faStar,
+  faCodeFork,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -65,11 +72,13 @@ const Profile = (Props: Props) => {
     if (!isNotAlreadyChanged) return;
 
     setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  }, [isNotAlreadyChanged, postArray]);
 
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postArrayRef.current = postArray;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
+  }, [isNotAlreadyChanged, postArray]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
 

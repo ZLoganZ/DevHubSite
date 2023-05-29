@@ -211,15 +211,17 @@ const MyPostShare = (PostProps: PostShareProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      <OpenMyPostDetailModal
-        key={PostProps.post?._id}
-        postShare={true}
-        post={PostProps.post}
-        userInfo={PostProps.userInfo}
-        owner={PostProps.owner}
-        visible={isOpenPostDetail}
-        setVisible={setIsOpenPostDetail}
-      />
+      {isOpenPostDetail && (
+        <OpenMyPostDetailModal
+          key={PostProps.post?._id}
+          postShare={true}
+          post={PostProps.post}
+          userInfo={PostProps.userInfo}
+          owner={PostProps.owner}
+          visible={isOpenPostDetail}
+          setVisible={setIsOpenPostDetail}
+        />
+      )}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

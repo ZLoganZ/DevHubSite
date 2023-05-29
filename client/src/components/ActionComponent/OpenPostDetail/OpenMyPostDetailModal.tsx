@@ -50,6 +50,8 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
+  const [visible, setVisible] = useState(PostProps.visible);
+
   const handleData = (data: any) => {
     setData(data);
   };
@@ -206,9 +208,12 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
               <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
             </ConfigProvider>
           }
-          open={PostProps.visible}
+          open={visible}
           onCancel={() => {
-            PostProps.setVisible(false);
+            setVisible(false);
+            setTimeout(() => {
+              PostProps.setVisible(false);
+            }, 300);
           }}
         >
           {memoizedComponent}

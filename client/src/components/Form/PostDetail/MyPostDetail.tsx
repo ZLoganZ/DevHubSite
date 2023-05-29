@@ -26,50 +26,52 @@ const MyPostDetail = (Props: PostProps) => {
 
   return (
     <StyleTotal>
-      <div
-        className="postDetail"
-        style={{
-          maxHeight: '74vh',
-          overflow: 'auto',
-        }}
-      >
+      <div className="postDetail">
         {Props.postShare ? (
           <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
         ) : (
           <MyPost post={Props.post} userInfo={Props.userInfo} />
         )}
-        {Props.post?.comments?.map((item: any) => {
-          return (
-            <div className="px-4" key={item?._id}>
-              {item ? (
-                <CommentDetail
-                  onData={Props.onData}
-                  key={item?._id}
-                  comment={item}
-                  userInfo={Props.userInfo}
-                  selectedCommentId={selectedCommentId}
-                  onSelectComment={handleSelectComment}
-                  postID={Props.post._id}
-                >
-                  {item.listReply?.map((item: any, index: number) => {
-                    return (
-                      <CommentDetail
-                        onData={Props.onData}
-                        key={item?._id}
-                        comment={item}
-                        userInfo={Props.userInfo}
-                        selectedCommentId={selectedCommentId}
-                        onSelectComment={handleSelectComment}
-                        isReply={true}
-                        postID={Props.post._id}
-                      />
-                    );
-                  })}
-                </CommentDetail>
-              ) : null}
-            </div>
-          );
-        })}
+        <div
+          className="commentTotal px-3 ml-4"
+          style={{
+            maxHeight: '30rem',
+            overflow: 'auto',
+          }}
+        >
+          {Props.post?.comments?.map((item: any) => {
+            return (
+              <div className="px-4" key={item?._id}>
+                {item ? (
+                  <CommentDetail
+                    onData={Props.onData}
+                    key={item?._id}
+                    comment={item}
+                    userInfo={Props.userInfo}
+                    selectedCommentId={selectedCommentId}
+                    onSelectComment={handleSelectComment}
+                    postID={Props.post._id}
+                  >
+                    {item.listReply?.map((item: any, index: number) => {
+                      return (
+                        <CommentDetail
+                          onData={Props.onData}
+                          key={item?._id}
+                          comment={item}
+                          userInfo={Props.userInfo}
+                          selectedCommentId={selectedCommentId}
+                          onSelectComment={handleSelectComment}
+                          isReply={true}
+                          postID={Props.post._id}
+                        />
+                      );
+                    })}
+                  </CommentDetail>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </StyleTotal>
   );

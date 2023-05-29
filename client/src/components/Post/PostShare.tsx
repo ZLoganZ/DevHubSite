@@ -127,15 +127,17 @@ const PostShare = (PostProps: PostShareProps) => {
         token: themeColor,
       }}
     >
-      <OpenPostDetailModal
-        key={PostProps.post?._id}
-        postShare={true}
-        post={PostProps.post}
-        userInfo={PostProps.userInfo}
-        owner={PostProps.owner}
-        visible={isOpenPostDetail}
-        setVisible={setIsOpenPostDetail}
-      />
+      {isOpenPostDetail && (
+        <OpenPostDetailModal
+          key={PostProps.post?._id}
+          postShare={true}
+          post={PostProps.post}
+          userInfo={PostProps.userInfo}
+          owner={PostProps.owner}
+          visible={isOpenPostDetail}
+          setVisible={setIsOpenPostDetail}
+        />
+      )}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

@@ -80,11 +80,13 @@ const MyProfile = () => {
     if (!isNotAlreadyChanged) return;
 
     setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  }, [isNotAlreadyChanged, postArray]);
 
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postArrayRef.current = postArray;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
+  }, [isNotAlreadyChanged, postArray]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 

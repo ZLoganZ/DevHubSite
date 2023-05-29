@@ -181,7 +181,6 @@ const OpenMyPostDetail = (Props: Props) => {
               ? {
                   style: {
                     color: 'gray',
-                    //hover disabled
                     cursor: 'not-allowed',
                   },
                 }
