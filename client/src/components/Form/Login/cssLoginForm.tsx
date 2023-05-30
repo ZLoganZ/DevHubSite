@@ -62,6 +62,19 @@ const StyleTotal = styled.div`
       }
     }
 
+    .forgot {
+      color: ${darkThemeSet.colorText2};
+      font-size: 0.9rem;
+      text-decoration: underline solid ${darkThemeSet.colorText2};
+      text-underline-position: below;
+      &:hover {
+        color: ${commonColor.colorBlue1};
+        transition: all 0.5s;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+
     .anotherLogin {
       width: 70%;
       .title {
@@ -114,7 +127,7 @@ const StyleTotal = styled.div`
       .signUp {
         color: ${commonColor.colorBlue1};
         &:hover {
-          color: ${commonColor.colorBlue2};
+          color: ${commonColor.colorBlue3};
           transition: all 0.5s;
           cursor: pointer;
         }

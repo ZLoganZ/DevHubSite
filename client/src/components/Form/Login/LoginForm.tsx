@@ -124,8 +124,10 @@ const LoginForm = () => {
             <button type="submit" className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold">
               Login
             </button>
+            <NavLink to="/forgot">
+              <span className="forgot flex justify-center align-middle">Forgot your password?</span>
+            </NavLink>
           </Form>
-
           <div className="anotherLogin mt-10">
             <div className="title relative">
               <span className="absolute" style={{ color: darkThemeSet.colorText2 }}>
