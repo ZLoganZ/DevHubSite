@@ -37,7 +37,7 @@ const AddRepositoryForm = (Props: ReposProps) => {
     let userData: any = undefined;
 
     const handleMessage = (event: any) => {
-      if (event.origin === 'http://localhost:7000') {
+      if (event.origin === 'https://dev-hub-pro.herokuapp.com') {
         userData = event.data;
         if (userData) {
           localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
