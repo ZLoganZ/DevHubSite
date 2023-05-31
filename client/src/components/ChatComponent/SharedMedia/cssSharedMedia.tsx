@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
+  .titleContent {
+    color: ${commonColor.colorWhile1};
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
   .shared {
     .extension {
       .extensionItem {

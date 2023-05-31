@@ -27,7 +27,12 @@ function* LoginSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      window.location.replace('/');
+      const { location } = yield select((state) => state.functionReducer);
+
+      const state = location.state as { from: Location };
+      const from = state?.from?.pathname || '/';
+
+      window.location.replace(from);
     }
   } catch (err: any) {
     console.log(err);
@@ -93,7 +98,12 @@ function* LoginWithGoogleSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      window.location.replace('/');
+      const { location } = yield select((state) => state.functionReducer);
+
+      const state = location.state as { from: Location };
+      const from = state?.from.pathname || '/';
+
+      window.location.replace(from);
     }
   } catch (err: any) {
     console.log(err);

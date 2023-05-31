@@ -128,7 +128,7 @@ const Post = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        window.open(`https://devhubsite.vercel.app/post/${PostProps.post?._id}`, '_blank')?.focus();
+        window.open(`/post/${PostProps.post?._id}`, '_blank')?.focus();
       },
     },
   ];

@@ -179,7 +179,12 @@ const SharedMedia = (Props: SharedMediaProps) => {
                 borderColor: themeColorSet.colorBg4,
               }}
             >
-              <div className="flex justify-center items-center w-full">
+              <div
+                className="flex justify-center items-center w-full"
+                style={{
+                  color: themeColorSet.colorText3,
+                }}
+              >
                 <div
                   className="setting text-center"
                   style={{
@@ -237,7 +242,14 @@ const SharedMedia = (Props: SharedMediaProps) => {
             <div className="fileShare px-3 py-4">
               <div className="sharedFile mt-5">
                 <div className="flex justify-between items-center mb-3">
-                  <div className="titleContent font-bold">Images</div>
+                  <div
+                    className="titleContent font-bold"
+                    style={{
+                      color: themeColorSet.colorText1,
+                    }}
+                  >
+                    Images
+                  </div>
                 </div>
                 <div className="content">
                   {items.length === 0 ? (

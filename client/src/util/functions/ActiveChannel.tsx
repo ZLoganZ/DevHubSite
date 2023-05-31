@@ -9,7 +9,10 @@ const ActiveChannel = () => {
   const { members } = useSelector((state: any) => state.activeListReducer);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
 
+  const login = useSelector((state: any) => state.authReducer.login);
+
   useEffect(() => {
+    if (!login) return;
     let channel = activeChannel;
 
     if (!channel) {
@@ -34,7 +37,7 @@ const ActiveChannel = () => {
         setActiveChannel(null);
       }
     };
-  }, [activeChannel, addMember, setMembers, removeMember]);
+  }, [activeChannel, addMember, setMembers, removeMember, login]);
 };
 
 export default ActiveChannel;

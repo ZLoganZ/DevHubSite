@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import LoadingLogo from '../../GlobalSetting/LoadingLogo/LoadingLogo';
 import { CHECK_LOGIN_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 
 const AlreadyAuth = () => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
 
   const login = useSelector((state: any) => state.authReducer.login);
 
@@ -20,14 +22,10 @@ const AlreadyAuth = () => {
   }
 
   if (login === true) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
 
-  return (
-    <React.Suspense fallback={<LoadingLogo />}>
-      <Outlet />
-    </React.Suspense>
-  );
+  return <Outlet />;
 };
 
 export default AlreadyAuth;
