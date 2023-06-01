@@ -4,7 +4,6 @@ import { UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
 import ConfigProvider from 'antd/es/config-provider';
 import Input from 'antd/es/input';
-
 import StyleTotal from './cssRegister';
 import { useDispatch } from 'react-redux';
 import { REGIS_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';

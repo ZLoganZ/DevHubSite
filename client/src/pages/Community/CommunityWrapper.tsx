@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { GET_COMMUNITY_BYID_SAGA } from '../../redux/actionSaga/CommunityActionSaga';
+import { GET_COMMUNITY_BY_ID_SAGA } from '../../redux/actionSaga/CommunityActionSaga';
 import CommunityAdmin from './CommunityAdmin';
 import CommunityMember from './CommunityMember';
 import CommunityNoMember from './CommunityNoMember';
@@ -21,7 +21,7 @@ const CommunityWrapper = () => {
   const { communityID } = useParams();
 
   useEffect(() => {
-    dispatch(GET_COMMUNITY_BYID_SAGA(communityID));
+    dispatch(GET_COMMUNITY_BY_ID_SAGA(communityID));
   }, []);
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);

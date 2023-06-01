@@ -1,48 +1,16 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, { useEffect } from 'react';
 import StyleTotal from './cssCommunity';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import {
-  Avatar,
-  Col,
-  Collapse,
-  ConfigProvider,
-  Empty,
-  Input,
-  Row,
-  Skeleton,
-  Space,
-  Switch,
-  Tabs,
-  Tag,
-  theme,
-  Tooltip,
-} from 'antd';
+import { Avatar, Col, Collapse, ConfigProvider, Empty, Row, Space, Tabs } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSnowflake,
-  faFileLines,
-  faComments,
-  faLocationDot,
-  faBriefcase,
-  faCalendar,
-} from '@fortawesome/free-solid-svg-icons';
-import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { faFileLines, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { commonColor } from '../../util/cssVariable/cssVariable';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 import MyPost from '../../components/Post/MyPost';
 import NewPost from '../../components/NewPost/NewPost';
-import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import MyPostShare from '../../components/Post/MyPostShare';
-import { useParams } from 'react-router-dom';
-import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
-import { isThisWeek, isThisYear, isToday, format } from 'date-fns';
+import { format } from 'date-fns';
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;

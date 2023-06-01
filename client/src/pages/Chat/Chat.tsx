@@ -1,4 +1,4 @@
-import { ConfigProvider, Input, Popover, Space } from 'antd';
+import { ConfigProvider, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -11,9 +11,8 @@ import { NavLink, useParams } from 'react-router-dom';
 import ConversationList from '../../components/ChatComponent/ConversationList/ConversationList';
 import EmptyChat from '../../components/ChatComponent/EmptyChat/EmptyChat';
 import MessageChat from '../../components/ChatComponent/MessageChat/MessageChat';
-import { useConversationsData, useCurrentConversationData, useFollowersData } from '../../util/functions/DataProvider';
+import { useConversationsData, useCurrentConversationData, useFollowersData } from '../../hooks/DataProvider';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
-import { messageService } from '../../services/MessageService';
 import SharedMedia from '../../components/ChatComponent/SharedMedia/SharedMedia';
 import LoadingChat from './LoadingChat';
 import LoadingConversation from './LoadingConversation';

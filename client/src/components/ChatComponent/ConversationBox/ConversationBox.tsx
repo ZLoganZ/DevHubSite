@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import OtherUser from '../../../util/functions/OtherUser';
+import useOtherUser from '../../../hooks/useOtherUser';
 import { useMemo } from 'react';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 import AvatarGroup from '../../Avatar/AvatarGroup';
@@ -12,7 +12,7 @@ interface ConversationBoxProps {
 }
 
 const ConversationBox = (Props: ConversationBoxProps) => {
-  const otherUser = OtherUser(Props.data);
+  const otherUser = useOtherUser(Props.data);
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);

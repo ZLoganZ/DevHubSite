@@ -1,4 +1,3 @@
-import { DiffFilled, PlusOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import {
   faBookmark,
   faBriefcase,
@@ -9,7 +8,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, ConfigProvider, Divider, Menu } from 'antd';
+import { Avatar, ConfigProvider, Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';

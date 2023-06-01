@@ -1,5 +1,4 @@
 import { Image } from 'antd';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Avatar from '../../Avatar/AvatarMessage';
 import format from 'date-fns/format';

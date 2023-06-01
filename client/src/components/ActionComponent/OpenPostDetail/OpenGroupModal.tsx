@@ -6,7 +6,6 @@ import GroupChatModal from '../../ChatComponent/GroupChatModal/GroupChatModal';
 import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
 import StyleTotal from './cssOpenPostDetailModal';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import { set } from 'lodash';
 import { ButtonActiveHover, ButtonCancelHover } from '../../MiniComponent/MiniComponent';
 
 interface Props {

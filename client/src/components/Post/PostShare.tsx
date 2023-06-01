@@ -12,7 +12,7 @@ import { INCREASE_VIEW_SHARE_SAGA, LIKE_POSTSHARE_SAGA } from '../../redux/actio
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
-import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';

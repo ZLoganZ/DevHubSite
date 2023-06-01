@@ -1,4 +1,4 @@
-import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload, UploadFile } from 'antd';
+import { Button, ConfigProvider, Input, message, Popover, Upload, UploadFile } from 'antd';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import React, { useEffect, useState, useMemo } from 'react';
@@ -9,9 +9,8 @@ import ImageCompress from 'quill-image-compress';
 import dataEmoji from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import { faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { useFormik } from 'formik';
-import { TOKEN } from '../../../util/constants/SettingSystem';
 import { UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
 import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';

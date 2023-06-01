@@ -5,7 +5,7 @@ import { Image, Space, Empty, Skeleton } from 'antd';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import { useSelector } from 'react-redux';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
-import { useCurrentConversationData } from '../../../util/functions/DataProvider';
+import { useCurrentConversationData } from '../../../hooks/DataProvider';
 import StyleTotal from './cssSharedMedia';
 import { useEffect, useMemo, useState } from 'react';
 import { pusherClient } from '../../../util/functions/Pusher';

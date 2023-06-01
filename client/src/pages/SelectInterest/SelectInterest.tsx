@@ -1,12 +1,12 @@
 import { ConfigProvider, message } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssSelectInterest';
 import { CHOOSE_GET_INTEREST_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
-import descArray from '../../util/constants/Description';
+import descArray from '../../components/GlobalSetting/ItemComponent/Description';
 import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const SelectInterest = () => {

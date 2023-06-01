@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-const OtherUser = (conversation: any) => {
+const useOtherUser = (conversation: any) => {
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const otherUser = useMemo(() => {
@@ -17,4 +17,4 @@ const OtherUser = (conversation: any) => {
   return otherUser;
 };
 
-export default OtherUser;
+export default useOtherUser;

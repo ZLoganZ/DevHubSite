@@ -1,15 +1,13 @@
-import { CommentOutlined } from '@ant-design/icons';
 import { faBriefcase, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, ConfigProvider, Radio, Space, message } from 'antd';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssGetStarted';
 import { CHOOSE_GET_STARTED_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
-import { set } from 'lodash';
 import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 
 const GetStarted = () => {

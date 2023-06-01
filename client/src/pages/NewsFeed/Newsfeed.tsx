@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Button, Col, ConfigProvider, Dropdown, MenuProps, Row, Space } from 'antd';
-
+import { Col, ConfigProvider, Dropdown, MenuProps, Row, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faThumbsUp, faSun, faComment, faFileLines, faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import { DownOutlined, RiseOutlined } from '@ant-design/icons';
+import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { DownOutlined } from '@ant-design/icons';
 import { GET_ALL_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
 import StyleTotal from './cssNewsFeed';
@@ -14,7 +13,6 @@ import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { useAllPostsData } from '../../util/functions/DataProvider';
 
 const items = [
   {

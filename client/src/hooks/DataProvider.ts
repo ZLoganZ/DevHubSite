@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSelector, useDispatch } from 'react-redux';
-import { setAllPost, setIsInProfile, setOwnerInfo, setPostArr } from '../../redux/Slice/PostSlice';
-import { postService } from '../../services/PostService';
-import { setUser } from '../../redux/Slice/UserSlice';
-import { messageService } from '../../services/MessageService';
-import { userService } from '../../services/UserService';
+import { useDispatch } from 'react-redux';
+import { setAllPost, setIsInProfile, setOwnerInfo, setPostArr } from '../redux/Slice/PostSlice';
+import { postService } from '../services/PostService';
+import { setUser } from '../redux/Slice/UserSlice';
+import { messageService } from '../services/MessageService';
+import { userService } from '../services/UserService';
 
 const useAllPostsData = () => {
   const dispatch = useDispatch();

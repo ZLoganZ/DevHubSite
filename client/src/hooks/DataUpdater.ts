@@ -1,8 +1,6 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useSelector, useDispatch } from 'react-redux';
-import { setAllPost, setIsInProfile, setOwnerInfo, setPostArr } from '../../redux/Slice/PostSlice';
-import { postService } from '../../services/PostService';
-import { setUser } from '../../redux/Slice/UserSlice';
+import { useMutation } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { postService } from '../services/PostService';
 import { useQueryClient } from '@tanstack/react-query';
 
 const updateAllPosts = () => {};

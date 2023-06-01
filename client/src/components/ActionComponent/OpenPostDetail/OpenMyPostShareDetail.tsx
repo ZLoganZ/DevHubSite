@@ -2,7 +2,6 @@ import { Avatar, ConfigProvider, Input, Popover, Row, Col } from 'antd';
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import PostDetail from '../../Form/PostDetail/PostDetail';
 import StyleTotal from './cssOpenPostDetail';
 import dataEmoji from '@emoji-mart/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +12,6 @@ import {
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
-  GET_POST_BY_ID_SAGA,
 } from '../../../redux/actionSaga/PostActionSaga';
 import { useParams } from 'react-router-dom';
 import MyPostDetail from '../../Form/PostDetail/MyPostDetail';

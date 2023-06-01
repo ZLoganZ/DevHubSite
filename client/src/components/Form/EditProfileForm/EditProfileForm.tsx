@@ -1,4 +1,4 @@
-import { ConfigProvider, Space, Tag, Avatar, Tooltip, Upload, Image, message } from 'antd';
+import { ConfigProvider, Space, Tag, Avatar, Upload, Image, message } from 'antd';
 import React, { useState, useCallback, useMemo } from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { faBriefcase, faCodeFork, faEdit, faPlus, faStar, faTrash } from '@forta
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
-import descArray from '../../../util/constants/Description';
+import descArray from '../../GlobalSetting/ItemComponent/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
 import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
 import { icon } from '@fortawesome/fontawesome-svg-core';
@@ -20,7 +20,6 @@ import QuillEdit from '../../QuillEdit/QuillEdit';
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill, { Value } from 'react-quill';
 import AddExperienceForm from '../ExperienceForm/AddExperienceForm';
-import dayjs from 'dayjs';
 import EditExperienceForm from '../ExperienceForm/EditExperienceForm';
 import AddRepositoryForm from '../AddRepositoryForm/AddRepositoryForm';
 import GithubColors from 'github-colors';

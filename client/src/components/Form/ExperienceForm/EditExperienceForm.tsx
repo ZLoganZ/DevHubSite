@@ -6,7 +6,6 @@ import StyleTotal from './cssAddExperienceForm';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { closeModal, setHandleSubmit } from '../../../redux/Slice/ModalHOCSlice';
-import { set } from 'lodash';
 
 interface EditProps {
   experiences: any;

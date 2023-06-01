@@ -32,7 +32,7 @@ import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
-import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';

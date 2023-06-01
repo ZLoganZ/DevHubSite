@@ -1,18 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Col,
-  ConfigProvider,
-  Dropdown,
-  Empty,
-  Row,
-  Space,
-  Switch,
-  notification,
-  theme,
-} from 'antd';
+import { Avatar, Badge, Button, Col, ConfigProvider, Dropdown, Empty, Row, Space, notification } from 'antd';
 import type { MenuProps } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +15,7 @@ import { setTheme } from '../../redux/Slice/ThemeSlice';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DayNightSwitch from '../Button/Day&NightSwitch';
 import { LOGOUT_SAGA } from '../../redux/actionSaga/AuthActionSaga';
-import { useConversationsData } from '../../util/functions/DataProvider';
+import { useConversationsData } from '../../hooks/DataProvider';
 import { pusherClient } from '../../util/functions/Pusher';
 import { format } from 'date-fns';
 import AvatarGroup from '../Avatar/AvatarGroup';

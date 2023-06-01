@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Space, Spin, theme } from 'antd';
+import { useSelector } from 'react-redux';
+import { Spin } from 'antd';
 import ConfigProvider from 'antd/es/config-provider';
 import StyleTotal from './cssLoadingComponent';
 import { getTheme } from '../../../util/functions/ThemeFunction';

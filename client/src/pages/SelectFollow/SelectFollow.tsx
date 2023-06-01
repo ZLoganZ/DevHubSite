@@ -1,15 +1,11 @@
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ConfigProvider, Space } from 'antd';
-import { Divider } from 'antd';
+import { ConfigProvider } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssSelectFollow';
-import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
-import { CHOOSE_SHOULD_FOLLOW_SAGA, GET_SHOULD_FOLLOWERS_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
+import { GET_SHOULD_FOLLOWERS_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
 import RenderPeopleItem from './RenderPeopleItem';
 import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
 

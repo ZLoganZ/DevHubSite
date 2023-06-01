@@ -5,7 +5,6 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssDrawerHOC';
 import { Drawer, Space } from 'antd';
 import { closeDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import { commonColor } from '../../util/cssVariable/cssVariable';
 import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent/MiniComponent';
 
 const DrawerHOC = () => {

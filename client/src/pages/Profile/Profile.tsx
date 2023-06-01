@@ -20,7 +20,7 @@ import Post from '../../components/Post/Post';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
-import descArray from '../../util/constants/Description';
+import descArray from '../../components/GlobalSetting/ItemComponent/Description'
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import ReactQuill from 'react-quill';

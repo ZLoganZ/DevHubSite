@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { ConfigProvider, FloatButton, Layout } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Headers from '../../components/Headers/Headers';
@@ -36,7 +36,7 @@ const MainTemplate = (props: any) => {
         token: themeColor,
       }}
     >
-      <StyleTotal className='abcdef' theme={themeColorSet}>
+      <StyleTotal className="abcdef" theme={themeColorSet}>
         <Layout style={{ backgroundColor: themeColorSet.colorBg1 }}>
           <FloatButton.BackTop />
           <Headers />

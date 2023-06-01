@@ -21,7 +21,7 @@ import { SHARE_POST_SAGA, LIKE_POSTSHARE_SAGA, INCREASE_VIEW_SHARE_SAGA } from '
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
-import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';

@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 let cloudinary: any;
 let widget: any;

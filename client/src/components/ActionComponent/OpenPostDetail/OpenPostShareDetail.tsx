@@ -13,7 +13,6 @@ import {
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
-  GET_POST_BY_ID_SAGA,
 } from '../../../redux/actionSaga/PostActionSaga';
 import { useParams } from 'react-router-dom';
 

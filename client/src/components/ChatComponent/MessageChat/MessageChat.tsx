@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssMessageChat';
 import AvatarGroup from '../../Avatar/AvatarGroup';
-import OtherUser from '../../../util/functions/OtherUser';
+import useOtherUser from '../../../hooks/useOtherUser';
 import Avatar from '../../Avatar/AvatarMessage';
 import MessageBox from '../MessageBox/MessageBox';
 import { pusherClient } from '../../../util/functions/Pusher';
 import { find } from 'lodash';
-import { useCurrentConversationData, useMessagesData } from '../../../util/functions/DataProvider';
+import { useCurrentConversationData, useMessagesData } from '../../../hooks/DataProvider';
 import { messageService } from '../../../services/MessageService';
-import useIntersectionObserverNow from '../../../util/functions/useIntersectionObserverNow';
+import useIntersectionObserverNow from '../../../hooks/useIntersectionObserverNow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
@@ -33,7 +33,7 @@ const MessageChat = (Props: IParams) => {
 
   const { messages, isLoadingMessages } = useMessagesData(Props.conversationId);
 
-  const otherUser = OtherUser(currentConversation);
+  const otherUser = useOtherUser(currentConversation);
 
   const [count, setCount] = useState(0);
 
@@ -44,7 +44,7 @@ const MessageChat = (Props: IParams) => {
       return `${currentConversation.users.length} members`;
     }
 
-    return isActive ? 'Active' : 'Offline';
+    return isActive ? 'Online' : 'Offline';
   }, [currentConversation, isActive]);
 
   const bottomRef = useRef<HTMLDivElement>(null);

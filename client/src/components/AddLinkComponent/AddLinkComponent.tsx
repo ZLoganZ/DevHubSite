@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import contactArrays from '../../util/constants/Contact';
-import { ConfigProvider, Tag, Dropdown, Button, Input, Avatar, Tooltip } from 'antd';
+import contactArrays from '../GlobalSetting/ItemComponent/Contact';
+import { ConfigProvider, Dropdown, Button, Input, Avatar } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssAddLinkComponent';
-import { closeModal, setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
+import { closeModal } from '../../redux/Slice/ModalHOCSlice';
 import { DownOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faPlus, faInfo } from '@fortawesome/free-solid-svg-icons';
-import { forEach, set } from 'lodash';
-import { a } from '../../util/functions/UtilFunction';
-import { hover } from '@testing-library/user-event/dist/hover';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
 
@@ -153,7 +150,12 @@ const AddLinkComponent = (Props: any) => {
                       color: themeColorSet.colorText1,
                     }}
                   >
-                    <Avatar style={{color: themeColorSet.colorText1}} className="item" icon={contactArray[parseInt(item.key)].icon} size={'small'} />
+                    <Avatar
+                      style={{ color: themeColorSet.colorText1 }}
+                      className="item"
+                      icon={contactArray[parseInt(item.key)].icon}
+                      size={'small'}
+                    />
                     <DownOutlined style={{ fontSize: '0.8rem' }} />
                   </Button>
                 </a>
@@ -219,7 +221,7 @@ const AddLinkComponent = (Props: any) => {
                   handleDelete(index);
                 }}
               >
-                <FontAwesomeIcon icon={faTrashCan} size='lg' />
+                <FontAwesomeIcon icon={faTrashCan} size="lg" />
               </Button>
             </div>
           ))}
