@@ -4,8 +4,8 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { ConfigProvider, Divider, Space } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
-import { commonColor } from '../../util/cssVariable/cssVariable';
-import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
+import { commonColor } from '../../util/cssVariable';
+import { ButtonActiveHover } from '../../components/MiniComponent';
 
 const RenderPeopleItem = ({ item }: any) => {
   // Lấy theme từ LocalStorage chuyển qua css

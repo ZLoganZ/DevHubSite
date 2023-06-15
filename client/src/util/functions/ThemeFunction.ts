@@ -1,10 +1,10 @@
-import { DARK_THEME, LIGHT_THEME } from "../constants/SettingSystem";
-import { lightTheme, darkTheme } from "../cssVariable/cssVariable";
-import { lightThemeSet, darkThemeSet } from "../cssVariable/cssVariable";
-import { theme } from "antd";
+import { DARK_THEME, LIGHT_THEME } from '../constants/SettingSystem';
+import { lightTheme, darkTheme } from '../cssVariable';
+import { lightThemeSet, darkThemeSet } from '../cssVariable';
+import { theme } from 'antd';
 
 export const getTheme = () => {
-  let themeLocal = localStorage.getItem("theme");
+  let themeLocal = localStorage.getItem('theme');
   switch (themeLocal) {
     case DARK_THEME: {
       return {

@@ -5,7 +5,7 @@ import { Avatar, ConfigProvider } from 'antd';
 import StyleTotal from './cssPopupInfoUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faEllipsis, faSnowflake } from '@fortawesome/free-solid-svg-icons';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import { NavLink } from 'react-router-dom';
 
@@ -85,7 +85,7 @@ const PopupInfoUser = ({ userInfo, isMe }: any) => {
                       setIsFollowing(!isFollowing);
                     }}
                   >
-                    <span style={{color: commonColor.colorWhile1}}>{isFollowing ? 'Following' : 'Follow'}</span>
+                    <span style={{ color: commonColor.colorWhile1 }}>{isFollowing ? 'Following' : 'Follow'}</span>
                   </button>
                 </div>
                 <div className="optionButton ">

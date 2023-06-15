@@ -4,11 +4,11 @@ import { Avatar, ConfigProvider, Radio, Space, message } from 'antd';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssGetStarted';
 import { CHOOSE_GET_STARTED_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
-import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
+import { ButtonActiveHover } from '../../components/MiniComponent';
 
 const GetStarted = () => {
   const dispatch = useDispatch();

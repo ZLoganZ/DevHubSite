@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { commonColor, change_color_autoFill } from '../../../util/cssVariable/cssVariable';
+import { commonColor, change_color_autoFill } from '../../../util/cssVariable';
 
 const StyleTotal = styled.div`
   ${change_color_autoFill}

@@ -4,10 +4,10 @@ import { ConfigProvider, Space } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssSelectCommunity';
-import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
+import { ButtonActiveHover } from '../../components/MiniComponent';
 
 const SelectCommunity = () => {
   const communityArray = [

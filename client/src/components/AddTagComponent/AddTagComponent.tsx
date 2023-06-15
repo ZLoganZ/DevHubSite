@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import descArrays from '../GlobalSetting/ItemComponent/Description';
-import { ConfigProvider, Tag } from 'antd';
+import { ConfigProvider} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssAddTagComponent';
@@ -16,7 +16,7 @@ const AddTagComponent = (Props: any) => {
 
   const descArray = [...descArrays];
 
-  const [addTagArr, setAddTagArr] = React.useState<any>([...Props.tags]);
+  const [addTagArr, setAddTagArr] = useState<any>([...Props.tags]);
 
   let addTagArrTemp = [...addTagArr];
 

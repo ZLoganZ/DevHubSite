@@ -8,8 +8,8 @@ import { closeModal } from '../../redux/Slice/ModalHOCSlice';
 import { DownOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faPlus, faInfo } from '@fortawesome/free-solid-svg-icons';
-import { commonColor } from '../../util/cssVariable/cssVariable';
-import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
+import { commonColor } from '../../util/cssVariable';
+import { ButtonActiveHover } from '../MiniComponent';
 
 const AddLinkComponent = (Props: any) => {
   const dispatch = useDispatch();

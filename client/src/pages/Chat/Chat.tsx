@@ -8,15 +8,15 @@ import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
 import { CommentOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import { NavLink, useParams } from 'react-router-dom';
-import ConversationList from '../../components/ChatComponent/ConversationList/ConversationList';
-import EmptyChat from '../../components/ChatComponent/EmptyChat/EmptyChat';
-import MessageChat from '../../components/ChatComponent/MessageChat/MessageChat';
+import ConversationList from '../../components/ChatComponent/ConversationList';
+import EmptyChat from '../../components/ChatComponent/EmptyChat';
+import MessageChat from '../../components/ChatComponent/MessageChat';
 import { useConversationsData, useCurrentConversationData, useFollowersData } from '../../hooks/DataProvider';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
-import SharedMedia from '../../components/ChatComponent/SharedMedia/SharedMedia';
-import LoadingChat from './LoadingChat';
-import LoadingConversation from './LoadingConversation';
-import { InputChat } from '../../components/ChatComponent/InputChat/InputChat';
+import SharedMedia from '../../components/ChatComponent/SharedMedia';
+import LoadingChat from '../../components/GlobalSetting/LoadingChat';
+import LoadingConversation from '../../components/GlobalSetting/LoadingConversation';
+import InputChat from '../../components/ChatComponent/InputChat';
 
 const Chat = () => {
   // Lấy theme từ LocalStorage chuyển qua css

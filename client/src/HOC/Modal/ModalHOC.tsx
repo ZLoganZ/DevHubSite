@@ -3,10 +3,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StyleTotal from './cssModalHOC';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Button, Modal, Space } from 'antd';
+import { Modal } from 'antd';
 import { closeModal } from '../../redux/Slice/ModalHOCSlice';
-import { commonColor } from '../../util/cssVariable/cssVariable';
-import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent/MiniComponent';
+import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent';
 
 const ModalHOC = () => {
   const dispatch = useDispatch();

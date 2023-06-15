@@ -5,7 +5,7 @@ import StyleTotal from './cssMessageChat';
 import AvatarGroup from '../../Avatar/AvatarGroup';
 import useOtherUser from '../../../hooks/useOtherUser';
 import Avatar from '../../Avatar/AvatarMessage';
-import MessageBox from '../MessageBox/MessageBox';
+import MessageBox from '../MessageBox';
 import { pusherClient } from '../../../util/functions/Pusher';
 import { find } from 'lodash';
 import { useCurrentConversationData, useMessagesData } from '../../../hooks/DataProvider';

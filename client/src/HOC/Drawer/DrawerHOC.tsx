@@ -5,7 +5,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssDrawerHOC';
 import { Drawer, Space } from 'antd';
 import { closeDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent/MiniComponent';
+import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent';
 
 const DrawerHOC = () => {
   const dispatch = useDispatch();

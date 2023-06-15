@@ -6,11 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileLines } from '@fortawesome/free-solid-svg-icons';
 import { DownOutlined } from '@ant-design/icons';
 import { GET_ALL_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
-import PostShare from '../../components/Post/PostShare';
+import OtherPostShare from '../../components/Post/OtherPostShare';
 import StyleTotal from './cssNewsFeed';
-import NewPost from '../../components/NewPost/NewPost';
-import Post from '../../components/Post/Post';
-import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
+import NewPost from '../../components/NewPost';
+import OtherPost from '../../components/Post/OtherPost';
+import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 
@@ -197,10 +197,10 @@ const NewFeed = () => {
                       return (
                         <div key={index}>
                           {!item.hasOwnProperty('PostShared') && (
-                            <Post key={item._id} post={item} userInfo={item.user} />
+                            <OtherPost key={item._id} post={item} userInfo={item.user} />
                           )}
                           {item.hasOwnProperty('PostShared') && (
-                            <PostShare key={item._id} post={item} userInfo={item.user} owner={item.owner} />
+                            <OtherPostShare key={item._id} post={item} userInfo={item.user} owner={item.owner} />
                           )}
                         </div>
                       );

@@ -9,10 +9,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import { pusherClient } from '../../../util/functions/Pusher';
 import Avatar from '../../Avatar/AvatarMessage';
 import { find } from 'lodash';
-import ConversationBox from '../ConversationBox/ConversationBox';
+import ConversationBox from '../ConversationBox';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { messageService } from '../../../services/MessageService';
-import OpenGroupModal from '../../ActionComponent/OpenPostDetail/OpenGroupModal';
+import OpenGroupModal from '../../ActionComponent/OpenDetail/OpenGroupModal';
 
 interface ConversationListProps {
   initialItems: any;
@@ -163,7 +163,7 @@ const ConversationList = (Props: ConversationListProps) => {
     navigate(`/message/${data.content.conversation._id}`);
   };
 
-  // Open PostDetailModal
+  // Open OtherPostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   const { visible } = useSelector((state: any) => state.modalHOCReducer);

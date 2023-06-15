@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConfigProvider, Input, Popover, Space } from 'antd';
 import React, { useState } from 'react';
-import UploadComponent from '../../UploadComponent/UploadComponent';
+import UploadComponent from '../../UploadComponent';
 import dataEmoji from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ interface Props {
   conversationID: string;
 }
 
-export const InputChat = (Props: Props) => {
+const InputChat = (Props: Props) => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -138,3 +138,5 @@ export const InputChat = (Props: Props) => {
     </ConfigProvider>
   );
 };
+
+export default InputChat;

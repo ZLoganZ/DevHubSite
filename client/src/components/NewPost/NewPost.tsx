@@ -19,8 +19,8 @@ import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
-import { commonColor } from '../../util/cssVariable/cssVariable';
-import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
+import { commonColor } from '../../util/cssVariable';
+import { ButtonActiveHover } from '../MiniComponent';
 
 Quill.register('modules/imageCompress', ImageCompress);
 

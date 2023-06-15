@@ -1,4 +1,4 @@
-import CommentDetail from '../../Comment/CommentDetail';
+import CommentDetail from '../../CommentDetail';
 import { useState, useEffect } from 'react';
 import MyPostShare from '../../Post/MyPostShare';
 import MyPost from '../../Post/MyPost';

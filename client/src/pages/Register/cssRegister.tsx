@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { flex_center_column, darkThemeSet, commonColor } from '../../util/cssVariable/cssVariable';
+import { flex_center_column, darkThemeSet, commonColor } from '../../util/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${darkThemeSet.colorBg1};

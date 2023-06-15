@@ -14,17 +14,17 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import MyPost from '../../components/Post/MyPost';
-import NewPost from '../../components/NewPost/NewPost';
+import NewPost from '../../components/NewPost';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import MyPostShare from '../../components/Post/MyPostShare';
 import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
-import descArray from '../../components/GlobalSetting/ItemComponent/Description'
+import EditProfileForm from '../../components/Form/EditProfileForm';
+import LoadingProfileComponent from '../../components/GlobalSetting/LoadingProfileComponent';
+import descArray from '../../components/GlobalSetting/ItemComponent/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';

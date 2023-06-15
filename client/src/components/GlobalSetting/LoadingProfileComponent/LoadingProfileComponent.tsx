@@ -1,6 +1,6 @@
 import { Col, Row, Skeleton } from 'antd';
 
-export const LoadingProfileComponent = () => {
+const LoadingProfileComponent = () => {
   return (
     <div className="loadingProfileComponent">
       <Row>
@@ -44,3 +44,5 @@ export const LoadingProfileComponent = () => {
     </div>
   );
 };
+
+export default LoadingProfileComponent;

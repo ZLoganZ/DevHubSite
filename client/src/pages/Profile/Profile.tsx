@@ -14,13 +14,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
-import Post from '../../components/Post/Post';
+import OtherPost from '../../components/Post/OtherPost';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
-import PostShare from '../../components/Post/PostShare';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
-import descArray from '../../components/GlobalSetting/ItemComponent/Description'
+import OtherPostShare from '../../components/Post/OtherPostShare';
+import LoadingProfileComponent from '../../components/GlobalSetting/LoadingProfileComponent';
+import descArray from '../../components/GlobalSetting/ItemComponent/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import ReactQuill from 'react-quill';
@@ -430,9 +430,14 @@ const Profile = (Props: Props) => {
                               return (
                                 <div className="w-8/12">
                                   {item.PostShared && (
-                                    <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
+                                    <OtherPostShare
+                                      key={item._id}
+                                      post={item}
+                                      userInfo={ownerInfo}
+                                      owner={item.owner}
+                                    />
                                   )}
-                                  {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
+                                  {!item.PostShared && <OtherPost key={item._id} post={item} userInfo={ownerInfo} />}
                                 </div>
                               );
                             })}

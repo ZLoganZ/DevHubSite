@@ -15,15 +15,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 
 import { SHARE_POST_SAGA, LIKE_POSTSHARE_SAGA, INCREASE_VIEW_SHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
-import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
+import OpenMyPostDetailModal from '../ActionComponent/OpenDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
-import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
+import PopupInfoUser from '../PopupInfoUser';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 
 interface PostShareProps {
@@ -141,7 +141,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
     });
   };
 
-  // Open PostDetailModal
+  // Open OtherPostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   // Read more

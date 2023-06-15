@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 
 import {
   DELETE_POST_SAGA,
@@ -28,13 +28,13 @@ import {
   INCREASE_VIEW_SAGA,
 } from '../../redux/actionSaga/PostActionSaga';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import EditPostForm from '../Form/EditPostForm/EditPostForm';
-import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
+import EditPostForm from '../Form/EditPostForm';
+import OpenMyPostDetailModal from '../ActionComponent/OpenDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import 'highlight.js/styles/monokai-sublime.css';
-import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
+import PopupInfoUser from '../PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 import { sha1 } from 'crypto-hash';
@@ -237,7 +237,7 @@ const MyPost = (PostProps: PostProps) => {
     });
   };
 
-  // Open PostDetailModal
+  // Open OtherPostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   function removeCode(htmlString: any): any {

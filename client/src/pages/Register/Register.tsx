@@ -10,7 +10,7 @@ import { REGIS_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
-import { darkThemeSet } from '../../util/cssVariable/cssVariable';
+import { darkThemeSet } from '../../util/cssVariable';
 
 const Register = () => {
   const dispatch = useDispatch();

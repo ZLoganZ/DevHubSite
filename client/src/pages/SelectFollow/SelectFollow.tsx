@@ -2,12 +2,12 @@ import { ConfigProvider } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssSelectFollow';
 import { GET_SHOULD_FOLLOWERS_SAGA } from '../../redux/actionSaga/GetStartedActionSaga';
 import RenderPeopleItem from './RenderPeopleItem';
-import { ButtonActiveHover } from '../../components/MiniComponent/MiniComponent';
+import { ButtonActiveHover } from '../../components/MiniComponent';
 
 const SelectFollow = () => {
   const dispatch = useDispatch();

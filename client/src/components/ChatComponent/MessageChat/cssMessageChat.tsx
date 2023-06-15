@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { commonColor } from '../../../util/cssVariable/cssVariable';
+import { commonColor } from '../../../util/cssVariable';
 
 const StyleTotal = styled.div`
   .header {
@@ -7,7 +7,7 @@ const StyleTotal = styled.div`
       color: ${(props) => props.theme.colorText3};
       :hover {
         color: ${(props) => props.theme.colorText1};
-        transition: all .5s;
+        transition: all 0.5s;
       }
     }
   }

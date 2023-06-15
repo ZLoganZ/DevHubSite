@@ -1,6 +1,6 @@
 import { faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import styled, { css } from 'styled-components';
-import { commonColor } from '../../util/cssVariable/cssVariable';
+import { commonColor } from '../../util/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};

@@ -13,7 +13,7 @@ import { BellOutlined, CommentOutlined, UserOutlined } from '@ant-design/icons';
 import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { setTheme } from '../../redux/Slice/ThemeSlice';
 import { NavLink, useNavigate } from 'react-router-dom';
-import DayNightSwitch from '../Button/Day&NightSwitch';
+import DayNightSwitch from '../Day&NightSwitch';
 import { LOGOUT_SAGA } from '../../redux/actionSaga/AuthActionSaga';
 import { useConversationsData } from '../../hooks/DataProvider';
 import { pusherClient } from '../../util/functions/Pusher';

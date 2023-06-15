@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { commonColor, custom_scrollBar } from '../../../util/cssVariable/cssVariable';
+import { commonColor, custom_scrollBar } from '../../../util/cssVariable';
 
 const StyleTotal = styled.div`
   .form__group {
@@ -61,9 +61,8 @@ const StyleTotal = styled.div`
     color: ${(props) => props.theme.colorText3};
   }
 
-
-  .addRepositories{
-    .repositories{
+  .addRepositories {
+    .repositories {
       ${custom_scrollBar}
     }
   }
