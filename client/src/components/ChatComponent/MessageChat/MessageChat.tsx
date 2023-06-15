@@ -17,7 +17,7 @@ import { NavLink } from 'react-router-dom';
 
 interface IParams {
   conversationId: string;
-  setIsDisplayShare: any;
+  setIsDisplayShare: React.Dispatch<React.SetStateAction<boolean>>;
   isDisplayShare: boolean;
 }
 
@@ -116,10 +116,6 @@ const MessageChat = (Props: IParams) => {
   const styleStatus = useMemo(() => {
     return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
   }, [isActive]);
-
-  useEffect(() => {
-    seenMessage();
-  }, []);
 
   return (
     <StyleTotal className="h-full" theme={themeColorSet}>
