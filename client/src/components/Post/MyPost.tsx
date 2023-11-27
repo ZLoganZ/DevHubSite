@@ -149,7 +149,7 @@ const MyPost = (PostProps: PostProps) => {
     formData.append('timestamp', timestamp);
     const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
     formData.append('signature', signature);
-    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+    const res = await fetch('https://api.cloudinary.com/v1_1/zsocialnetworkz/image/destroy', {
       method: 'POST',
       body: formData,
     });
