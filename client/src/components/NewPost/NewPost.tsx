@@ -89,7 +89,7 @@ const NewPost = (Props: Props) => {
   const error = () => {
     messageApi.open({
       type: 'error',
-      content: 'Please enter all field',
+      content: 'Please enter content',
     });
   };
 
@@ -100,7 +100,7 @@ const NewPost = (Props: Props) => {
       content: '',
     },
     onSubmit: async (values, helper) => {
-      if (quill.root.innerHTML === '<p><br></p>' || !values.title) {
+      if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
         setLoading(true);
