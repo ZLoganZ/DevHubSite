@@ -78,7 +78,7 @@
     "@tanstack/eslint-plugin-query": "^4.29.4",
     "@types/date-fns": "^2.6.0",
     "@types/lodash": "^4.14.194",
-    "@types/node": "^16.18.14",
+    "@types/node": "^16.18.68",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",

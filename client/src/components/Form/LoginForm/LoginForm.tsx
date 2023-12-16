@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import StyleTotal from './cssLoginForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +7,7 @@ import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
 import { ConfigProvider, Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 import { useGoogleLogin } from '@react-oauth/google';
 import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
@@ -16,6 +16,9 @@ import { darkThemeSet } from '../../../util/cssVariable';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { error } = useSelector((state: any) => state.authReducer);
 
   const location = useLocation();
 
@@ -38,7 +41,12 @@ const LoginForm = () => {
     const popup = window.open(GetGitHubUrl(), 'GithubAuth', `width=${width},height=${height},left=${left},top=${top}`);
 
     const handleMessage = (event: any) => {
-      if (event.origin === import.meta.env.VITE_SERVER_ENDPOINT) {
+      if (
+        event.origin ===
+        (process.env.NODE_ENV === 'development'
+          ? import.meta.env.VITE_SERVER_ENDPOINT
+          : import.meta.env.VITE_SERVER_ENDPOINT_PRODUCT)
+      ) {
         // Check the origin of the message for security
         // Handle the received data from the server
         const userData = event.data;
@@ -71,6 +79,9 @@ const LoginForm = () => {
       password: '',
     },
     onSubmit: (values) => {
+      setEmail(values.email);
+      setPassword(values.password);
+
       dispatch(
         LOGIN_SAGA({
           userLogin: values,
@@ -112,6 +123,14 @@ const LoginForm = () => {
                   type: 'email',
                   message: 'The input is not valid E-mail!',
                 },
+                {
+                  validator(_, value) {
+                    if (error?.toLowerCase()?.includes('email') && value === email) {
+                      return Promise.reject(new Error(error));
+                    }
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Input placeholder="Email" allowClear prefix={<MailOutlined />} onChange={formik.handleChange}></Input>
@@ -122,6 +141,14 @@ const LoginForm = () => {
                 {
                   required: true,
                   message: 'Please input your password!',
+                },
+                {
+                  validator(_, value) {
+                    if (error?.toLowerCase()?.includes('password') && value === password) {
+                      return Promise.reject(new Error(error));
+                    }
+                    return Promise.resolve();
+                  },
                 },
               ]}
             >

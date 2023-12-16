@@ -1,4 +1,7 @@
-export const DOMAIN_NAME = 'https://dev-hub-pro.herokuapp.com/api';
+export const DOMAIN_NAME =
+  (process.env.NODE_ENV === 'development'
+    ? import.meta.env.VITE_SERVER_ENDPOINT
+    : import.meta.env.VITE_SERVER_ENDPOINT_PRODUCT) + '/api';
 
 export const TOKEN = 'access_token';
 export const TOKEN_GITHUB = 'access_token_github';

@@ -36,7 +36,12 @@ const AddRepositoryForm = (Props: ReposProps) => {
     let userData: any = undefined;
 
     const handleMessage = (event: any) => {
-      if (event.origin === import.meta.env.VITE_SERVER_ENDPOINT) {
+      if (
+        event.origin ===
+        (process.env.NODE_ENV === 'development'
+          ? import.meta.env.VITE_SERVER_ENDPOINT
+          : import.meta.env.VITE_SERVER_ENDPOINT_PRODUCT)
+      ) {
         userData = event.data;
         if (userData) {
           localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);

@@ -13,7 +13,7 @@ import {
   RESET_PASSWORD_SAGA,
   VERIFY_CODE_SAGA,
 } from '../actionSaga/AuthActionSaga';
-import { setLogin, setUserID } from '../Slice/AuthSlice';
+import { setError, setLogin, setUserID } from '../Slice/AuthSlice';
 import { setTheme } from '../Slice/ThemeSlice';
 
 // LoginSaga
@@ -35,6 +35,7 @@ function* LoginSaga({ payload }: any) {
       window.location.replace(from);
     }
   } catch (err: any) {
+    yield put(setError({ error: err.response.data.message }));
     console.log(err);
   }
 }
