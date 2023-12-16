@@ -35,9 +35,15 @@ const OtherPostDetail = (Props: PostProps) => {
     <StyleTotal theme={themeColorSet}>
       <div className="postDetail">
         {Props.postShare ? (
-          <OtherPostShare key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
+          <OtherPostShare
+            key={Props.post?._id}
+            post={Props.post}
+            userInfo={Props.userInfo}
+            owner={Props.owner}
+            isModal
+          />
         ) : (
-          <OtherPost key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
+          <OtherPost key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} isModal />
         )}
         <div
           className="commentTotal px-3 ml-4"

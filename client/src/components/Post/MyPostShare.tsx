@@ -30,6 +30,7 @@ interface PostShareProps {
   post: any;
   userInfo: any;
   owner: any;
+  isModal?: boolean;
 }
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
@@ -378,7 +379,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                   style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
-                    setIsOpenPostDetail(true);
+                    !PostProps.isModal && setIsOpenPostDetail(true);
                   }}
                 />
               </Space>

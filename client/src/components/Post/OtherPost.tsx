@@ -34,6 +34,7 @@ import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 interface PostProps {
   post: any;
   userInfo: any;
+  isModal?: boolean;
 }
 
 // -----------------------------------------------------
@@ -357,7 +358,7 @@ const OtherPost = (PostProps: PostProps) => {
                   style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
-                    setIsOpenPostDetail(true);
+                    !PostProps.isModal && setIsOpenPostDetail(true);
                   }}
                 />
               </Space>

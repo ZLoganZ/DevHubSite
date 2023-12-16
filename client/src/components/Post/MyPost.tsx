@@ -42,6 +42,7 @@ import { sha1 } from 'crypto-hash';
 interface PostProps {
   post: any;
   userInfo: any;
+  isModal?: boolean;
 }
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
@@ -475,7 +476,7 @@ const MyPost = (PostProps: PostProps) => {
                   style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
-                    setIsOpenPostDetail(true);
+                    !PostProps.isModal && setIsOpenPostDetail(true);
                   }}
                 />
               </Space>

@@ -21,6 +21,7 @@ interface PostShareProps {
   post: any;
   userInfo: any;
   owner: any;
+  isModal?: boolean;
 }
 
 const PostShare = (PostProps: PostShareProps) => {
@@ -298,7 +299,7 @@ const PostShare = (PostProps: PostShareProps) => {
                   style={{ backgroundColor: 'transparent' }}
                   icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
-                    setIsOpenPostDetail(true);
+                    !PostProps.isModal && setIsOpenPostDetail(true);
                   }}
                 />
               </Space>

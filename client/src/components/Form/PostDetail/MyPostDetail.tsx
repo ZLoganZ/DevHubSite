@@ -28,9 +28,9 @@ const MyPostDetail = (Props: PostProps) => {
     <StyleTotal>
       <div className="postDetail">
         {Props.postShare ? (
-          <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
+          <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} isModal/>
         ) : (
-          <MyPost post={Props.post} userInfo={Props.userInfo} />
+          <MyPost post={Props.post} userInfo={Props.userInfo} isModal/>
         )}
         <div
           className="commentTotal px-3 ml-4"
